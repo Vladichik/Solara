@@ -7,6 +7,8 @@ import MongoConfig from './config/mongo-config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './database/users/users.module';
+import { CryptoguyModule } from './tools/cryptoguy/cryptoguy.module';
 import configuration from './config/configurations';
 
 @Module({
@@ -23,6 +25,8 @@ import configuration from './config/configurations';
       useClass: MongoConfig,
     }),
     AuthModule,
+    UsersModule,
+    CryptoguyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

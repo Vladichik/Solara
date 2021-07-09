@@ -11,16 +11,20 @@ import {
 
 import { LocalAuthGuard } from './local-auth.guard';
 import { AuthService } from './auth.service';
+import { UsersService } from '../database/users/users.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UsersService,
+  ) {}
 
   @Post('/signup')
-  async signUp(@Res() res, @Body() friend) {
-    const createdFriend = await this.friendService.createFriend(friend);
+  async signUp(@Res() res, @Body() user) {
+    const createdFriend = await this.userService.createUser(user);
     if (createdFriend) {
-      await this.authService.sendMessageToNewFriend(createdFriend, friend.lang);
+      // await this.authService.sendMessageToNewFriend(createdFriend, friend.lang);
       return res.status(HttpStatus.OK).json(createdFriend);
     }
     throw new HttpException(
@@ -43,11 +47,11 @@ export class AuthController {
 
   @Post('/forgot')
   async remindPassword(@Res() res, @Body() data) {
-    const recovered = await this.authService.remindPassword(data.email);
-    if (recovered) {
-      return res.status(HttpStatus.OK).json();
-    } else {
-      return res.status(HttpStatus.NO_CONTENT).json();
-    }
+    // const recovered = await this.authService.remindPassword(data.email);
+    // if (recovered) {
+    //   return res.status(HttpStatus.OK).json();
+    // } else {
+    //   return res.status(HttpStatus.NO_CONTENT).json();
+    // }
   }
 }
