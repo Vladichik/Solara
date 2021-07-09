@@ -8,7 +8,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './database/users/users.module';
-import { CryptoguyModule } from './tools/cryptoguy/cryptoguy.module';
+import { CryptoGuyModule } from './tools/cryptoguy/cryptoguy.module';
 import configuration from './config/configurations';
 
 @Module({
@@ -26,7 +26,7 @@ import configuration from './config/configurations';
     }),
     AuthModule,
     UsersModule,
-    CryptoguyModule,
+    CryptoGuyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -7,11 +7,13 @@ import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './auth.controller';
 import { UsersModule } from '../database/users/users.module';
+import { CryptoGuyModule } from '../tools/cryptoguy/cryptoguy.module';
 
 @Module({
   imports: [
     PassportModule,
     UsersModule,
+    CryptoGuyModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
