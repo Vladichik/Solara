@@ -3,7 +3,7 @@
 
     <q-header class="bg-primary text-white" height-hint="98">
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
+<!--        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />-->
         <q-toolbar-title>
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">

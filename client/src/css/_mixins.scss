@@ -1,0 +1,67 @@
+@mixin setSticky($align) {
+  position: sticky;
+  position: -webkit-sticky;
+  @if ($align == "top") {
+    top: 0;
+  } @else {
+    bottom: 0;
+  }
+}
+
+@mixin setGridAuto($size, $gap, $type) {
+  display: grid !important;
+  @if ($type == "columns") {
+    grid-auto-columns: $size;
+    grid-template-columns: $size;
+    grid-column-gap: $gap;
+    grid-auto-flow: column;
+  } @else if ($type == "rows") {
+    grid-auto-rows: $size;
+    grid-template-rows: $size;
+    grid-row-gap: $gap;
+    grid-auto-flow: row;
+  }
+}
+
+@mixin setGrid($columns, $columns-gap, $rows, $rows-gap, $type) {
+  display: grid;
+  @if ($type == 'columns') {
+    grid-template-columns: $columns;
+    grid-column-gap: $columns-gap;
+  } @else if ($type == 'rows') {
+    grid-template-rows: $rows;
+    grid-row-gap: $rows-gap;
+  } @else if ($type == 'both') {
+    grid-template-columns: $columns;
+    grid-column-gap: $columns-gap;
+    grid-template-rows: $rows;
+    grid-row-gap: $rows-gap;
+  }
+}
+
+@mixin shadowGenerator($item) {
+  -webkit-box-shadow: $item;
+  -moz-box-shadow: $item;
+  box-shadow: $item;
+}
+
+
+@mixin noUserSelect() {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+@mixin ellipsis() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin setSticky($top) {
+  position: sticky;
+  position: -webkit-sticky;
+  top: $top;
+}
