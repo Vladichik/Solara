@@ -77,16 +77,15 @@ module.exports = configure((ctx) => ({
   // Full list of options: https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
   devServer: {
     https: false,
-    port: 8080,
+    port: 8082,
     open: true, // opens browser window automatically
   },
 
   // https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
   framework: {
     config: {},
-
-    // iconSet: 'material-icons', // Quasar icon set
-    // lang: 'en-US', // Quasar language pack
+    iconSet: 'material-icons', // Quasar icon set
+    lang: 'en-US', // Quasar language pack
 
     // For special cases outside of where the auto-import strategy can have an impact
     // (like functional components as one of the examples),

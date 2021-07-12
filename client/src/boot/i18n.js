@@ -4,6 +4,7 @@ import messages from 'src/i18n';
 
 const i18n = createI18n({
   locale: 'en-US',
+  fallbackLocale: 'en',
   messages,
 });
 
