@@ -7,4 +7,7 @@ export default {
   ],
   email: 'E-mail',
   pw: 'Password',
+  login: 'Login',
+  dont_have: "Don't have an account yet?",
+  sign_up_now: 'Sign Up Now',
 };

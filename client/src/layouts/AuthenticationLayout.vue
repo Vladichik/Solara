@@ -9,7 +9,7 @@
       class="sol-auth-panels bg-transparent"
     >
       <q-tab-panel v-for="panel in panels" :name="panel.name" :key="panel.name">
-        <component :is="panel.componentName" @forgot-pass="tab = 'forgot'" />
+        <component :is="panel.componentName" @set-tab="setActiveTab" />
       </q-tab-panel>
     </q-tab-panels>
   </section>
@@ -18,11 +18,13 @@
 <script>
 import { ref } from 'vue';
 import Login from 'components/auth/Login';
+import Forgot from 'components/auth/Forgot';
 
 export default {
   name: 'AuthenticationLayout',
   components: {
     Login,
+    Forgot,
   },
   setup() {
     const activeTab = ref('login');
@@ -40,9 +42,13 @@ export default {
         name: 'forgot',
       },
     ];
+    const setActiveTab = (aTab) => {
+      activeTab.value = aTab;
+    };
     return {
       activeTab,
       panels,
+      setActiveTab,
     };
   },
 };
@@ -61,6 +67,6 @@ export default {
 }
 
 .sol-auth-form-grid {
-  @include setGridAuto(auto, 15px, "rows");
+  @include setGridAuto(auto, 20px, "rows");
 }
 </style>
