@@ -1,5 +1,5 @@
 <template>
-  <q-form class="bg-transparent sol-auth-form-grid sol-login-form" @submit="login()">
+  <q-form class="bg-transparent sol-auth-form-grid sol-login-form" @submit="signup()">
     <q-input filled
              :placeholder="$t('email')"
              v-model="formData.username"
