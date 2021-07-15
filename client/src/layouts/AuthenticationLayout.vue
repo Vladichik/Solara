@@ -18,16 +18,18 @@
 <script>
 import { ref } from 'vue';
 import Login from 'components/auth/Login';
+import Signup from 'components/auth/Signup';
 import Forgot from 'components/auth/Forgot';
 
 export default {
   name: 'AuthenticationLayout',
   components: {
     Login,
+    Signup,
     Forgot,
   },
   setup() {
-    const activeTab = ref('login');
+    const activeTab = ref('signup');
     const panels = [
       {
         componentName: 'Login',
