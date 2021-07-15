@@ -10,4 +10,9 @@ export default {
   login: 'Login',
   dont_have: "Don't have an account yet?",
   sign_up_now: 'Sign Up Now',
+  mandatory_field: 'This field is mandatory',
+  pw_mandatory: 'Password must be 6 characters or more',
+  i_accept: 'I accept ',
+  terms: 'Terms and Conditions',
+  forgot_pw: 'Forgot password',
 };

@@ -1,17 +1,29 @@
 <template>
-  <q-form greedy class="bg-transparent sol-auth-form-grid sol-login-form" onsubmit="login()">
-        <q-input filled
-                 :placeholder="$t('email')"
-                 v-model="formData.username" />
-        <q-input filled bottom-slots
-                 :placeholder="$t('pw')"
-                 type="password"
-                 v-model="formData.password" >
-          <template v-slot:hint>
-            <q-btn flat dense no-caps
-                   @click="$emit('set-tab', 'forgot')">Forgot password</q-btn>
-          </template>
-        </q-input>
+  <q-form class="bg-transparent sol-auth-form-grid sol-login-form" @submit="login()">
+    <q-input filled
+             :placeholder="$t('email')"
+             v-model="formData.username"
+             :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />
+    <q-input filled bottom-slots
+             :placeholder="$t('pw')"
+             type="password"
+             v-model="formData.password"
+             model-value=""
+             :rules="[ val => val && val.length > 5 || $t('pw_mandatory')]" />
+    <div class="sol-forgot-pw-block">
+      <q-btn flat dense no-caps @click="$emit('set-tab', 'forgot')">{{$t('forgot_pw')}}</q-btn>
+    </div>
+    <div class="sol-terms-block">
+      <q-checkbox size="lg"
+                  keep-color
+                  v-model="formData.checked"
+                  :label="$t('i_accept')"
+                  color="primary" />
+      <router-link
+        to="/authenticate"
+        class="sol-signup-text text-blue-7 text-bold">{{ $t('terms') }}
+      </router-link>
+    </div>
     <q-btn class="q-mt-lg" color="primary" :label="$t('login')" type="submit" />
     <div class="sol-signup-block">
       <span class="text-grey-9">{{ $t('dont_have') }}</span>
@@ -22,16 +34,23 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'Login',
-  data() {
+  setup() {
+    const formData = ref({
+      username: '',
+      password: '',
+      checked: false,
+    });
+    const login = () => {
+      console.log(formData);
+      debugger;
+    };
     return {
-      formData: {
-        username: '',
-        password: '',
-      },
+      formData,
+      login,
     };
   },
 });
@@ -56,6 +75,22 @@ export default defineComponent({
     text-decoration: underline;
     cursor: pointer;
   }
+}
+
+.sol-forgot-pw-block {
+  position: relative;
+  button {
+    position: absolute;
+    padding: 0 5px;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+.sol-terms-block {
+  align-items: center;
+  justify-content: flex-start;
+  @include setGridAuto(auto, 5px, "columns");
 }
 
 </style>

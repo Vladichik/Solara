@@ -67,6 +67,6 @@ export default {
 }
 
 .sol-auth-form-grid {
-  @include setGridAuto(auto, 20px, "rows");
+  @include setGridAuto(auto, 10px, "rows");
 }
 </style>
