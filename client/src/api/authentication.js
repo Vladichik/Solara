@@ -18,7 +18,13 @@ export default class AuthAPI {
    */
   static signUp(credentials) {
     return api.post(`${AUTH_BASE}/signup`, credentials)
-      .then((resp) => resp)
+      .then((resp) => {
+        if (resp.data && resp.data.access_token) {
+          this.setAuthToken(resp.data.access_token);
+          return resp.data.access_token;
+        }
+        return false;
+      })
       .catch((error) => error);
   }
 

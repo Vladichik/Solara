@@ -24,7 +24,11 @@ export class AuthController {
   async signUp(@Res() res, @Body() user) {
     const createdFriend = await this.userService.createUser(user);
     if (createdFriend) {
-      return res.status(HttpStatus.OK).json(createdFriend);
+      const token = await this.authService.login({
+        username: createdFriend.username,
+        password: createdFriend.password,
+      });
+      return res.status(HttpStatus.OK).json(token);
     }
     throw new HttpException(
       {
