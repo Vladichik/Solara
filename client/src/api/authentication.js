@@ -1,13 +1,12 @@
 /**
  *
- * Written by vlad on 29/03/2021
+ * Written by vlad on 15/07/2021
  */
 
-import Vue from 'vue';
+import { api } from 'boot/axios';
 import decode from 'jwt-decode';
 import { Constants } from '../config/constants';
 
-const self = Vue.prototype;
 const AUTH_BASE = '/auth';
 
 export default class AuthAPI {
@@ -18,7 +17,7 @@ export default class AuthAPI {
    * Vlad. 13/1/21
    */
   static signUp(credentials) {
-    return self.$api.post(`${AUTH_BASE}/signup`, credentials)
+    return api.post(`${AUTH_BASE}/signup`, credentials)
       .then((resp) => resp)
       .catch((error) => error);
   }
@@ -30,7 +29,7 @@ export default class AuthAPI {
    * Vlad. 15/1/21
    */
   static signIn(credentials) {
-    return self.$api.post(`${AUTH_BASE}/login`, credentials)
+    return api.post(`${AUTH_BASE}/login`, credentials)
       .then((resp) => {
         if (resp.status === 201) {
           this.setAuthToken(resp.data.access_token);
@@ -48,7 +47,7 @@ export default class AuthAPI {
    * Vlad. 15/1/21
    */
   static recoverPassword(email) {
-    return self.$api.post(`${AUTH_BASE}/forgot`, email)
+    return api.post(`${AUTH_BASE}/forgot`, email)
       .then((resp) => resp.status)
       .catch((error) => error);
   }
@@ -65,7 +64,7 @@ export default class AuthAPI {
    */
   static setAuthToken(token) {
     localStorage.setItem(Constants.AUTH_TOKEN_KEY, token);
-    self.$api.defaults.headers.Authorization = token;
+    api.defaults.headers.Authorization = token;
   }
 
   /**
@@ -74,7 +73,7 @@ export default class AuthAPI {
    * Vlad. 15/1/21
    */
   static clearAuthToken() {
-    delete self.$api.defaults.headers.Authorization;
+    delete api.defaults.headers.Authorization;
     localStorage.removeItem(Constants.AUTH_TOKEN_KEY);
   }
 

@@ -1,6 +1,10 @@
 <template>
   <q-form class="bg-transparent sol-auth-form-grid sol-login-form" @submit="signup()">
     <q-input filled
+             :placeholder="$t('name')"
+             v-model="formData.name"
+             :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />
+    <q-input filled
              :placeholder="$t('email')"
              v-model="formData.username"
              :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />
@@ -33,20 +37,28 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, reactive } from 'vue';
+import AuthAPI from 'src/api/authentication';
 
 export default defineComponent({
   name: 'Signup',
-  setup() {
-    const formData = ref({
+  props: ['setProcessing'],
+  setup(props) {
+    const formData = reactive({
+      name: '',
       username: '',
       password: '',
       rep_password: '',
       checked: false,
     });
-    const signup = () => {
-      console.log(formData);
-      debugger;
+    const signup = async () => {
+      props.setProcessing(true);
+      await AuthAPI.signUp({
+        username: formData.username,
+        password: formData.username,
+        name: formData.name,
+      });
+      props.setProcessing(false);
     };
     return {
       formData,

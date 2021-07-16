@@ -5,6 +5,7 @@ export default {
     { name: 'Favorites', route: 'favorites', icon: 'star' },
     { name: 'Solara Pro', route: 'solara-pro', icon: 'paid' },
   ],
+  name: 'Name',
   email: 'E-mail',
   pw: 'Password',
   rp_pw: 'Repeat password',

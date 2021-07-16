@@ -1,14 +1,16 @@
 <template>
   <section class="sol-preloader-overlay">
-    <q-spinner-puff color="primary" size="4em" />
+    <q-spinner-bars color="primary" size="3em" />
   </section>
 </template>
 
 <script>
-export default {
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   name: 'Preloader',
   props: ['dark', 'rounded'],
-};
+});
 </script>
 <style lang="scss">
 .sol-preloader-overlay {

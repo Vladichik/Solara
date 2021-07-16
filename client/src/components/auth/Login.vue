@@ -45,8 +45,6 @@ export default defineComponent({
       checked: false,
     });
     const login = () => {
-      console.log(formData);
-      debugger;
     };
     return {
       formData,

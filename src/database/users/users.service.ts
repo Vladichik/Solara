@@ -29,7 +29,7 @@ export class UsersService {
       const friendData = {
         username: user.username,
         password: pwHash,
-        full_name: user.name,
+        name: user.name,
         email: user.username,
       };
       const newUser = await new this.userModel(friendData);

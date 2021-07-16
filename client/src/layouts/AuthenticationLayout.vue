@@ -9,9 +9,12 @@
       class="sol-auth-panels bg-transparent"
     >
       <q-tab-panel v-for="panel in panels" :name="panel.name" :key="panel.name">
-        <component :is="panel.componentName" @set-tab="setActiveTab" />
+        <component :is="panel.componentName"
+                   :set-processing="setProcessing"
+                   @set-tab="setActiveTab" />
       </q-tab-panel>
     </q-tab-panels>
+    <preloader v-if="processing" />
   </section>
 </template>
 
@@ -30,6 +33,7 @@ export default {
   },
   setup() {
     const activeTab = ref('signup');
+    const processing = ref(false);
     const panels = [
       {
         componentName: 'Login',
@@ -47,10 +51,15 @@ export default {
     const setActiveTab = (aTab) => {
       activeTab.value = aTab;
     };
+    const setProcessing = (val) => {
+      processing.value = val;
+    };
     return {
       activeTab,
       panels,
+      processing,
       setActiveTab,
+      setProcessing,
     };
   },
 };
@@ -63,6 +72,7 @@ export default {
   justify-items: center;
   @include setGrid(null, null, 100px 1fr, null, "rows");
 }
+
 .sol-auth-panels {
   max-width: 600px;
   width: 100%;
