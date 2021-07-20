@@ -32,7 +32,7 @@ export default {
     Forgot,
   },
   setup() {
-    const activeTab = ref('signup');
+    const activeTab = ref('login');
     const processing = ref(false);
     const panels = [
       {

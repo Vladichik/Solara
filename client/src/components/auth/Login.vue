@@ -11,18 +11,7 @@
              model-value=""
              :rules="[ val => val && val.length > 5 || $t('pw_mandatory')]" />
     <div class="sol-forgot-pw-block">
-      <q-btn flat dense no-caps @click="$emit('set-tab', 'forgot')">{{$t('forgot_pw')}}</q-btn>
-    </div>
-    <div class="sol-terms-block">
-      <q-checkbox size="lg"
-                  keep-color
-                  v-model="formData.checked"
-                  :label="$t('i_accept')"
-                  color="primary" />
-      <router-link
-        to="/authenticate"
-        class="sol-signup-text text-blue-7 text-bold">{{ $t('terms') }}
-      </router-link>
+      <q-btn flat dense no-caps @click="$emit('set-tab', 'forgot')">{{ $t('forgot_pw') }}</q-btn>
     </div>
     <q-btn class="q-mt-lg" color="primary" :label="$t('login')" type="submit" />
     <div class="sol-signup-block">
@@ -34,22 +23,32 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
+import AuthAPI from 'src/api/authentication';
 
 export default defineComponent({
   name: 'Login',
-  setup() {
-    const formData = ref({
-      username: '',
-      password: '',
-      checked: false,
-    });
-    const login = () => {
-    };
+  props: ['setProcessing'],
+  data() {
     return {
-      formData,
-      login,
+      formData: {
+        username: '',
+        password: '',
+        checked: false,
+      },
     };
+  },
+  methods: {
+    async login() {
+      this.setProcessing(true);
+      const logged = await AuthAPI.signIn({
+        username: this.formData.username,
+        password: this.formData.password,
+      });
+      debugger;
+      console.log(logged);
+      this.setProcessing(false);
+    },
   },
 });
 </script>
@@ -77,18 +76,13 @@ export default defineComponent({
 
 .sol-forgot-pw-block {
   position: relative;
+
   button {
     position: absolute;
     padding: 0 5px;
     right: 0;
     bottom: 0;
   }
-}
-
-.sol-terms-block {
-  align-items: center;
-  justify-content: flex-start;
-  @include setGridAuto(auto, 5px, "columns");
 }
 
 </style>

@@ -35,10 +35,10 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('/login')
-  async login(@Request() req) {
+  async login(@Request() req, @Body() credentials) {
     return this.authService.login({
-      username: req.user._doc.username,
-      id: req.user._doc.id,
+      username: credentials.username,
+      id: credentials.id,
     });
   }
 

@@ -81,4 +81,10 @@ export default defineComponent({
 
 <style lang="scss">
 @import "src/css/mixins";
+
+.sol-terms-block {
+  align-items: center;
+  justify-content: flex-start;
+  @include setGridAuto(auto, 5px, "columns");
+}
 </style>
