@@ -9,7 +9,7 @@ export default {
       this.fireNotification(message, color, timeout);
     },
     showWarningNotification(message, timeout) {
-      this.fireNotification(message, 'red', timeout);
+      this.fireNotification(message, 'primary', timeout);
     },
     fireNotification(message, color, timeout) {
       this.$q.notify({

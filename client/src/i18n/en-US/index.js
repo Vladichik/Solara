@@ -20,4 +20,5 @@ export default {
   terms: 'Terms and Conditions',
   forgot_pw: 'Forgot password',
   policy_check: 'Please accept Terms and Conditions to proceed',
+  user_exists: 'User with this email already exists.',
 };

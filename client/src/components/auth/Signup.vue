@@ -60,12 +60,16 @@ export default defineComponent({
     async signup() {
       if (this.formData.checked) {
         this.setProcessing(true);
-        await AuthAPI.signUp({
+        const onSignup = await AuthAPI.signUp({
           username: this.formData.username,
-          password: this.formData.username,
+          password: this.formData.password,
           name: this.formData.name,
         });
-        await this.$router.push('/');
+        if (onSignup.status === 302) {
+          this.showWarningNotification(this.$t('user_exists'));
+        } else if (onSignup) {
+          await this.$router.push('/');
+        }
         this.setProcessing(false);
       } else {
         this.showWarningNotification(this.$t('policy_check'));

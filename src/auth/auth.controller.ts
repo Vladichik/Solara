@@ -30,13 +30,7 @@ export class AuthController {
       });
       return res.status(HttpStatus.OK).json(token);
     }
-    throw new HttpException(
-      {
-        status: HttpStatus.FOUND,
-        error: 'USER_EXISTS',
-      },
-      HttpStatus.FOUND,
-    );
+    return res.status(HttpStatus.FOUND).json({ message: 'USER_EXISTS' });
   }
 
   @UseGuards(LocalAuthGuard)

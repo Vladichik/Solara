@@ -25,7 +25,7 @@ export default class AuthAPI {
         }
         return false;
       })
-      .catch((error) => error);
+      .catch((error) => error.response);
   }
 
   /**
