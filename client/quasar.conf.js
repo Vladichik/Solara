@@ -88,7 +88,7 @@ module.exports = configure((ctx) => ({
       notify: {
         progress: true,
         position: 'top',
-        timeout: 3000,
+        timeout: 2000,
         textColor: 'white',
       },
     },

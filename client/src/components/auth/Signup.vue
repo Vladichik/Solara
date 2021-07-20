@@ -65,6 +65,7 @@ export default defineComponent({
           password: this.formData.username,
           name: this.formData.name,
         });
+        await this.$router.push('/');
         this.setProcessing(false);
       } else {
         this.showWarningNotification(this.$t('policy_check'));
