@@ -19,4 +19,5 @@ export default {
   i_accept: 'I accept ',
   terms: 'Terms and Conditions',
   forgot_pw: 'Forgot password',
+  policy_check: 'Please accept Terms and Conditions to proceed',
 };

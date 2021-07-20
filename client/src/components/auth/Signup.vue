@@ -37,33 +37,39 @@
 </template>
 
 <script>
-import { defineComponent, reactive } from 'vue';
+import { defineComponent } from 'vue';
 import AuthAPI from 'src/api/authentication';
+import NotificationsMixins from 'src/mixins/NotificationsMixins';
 
 export default defineComponent({
   name: 'Signup',
   props: ['setProcessing'],
-  setup(props) {
-    const formData = reactive({
-      name: '',
-      username: '',
-      password: '',
-      rep_password: '',
-      checked: false,
-    });
-    const signup = async () => {
-      props.setProcessing(true);
-      await AuthAPI.signUp({
-        username: formData.username,
-        password: formData.username,
-        name: formData.name,
-      });
-      props.setProcessing(false);
-    };
+  mixins: [NotificationsMixins],
+  data() {
     return {
-      formData,
-      signup,
+      formData: {
+        name: '',
+        username: '',
+        password: '',
+        rep_password: '',
+        checked: false,
+      },
     };
+  },
+  methods: {
+    async signup() {
+      if (this.formData.checked) {
+        this.setProcessing(true);
+        await AuthAPI.signUp({
+          username: this.formData.username,
+          password: this.formData.username,
+          name: this.formData.name,
+        });
+        this.setProcessing(false);
+      } else {
+        this.showWarningNotification(this.$t('policy_check'));
+      }
+    },
   },
 });
 </script>
