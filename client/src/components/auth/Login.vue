@@ -28,7 +28,6 @@ import AuthAPI from 'src/api/authentication';
 
 export default defineComponent({
   name: 'Login',
-  props: ['setProcessing'],
   data() {
     return {
       formData: {
@@ -40,14 +39,12 @@ export default defineComponent({
   },
   methods: {
     async login() {
-      this.setProcessing(true);
       const logged = await AuthAPI.signIn({
         username: this.formData.username,
         password: this.formData.password,
       });
       debugger;
       console.log(logged);
-      this.setProcessing(false);
     },
   },
 });

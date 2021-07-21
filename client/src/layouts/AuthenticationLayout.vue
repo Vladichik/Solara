@@ -10,7 +10,6 @@
     >
       <q-tab-panel v-for="panel in panels" :name="panel.name" :key="panel.name">
         <component :is="panel.componentName"
-                   :set-processing="setProcessing"
                    @set-tab="setActiveTab" />
       </q-tab-panel>
     </q-tab-panels>
@@ -20,6 +19,7 @@
 
 <script>
 import { ref } from 'vue';
+import { mapState } from 'vuex';
 import Login from 'components/auth/Login';
 import Signup from 'components/auth/Signup';
 import Forgot from 'components/auth/Forgot';
@@ -32,8 +32,7 @@ export default {
     Forgot,
   },
   setup() {
-    const activeTab = ref('login');
-    const processing = ref(false);
+    const activeTab = ref('signup');
     const panels = [
       {
         componentName: 'Login',
@@ -51,16 +50,16 @@ export default {
     const setActiveTab = (aTab) => {
       activeTab.value = aTab;
     };
-    const setProcessing = (val) => {
-      processing.value = val;
-    };
     return {
       activeTab,
       panels,
-      processing,
       setActiveTab,
-      setProcessing,
     };
+  },
+  computed: {
+    ...mapState({
+      processing: (state) => state.Auth.processing,
+    }),
   },
 };
 </script>

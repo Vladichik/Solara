@@ -43,7 +43,6 @@ import NotificationsMixins from 'src/mixins/NotificationsMixins';
 
 export default defineComponent({
   name: 'Signup',
-  props: ['setProcessing'],
   mixins: [NotificationsMixins],
   data() {
     return {
@@ -59,18 +58,18 @@ export default defineComponent({
   methods: {
     async signup() {
       if (this.formData.checked) {
-        this.setProcessing(true);
-        const onSignup = await AuthAPI.signUp({
+        const payload = {
           username: this.formData.username,
           password: this.formData.password,
           name: this.formData.name,
+        };
+        this.$store.dispatch('Auth/signUp', payload).then((resp) => {
+          if (resp.status === 302) {
+            this.showWarningNotification(this.$t('notifications.user_exists'), 4000);
+          } else if (resp.data && resp.data.access_token) {
+            this.$router.push('/');
+          }
         });
-        if (onSignup.status === 302) {
-          this.showWarningNotification(this.$t('user_exists'));
-        } else if (onSignup) {
-          await this.$router.push('/');
-        }
-        this.setProcessing(false);
       } else {
         this.showWarningNotification(this.$t('policy_check'));
       }

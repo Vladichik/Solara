@@ -6,10 +6,11 @@ export function signUp({ commit }, user) {
     .then((resp) => {
       commit('setAuthProcess', false);
       if (resp.status === 200) {
-        return resp.data;
+        AuthAPI.setAuthToken(resp.data.access_token);
+        return resp;
       }
-      if (resp.message.includes('302')) {
-        return 302;
+      if (resp.status === 302) {
+        return resp;
       }
       return false;
     })

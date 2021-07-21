@@ -69,6 +69,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'prefer-promise-reject-errors': 'off',
     'no-unused-vars': 'off',
+    'func-names': 'off',
 
 
     // allow debugger during development only
