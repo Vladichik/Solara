@@ -3,7 +3,7 @@
 
     <q-header class="bg-primary text-white" height-hint="98">
       <q-toolbar>
-<!--        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />-->
+        <!--        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />-->
         <q-toolbar-title>
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
@@ -31,14 +31,18 @@
     <q-page-container>
       <router-view />
     </q-page-container>
-
+    <splash-screen />
   </q-layout>
 </template>
 
 <script>
 import { ref } from 'vue';
+import SplashScreen from 'components/splash/SplashScreen';
 
 export default {
+  components: {
+    SplashScreen,
+  },
   setup() {
     const leftDrawerOpen = ref(false);
 
