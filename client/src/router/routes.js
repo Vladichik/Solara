@@ -8,7 +8,10 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     meta: { requiresAuth: true },
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
+      { path: '/home', component: () => import('pages/Home.vue') },
+      { path: '/my-account', component: () => import('pages/MyAccount.vue') },
+      { path: '/favorites', component: () => import('pages/Favorites.vue') },
+      { path: '/solara-pro', component: () => import('pages/SolaraPro.vue') },
     ],
   },
 
