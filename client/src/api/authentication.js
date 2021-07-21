@@ -25,19 +25,13 @@ export default class AuthAPI {
   /**
    * Function that performs LogIn sequence
    * @param credentials - Object with login credentials
-   * @return {Promise<T | boolean>}
+   * @return {Promise<T>}
    * Vlad. 15/1/21
    */
   static signIn(credentials) {
     return api.post(`${AUTH_BASE}/login`, credentials)
-      .then((resp) => {
-        if (resp.status === 201) {
-          this.setAuthToken(resp.data.access_token);
-          return resp.data.access_token;
-        }
-        return false;
-      })
-      .catch(() => false);
+      .then((resp) => resp)
+      .catch((error) => error.response);
   }
 
   /**

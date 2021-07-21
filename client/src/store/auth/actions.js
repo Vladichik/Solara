@@ -24,10 +24,14 @@ export function signIn({ commit }, user) {
   return AuthAPI.signIn(user)
     .then((token) => {
       commit('setAuthProcess', false);
+      if (token.status === 201 && token.data.access_token) {
+        AuthAPI.setAuthToken(token.data.access_token);
+        return token.data.access_token;
+      }
+      if (token.status === 401) {
+        return 401;
+      }
       return !!token;
-    })
-    .catch((e) => {
-      commit('setAuthProcess', false);
     });
 }
 

@@ -24,27 +24,29 @@
 
 <script>
 import { defineComponent } from 'vue';
-import AuthAPI from 'src/api/authentication';
+import NotificationsMixins from 'src/mixins/NotificationsMixins';
 
 export default defineComponent({
   name: 'Login',
+  mixins: [NotificationsMixins],
   data() {
     return {
       formData: {
         username: '',
         password: '',
-        checked: false,
       },
     };
   },
   methods: {
     async login() {
-      const logged = await AuthAPI.signIn({
-        username: this.formData.username,
-        password: this.formData.password,
+      this.formData.username = this.formData.username.toLowerCase();
+      this.$store.dispatch('Auth/signIn', this.formData).then((loggedIn) => {
+        if (loggedIn === 401 || !loggedIn) {
+          this.showWarningNotification(this.$t('notifications.wrong_login'), 2000);
+        } else if (loggedIn) {
+          this.$router.push('/');
+        }
       });
-      debugger;
-      console.log(logged);
     },
   },
 });

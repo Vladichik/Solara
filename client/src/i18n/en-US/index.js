@@ -22,5 +22,6 @@ export default {
   policy_check: 'Please accept Terms and Conditions to proceed',
   notifications: {
     user_exists: 'User with this email already exists.',
+    wrong_login: 'Wrong login credentials',
   },
 };
