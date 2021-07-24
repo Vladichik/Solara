@@ -9,7 +9,14 @@ const routes = [
     meta: { requiresAuth: true },
     children: [
       { path: '/home', component: () => import('pages/Home.vue') },
-      { path: '/my-account', component: () => import('pages/MyAccount.vue') },
+      {
+        path: '/my-account',
+        component: () => import('pages/MyAccount.vue'),
+        meta: { requiresAuth: true },
+        children: [
+          { path: '', component: () => import('components/my-account/MainTabs.vue') },
+        ],
+      },
       { path: '/favorites', component: () => import('pages/Favorites.vue') },
       { path: '/solara-pro', component: () => import('pages/SolaraPro.vue') },
     ],

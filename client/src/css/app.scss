@@ -1,5 +1,30 @@
-// app global css in SCSS form
+@font-face {
+  font-family: "Heebo-Light";
+  src: url("../assets/fonts/Heebo-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Heebo-Medium";
+  src: url("../assets/fonts/Heebo-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Heebo-Regular";
+  src: url("../assets/fonts/Heebo-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Heebo-Black";
+  src: url("../assets/fonts/Heebo-Black.ttf") format("truetype");
+}
 
 html, body, #q-app {
+  overflow: hidden;
   height: 100%;
+  font-family: Heebo-Medium, sans-serif;
+}
+
+.sol-scrollable-area {
+  overflow: auto;
+  height: 100vh;
 }

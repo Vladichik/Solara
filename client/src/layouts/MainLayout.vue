@@ -28,7 +28,7 @@
       sdfgsdfg
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="sol-scrollable-area">
       <router-view />
     </q-page-container>
     <splash-screen />

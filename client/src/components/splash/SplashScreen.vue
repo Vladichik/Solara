@@ -21,7 +21,7 @@ export default defineComponent({
     const closeSplash = () => {
       setTimeout(() => {
         show.value = false;
-      }, 3000);
+      }, 1000);
     };
 
     onMounted(closeSplash);

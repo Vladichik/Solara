@@ -1,10 +1,15 @@
 <template>
-My account
+  <router-view />
 </template>
 
 <script>
 export default {
   name: 'MyAccount',
+  data() {
+    return {
+      panel: 'main',
+    };
+  },
 };
 </script>
 
