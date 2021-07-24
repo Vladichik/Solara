@@ -2,7 +2,7 @@
   <q-list flat separator>
     <q-item clickable
             v-ripple
-            class="q-pt-lg q-pb-lg"
+            class="q-pt-lg q-pb-lg sol-main-links"
             v-for="item in $tm('my_account_links')"
             :to="item.path"
             :key="item.name">

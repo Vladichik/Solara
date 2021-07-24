@@ -11,6 +11,7 @@ export default {
   rp_pw: 'Repeat password',
   login: 'Login',
   signup: 'Sign Up',
+  save: 'Save',
   dont_have: "Don't have an account yet?",
   sign_up_now: 'Sign Up Now',
   mandatory_field: 'This field is mandatory',
@@ -32,4 +33,10 @@ export default {
     { name: 'Resource center (Q&A)', icon: '', path: '/resource-center' },
     { name: 'Contact Us', icon: '', path: '/contact-us' },
   ],
+  account_info: {
+    first_name: 'First Name',
+    last_name: 'Last Name',
+    phone_num: 'Phone Number',
+    birthday: 'Birthday',
+  },
 };
