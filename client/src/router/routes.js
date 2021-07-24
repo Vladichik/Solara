@@ -14,7 +14,8 @@ const routes = [
         component: () => import('pages/MyAccount.vue'),
         meta: { requiresAuth: true },
         children: [
-          { path: '', component: () => import('components/my-account/MainTabs.vue') },
+          { path: '', component: () => import('pages/my-account/MainTabs.vue') },
+          { path: '/personal-info', component: () => import('pages/my-account/PersonalInfo.vue') },
         ],
       },
       { path: '/favorites', component: () => import('pages/Favorites.vue') },

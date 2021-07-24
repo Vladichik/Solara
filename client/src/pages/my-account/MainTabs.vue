@@ -4,6 +4,7 @@
             v-ripple
             class="q-pt-lg q-pb-lg"
             v-for="item in $tm('my_account_links')"
+            :to="item.path"
             :key="item.name">
       <q-item-section>
         <q-item-label>{{item.name}}</q-item-label>

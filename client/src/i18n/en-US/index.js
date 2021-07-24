@@ -25,11 +25,11 @@ export default {
     wrong_login: 'Wrong login credentials',
   },
   my_account_links: [
-    { name: 'Payment Info', icon: '', path: 'payment-info' },
-    { name: 'Personal Info', icon: '', path: 'personal-info' },
-    { name: 'Address', icon: '', path: 'address' },
-    { name: 'Product Info', icon: '', path: 'product-info' },
-    { name: 'Resource center (Q&A)', icon: '', path: 'resource-center' },
-    { name: 'Contact Us', icon: '', path: 'contact-us' },
+    { name: 'Payment Info', icon: '', path: '/payment-info' },
+    { name: 'Personal Info', icon: '', path: '/personal-info' },
+    { name: 'Address', icon: '', path: '/address' },
+    { name: 'Product Info', icon: '', path: '/product-info' },
+    { name: 'Resource center (Q&A)', icon: '', path: '/resource-center' },
+    { name: 'Contact Us', icon: '', path: '/contact-us' },
   ],
 };
