@@ -19,12 +19,6 @@
 }
 
 html, body, #q-app {
-  overflow: hidden;
   height: 100%;
   font-family: Heebo-Medium, sans-serif;
-}
-
-.sol-scrollable-area {
-  overflow: auto;
-  height: 100vh;
 }

@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hhh lpR fFf">
+  <q-layout view="hHh lpR fFf" class="sol-main-frame">
 
     <q-header class="bg-primary text-white" height-hint="98">
       <q-toolbar>
@@ -28,7 +28,7 @@
       sdfgsdfg
     </q-drawer>
 
-    <q-page-container class="sol-scrollable-area">
+    <q-page-container class="sol-scrollable-area scroll-y">
       <router-view />
     </q-page-container>
     <splash-screen />

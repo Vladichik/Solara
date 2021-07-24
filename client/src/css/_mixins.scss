@@ -59,9 +59,3 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-@mixin setSticky($top) {
-  position: sticky;
-  position: -webkit-sticky;
-  top: $top;
-}
