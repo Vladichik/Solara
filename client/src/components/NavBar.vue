@@ -10,10 +10,12 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   name: 'NavBar',
   props: ['title', 'btnLabel', 'to'],
-};
+});
 </script>
 
 <style lang="scss">

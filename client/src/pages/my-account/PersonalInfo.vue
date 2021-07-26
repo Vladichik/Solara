@@ -1,5 +1,5 @@
 <template>
-  <nav-bar :title="$tm('nav_bar.personal_info')"
+  <navbar :title="$tm('nav_bar.personal_info')"
            :btn-label="$t('nav_bar.my_account')"
            to="/my-account" />
   <q-form class="sol-form-grid q-pb-md q-pr-lg q-pl-lg">
@@ -39,11 +39,9 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue';
-import NavBar from 'components/NavBar';
+import { reactive } from 'vue';
 
 export default {
-  components: { NavBar },
   setup() {
     const personalData = reactive({
       first_name: '',
