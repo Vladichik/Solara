@@ -3,15 +3,18 @@
          class="full-width q-pa-none"
          color="primary"
          label="Add Device" size="18px" />
-  <q-list separator v-if="devices && devices.length">
-    <q-item>
-      <q-btn flat @click="viewDevice" label="asdad" />
-    </q-item>
-  </q-list>
+  <div class="sol-devices-list-frame">
+    <placeholder :text="$tm('placeholder.no_devices')" />
+    <q-list separator v-if="devices && devices.length">
+      <q-item>
+        <q-btn flat @click="viewDevice" label="asdad" />
+      </q-item>
+    </q-list>
+  </div>
 </template>
 
 <script>
-import { defineComponent, reactive } from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'ProductsList',
@@ -24,6 +27,9 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-
+<style lang="scss">
+.sol-devices-list-frame {
+  position: relative;
+  min-height: 250px;
+}
 </style>

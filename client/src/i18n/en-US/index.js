@@ -17,6 +17,9 @@ export default {
     resource_center: 'Resource center (Q&A)',
     contact_us: 'Contact Us',
   },
+  placeholder: {
+    no_devices: 'You do not have connected devices yet',
+  },
   name: 'Name',
   email: 'E-mail',
   pw: 'Password',
