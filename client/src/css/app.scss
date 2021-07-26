@@ -35,3 +35,17 @@ h1, h2, h3, h4, h5, h6 {
 .sol-form-grid {
   @include setGridAuto(auto, 20px, "rows");
 }
+
+.sol-preloader-overlay, .sol-placeholder-overlay {
+  opacity: 0.9;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  background: white;
+}
