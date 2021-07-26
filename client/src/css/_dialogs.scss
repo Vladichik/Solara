@@ -1,0 +1,15 @@
+@import "mixins";
+.sol-dialog-default {
+  @include setGrid(null, null, auto 1fr auto, null, 'rows');
+}
+.text-h6, .sol-dialog-content, .sol-dialog-footer {
+  padding: 10px 20px;
+}
+
+.sol-dialog-content {
+  overflow: auto;
+}
+
+.sol-dialog-footer {
+  @include setGridAuto(auto, 20px, "columns");
+}

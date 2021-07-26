@@ -3,7 +3,7 @@
           :btn-label="$tm('nav_bar.my_account')"
           to="/my-account" />
   <q-tab-panels v-model="panel" animated>
-    <q-tab-panel name="products" class="q-pt-none">
+    <q-tab-panel name="products" class="q-pt-none q-pl-lg q-pr-lg">
       <products-list :view-device="viewDevice" />
     </q-tab-panel>
     <q-tab-panel name="device-details">

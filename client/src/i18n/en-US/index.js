@@ -27,6 +27,8 @@ export default {
   login: 'Login',
   signup: 'Sign Up',
   save: 'Save',
+  cancel: 'Cancel',
+  add: 'Add',
   dont_have: 'Don\'t have an account yet?',
   sign_up_now: 'Sign Up Now',
   mandatory_field: 'This field is mandatory',
@@ -54,4 +56,5 @@ export default {
     phone_num: 'Phone Number',
     birthday: 'Birthday',
   },
+  add_device: 'Add Device',
 };
