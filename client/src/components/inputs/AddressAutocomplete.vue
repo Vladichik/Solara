@@ -1,15 +1,15 @@
 <template>
   <q-select filled
             class="sc-address-autocomplete"
-            color="blue-13"
+            color="primary"
             :disable="disable"
             use-input
             fill-input
             option-value="val"
             option-label="place_name"
             :model-value="model.address"
+            @update:model-value="selectAddress"
             @input-value="getResults"
-            @input="selectAddress"
             :options="options"
             ref="addressAutocomplete"
             :loading="gettingResults"
@@ -58,7 +58,6 @@ export default {
       if (val && val.length > 2 && !this.avoidQuery) {
         // eslint-disable-next-line vue/no-mutating-props
         this.model.address = val;
-        console.log(val);
         this.gettingResults = true;
         MapboxAPI.getSuggestions(val)
           .then((addresses) => {

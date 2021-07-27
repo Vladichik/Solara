@@ -15,7 +15,7 @@ export default class MapboxAPI {
    * Vlad. 27/07
    */
   static getSuggestions(text) {
-    return api.get(`${MAPBOX_BASE}/address-suggestions`, text)
+    return api.get(`${MAPBOX_BASE}/address-suggestions/${text}`)
       .then((resp) => resp)
       .catch((error) => error.response);
   }

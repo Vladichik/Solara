@@ -25,8 +25,8 @@
             </q-icon>
           </template>
         </q-input>
-        <q-btn flat class="bg-grey-3" :label="$t('add_photo')" icon="photo_camera" size="18px" />
         <address-autocomplete :model="formData" />
+        <q-btn flat class="bg-grey-3" :label="$t('add_photo')" icon="photo_camera" size="18px" />
       </q-card-section>
 
       <div class="sol-dialog-footer">
