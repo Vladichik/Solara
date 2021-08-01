@@ -9,3 +9,14 @@ export function getLoggedInUser({ commit }) {
     })
     .catch((e) => {});
 }
+
+export function updateUser({ commit }, user) {
+  return UserAPI.updateUser(user)
+    .then((resp) => {
+      if (resp.status === 200) {
+        return true;
+      }
+      return null;
+    })
+    .catch((e) => {});
+}
