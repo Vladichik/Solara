@@ -6,7 +6,7 @@
     <q-input square
              filled
              :label="$tm('account_info.first_name')"
-             v-model="personalData.first_name" />
+             :model-value="personalData.first_name" />
     <q-input square
              filled
              :label="$tm('account_info.last_name')"

@@ -33,15 +33,19 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put('/update')
-  async createCategory(@Res() res, @Body() payload) {
-    // const surveyId = category.survey_id;
-    // const newCategory = await this.categoryService.createCategory(category);
-    // await this.surveyService.updateSurveyRelatedCategories(
-    //   surveyId,
-    //   newCategory.category_id,
-    //   true,
-    // );
-    // return res.status(HttpStatus.OK).json(newCategory);
+  @Put('/user/userID')
+  async createCategory(@Res() res, @Param('userID') userID, @Body() payload) {
+    if (userID) {
+      const updated = await this.userService.updateUser(userID, payload);
+      if (updated) {
+        return res.status(HttpStatus.OK).json(updated);
+      }
+      return res
+        .status(HttpStatus.NOT_IMPLEMENTED)
+        .json({ message: 'User Update Failed' });
+    }
+    return res
+      .status(HttpStatus.UNAUTHORIZED)
+      .json({ message: 'You are not authorized to perform this action' });
   }
 }

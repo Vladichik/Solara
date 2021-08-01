@@ -28,7 +28,8 @@ export default class UserAPI {
    * Vlad. 01/07/21
    */
   static updateUser(user) {
-    return api.put(`${USER_BASE}`, user)
+    const userID = AuthAPI.getUserId();
+    return api.put(`${USER_BASE}/${userID}`, user)
       .then((resp) => resp)
       .catch((error) => error.response);
   }

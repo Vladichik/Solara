@@ -40,7 +40,7 @@ export class UsersService {
     }
   }
 
-  async updateUser(user: Record<string, unknown>) {
-    return this.userModel.updateOne({ _id: user.id }, user);
+  async updateUser(userID: string, user: Partial<User>) {
+    return this.userModel.updateOne({ _id: userID }, user);
   }
 }
