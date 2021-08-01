@@ -36,7 +36,8 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onBeforeMount } from 'vue';
+import { useStore } from 'vuex';
 import SplashScreen from 'components/splash/SplashScreen';
 
 export default {
@@ -44,11 +45,18 @@ export default {
     SplashScreen,
   },
   setup() {
+    const store = useStore();
     const leftDrawerOpen = ref(false);
 
     const toggleLeftDrawer = () => {
       leftDrawerOpen.value = !leftDrawerOpen.value;
     };
+
+    const getUserData = () => store.dispatch('User/getLoggedInUser');
+
+    onBeforeMount(() => {
+      getUserData();
+    });
 
     return {
       leftDrawerOpen,

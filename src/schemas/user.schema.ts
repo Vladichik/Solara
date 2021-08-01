@@ -6,6 +6,9 @@ export const UserSchema = new mongoose.Schema({
   phone: String,
   created_at: { type: Date, default: Date.now },
   name: String,
+  birthday: Date,
   email: { type: String },
   avatar: { type: String },
+}).set('toJSON', {
+  virtuals: true,
 });

@@ -7,5 +7,6 @@ export function getLoggedInUser({ commit }) {
       commit('setUserData', resp.data);
     })
     .catch((e) => {
+      debugger;
     });
 }

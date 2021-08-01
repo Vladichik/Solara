@@ -18,7 +18,7 @@ export class UsersService {
 
   async getLoggedInUser(userID: string): Promise<User> {
     return await this.userModel
-      .findOne({ id: userID }, { password: 0, username: 0, __v: 0 })
+      .findOne({ _id: userID }, { password: 0, username: 0, __v: 0, _id: 0 })
       .exec();
   }
 
@@ -37,5 +37,9 @@ export class UsersService {
     } else {
       return false;
     }
+  }
+
+  async updateUser(user: Record<string, unknown>) {
+    return this.userModel.updateOne({ _id: user.id }, user);
   }
 }

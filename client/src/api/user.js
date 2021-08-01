@@ -16,11 +16,8 @@ export default class UserAPI {
    */
   static getLoggedInUser() {
     const userID = AuthAPI.getUserId();
-    if (userID) {
-      return api.get(`${USER_BASE}/user/${userID}`)
-        .then((resp) => resp)
-        .catch((error) => error.response);
-    }
-    return false;
+    return api.get(`${USER_BASE}/user/${userID}`)
+      .then((resp) => resp)
+      .catch((error) => error.response);
   }
 }

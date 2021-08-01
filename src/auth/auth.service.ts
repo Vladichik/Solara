@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../database/users/users.service';
 import { CryptoGuyService } from '../tools/cryptoguy/cryptoguy.service';
+import { User } from '../database/users/user.interface';
 
 @Injectable()
 export class AuthService {
@@ -23,10 +24,9 @@ export class AuthService {
     return null;
   }
 
-  login(user: any) {
+  login(user: Partial<User>) {
     const payload = {
       username: user.username,
-      name: user.name,
       id: user.id,
     };
     return {

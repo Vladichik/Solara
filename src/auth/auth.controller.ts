@@ -22,11 +22,11 @@ export class AuthController {
 
   @Post('/signup')
   async signUp(@Res() res, @Body() user) {
-    const createdFriend = await this.userService.createUser(user);
-    if (createdFriend) {
-      const token = await this.authService.login({
-        username: createdFriend.username,
-        password: createdFriend.password,
+    const createdUser = await this.userService.createUser(user);
+    if (createdUser) {
+      const token = this.authService.login({
+        username: createdUser.username,
+        id: createdUser.id,
       });
       return res.status(HttpStatus.OK).json(token);
     }
