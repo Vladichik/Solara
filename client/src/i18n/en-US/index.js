@@ -44,6 +44,7 @@ export default {
   notifications: {
     user_exists: 'User with this email already exists.',
     wrong_login: 'Wrong login credentials',
+    data_saved: 'Changes saved successfully',
   },
   my_account_links: [
     { name: 'Payment Info', icon: 'credit_card', path: '/payment-info' },

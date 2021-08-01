@@ -48,8 +48,10 @@
 <script>
 import { reactive, onMounted } from 'vue';
 import { mapState, useStore } from 'vuex';
+import NotificationsMixins from 'src/mixins/NotificationsMixins';
 
 export default {
+  mixins: [NotificationsMixins],
   setup() {
     const store = useStore();
     const personalData = reactive({
@@ -75,27 +77,12 @@ export default {
       }
     };
 
-    /**
-     * Function that triggers update of user details
-     * @returns {Promise<void>}
-     * Vlad. 01/08/21
-     */
-    const submit = async () => {
-      store.commit('General/setMainLoaderState', true);
-      const updated = await store.dispatch('User/updateUser', personalData);
-      if (updated) {
-        await store.dispatch('User/getLoggedInUser');
-      }
-      store.commit('General/setMainLoaderState', false);
-    };
-
     onMounted(() => {
       setPersonalInfoOnLoad();
     });
 
     return {
       personalData,
-      submit,
       setPersonalInfoOnLoad,
     };
   },
@@ -103,6 +90,22 @@ export default {
     ...mapState({
       user: (state) => state.User.user,
     }),
+  },
+  methods: {
+    /**
+     * Function that triggers update of user details
+     * @returns {Promise<void>}
+     * Vlad. 01/08/21
+     */
+    async submit() {
+      this.$store.commit('General/setMainLoaderState', true);
+      const updated = await this.$store.dispatch('User/updateUser', this.personalData);
+      if (updated) {
+        await this.$store.dispatch('User/getLoggedInUser');
+        this.showInfoNotification(this.$t('notifications.data_saved'), 2000);
+      }
+      this.$store.commit('General/setMainLoaderState', false);
+    },
   },
   watch: {
     user() {

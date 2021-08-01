@@ -1,6 +1,5 @@
 <template>
   <q-layout view="hHh lpR fFf" class="sol-main-frame">
-
     <q-header class="bg-primary text-white" height-hint="98">
       <q-toolbar>
         <!--        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />-->
