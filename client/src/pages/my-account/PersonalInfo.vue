@@ -103,6 +103,8 @@ export default {
       if (updated) {
         await this.$store.dispatch('User/getLoggedInUser');
         this.showInfoNotification(this.$t('notifications.data_saved'), 2000);
+      } else {
+        this.showWarningNotification(this.$t('notifications.saving_failed'), 2000);
       }
       this.$store.commit('General/setMainLoaderState', false);
     },
