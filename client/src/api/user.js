@@ -25,7 +25,7 @@ export default class UserAPI {
    * API call that updates user details
    * @param user - Object
    * @returns {Promise<T>}
-   * Vlad. 01/07/21
+   * Vlad. 01/08/21
    */
   static updateUser(user) {
     const userID = AuthAPI.getUserId();

@@ -33,7 +33,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put('/user/userID')
+  @Put('/user/:userID')
   async createCategory(@Res() res, @Param('userID') userID, @Body() payload) {
     if (userID) {
       const updated = await this.userService.updateUser(userID, payload);

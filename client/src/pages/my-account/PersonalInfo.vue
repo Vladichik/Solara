@@ -6,20 +6,25 @@
     <q-input square
              filled
              :label="$tm('account_info.first_name')"
-             :model-value="personalData.first_name" />
+             :model-value="personalData.first_name"
+             v-model="personalData.first_name" />
     <q-input square
              filled
              :label="$tm('account_info.last_name')"
+             :model-value="personalData.last_name"
              v-model="personalData.last_name" />
     <q-input square
              filled
              :label="$tm('account_info.phone_num')"
+             :model-value="personalData.phone"
              v-model="personalData.phone" />
     <q-input square
              filled
              :label="$tm('email')"
+             :model-value="personalData.email"
              v-model="personalData.email" />
     <q-input square filled :label="$tm('account_info.birthday')"
+             :model-value="personalData.birthday"
              v-model="personalData.birthday"
              mask="date">
       <template v-slot:append>
@@ -68,7 +73,16 @@ export default {
       }
     };
 
-    const submit = () => {
+    /**
+     * Function that triggers update of user details
+     * @returns {Promise<void>}
+     * Vlad. 01/08/21
+     */
+    const submit = async () => {
+      const updated = await store.dispatch('User/updateUser', personalData);
+      if (updated) {
+        await store.dispatch('User/getLoggedInUser');
+      }
     };
 
     onMounted(() => {
