@@ -1,9 +1,8 @@
 <template>
   <navbar :title="$tm('nav_bar.personal_info')"
-           :btn-label="$t('nav_bar.my_account')"
-           to="/my-account" />
+          :btn-label="$t('nav_bar.my_account')"
+          to="/my-account" />
   <q-form class="sol-form-grid q-pb-md q-pr-lg q-pl-lg">
-    {{user}}
     <q-input square
              filled
              :label="$tm('account_info.first_name')"
@@ -40,11 +39,12 @@
 </template>
 
 <script>
-import { reactive } from 'vue';
-import { mapState } from 'vuex';
+import { reactive, onMounted } from 'vue';
+import { mapState, useStore } from 'vuex';
 
 export default {
   setup() {
+    const store = useStore();
     const personalData = reactive({
       first_name: '',
       last_name: '',
@@ -52,11 +52,33 @@ export default {
       email: '',
       birthday: null,
     });
+
+    /**
+     * When the view loads form data populates with existing user details
+     * Vlad. 01/08/21
+     */
+    const setPersonalInfoOnLoad = () => {
+      const { user } = store.state.User;
+      if (user) {
+        personalData.first_name = user.first_name;
+        personalData.last_name = user.last_name;
+        personalData.phone = user.phone;
+        personalData.email = user.email;
+        personalData.birthday = user.birthday;
+      }
+    };
+
     const submit = () => {
     };
+
+    onMounted(() => {
+      setPersonalInfoOnLoad();
+    });
+
     return {
       personalData,
       submit,
+      setPersonalInfoOnLoad,
     };
   },
   computed: {
@@ -64,9 +86,10 @@ export default {
       user: (state) => state.User.user,
     }),
   },
+  watch: {
+    user() {
+      this.setPersonalInfoOnLoad();
+    },
+  },
 };
 </script>
-
-<style scoped>
-
-</style>
