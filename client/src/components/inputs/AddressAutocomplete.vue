@@ -76,9 +76,10 @@ export default {
             this.getResults = false;
             this.options = null;
           });
-      } else {
+      } else if (!val || val.length < 2) {
         this.options = [];
-        // this.$emit('clear-address');
+        // eslint-disable-next-line vue/no-mutating-props
+        this.model.address = '';
       }
     }, 1000);
   },
