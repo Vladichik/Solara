@@ -6,7 +6,7 @@
 import { api } from 'boot/axios';
 import AuthAPI from 'src/api/authentication';
 
-const USER_BASE = '/users';
+const USER_BASE = '/users/user';
 
 export default class UserAPI {
   /**
@@ -16,7 +16,19 @@ export default class UserAPI {
    */
   static getLoggedInUser() {
     const userID = AuthAPI.getUserId();
-    return api.get(`${USER_BASE}/user/${userID}`)
+    return api.get(`${USER_BASE}/${userID}`)
+      .then((resp) => resp)
+      .catch((error) => error.response);
+  }
+
+  /**
+   * API call that updates user details
+   * @param user - Object
+   * @returns {Promise<T>}
+   * Vlad. 01/07/21
+   */
+  static updateUser(user) {
+    return api.put(`${USER_BASE}`, user)
       .then((resp) => resp)
       .catch((error) => error.response);
   }
