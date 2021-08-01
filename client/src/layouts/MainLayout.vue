@@ -32,11 +32,12 @@
       <router-view />
     </q-page-container>
     <splash-screen />
+    <preloader v-if="processing" />
   </q-layout>
 </template>
 
 <script>
-import { ref, onBeforeMount } from 'vue';
+import { ref, onBeforeMount, computed } from 'vue';
 import { useStore } from 'vuex';
 import SplashScreen from 'components/splash/SplashScreen';
 
@@ -46,6 +47,7 @@ export default {
   },
   setup() {
     const store = useStore();
+    const processing = computed(() => store.state.General.processing);
     const leftDrawerOpen = ref(false);
 
     const toggleLeftDrawer = () => {
@@ -59,6 +61,7 @@ export default {
     });
 
     return {
+      processing,
       leftDrawerOpen,
       toggleLeftDrawer,
     };

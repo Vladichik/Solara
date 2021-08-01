@@ -1,5 +1,6 @@
 import { store } from 'quasar/wrappers';
 import { createStore } from 'vuex';
+import General from './general';
 import Auth from './auth';
 import User from './user';
 
@@ -16,6 +17,7 @@ import User from './user';
 
 export default store((/* { ssrContext } */) => createStore({
   modules: {
+    General,
     Auth,
     User,
   },

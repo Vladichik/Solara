@@ -30,7 +30,9 @@
       <template v-slot:append>
         <q-icon name="event" class="cursor-pointer">
           <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-            <q-date default-view="Years" v-model="personalData.birthday">
+            <q-date default-view="Years"
+                    v-model="personalData.birthday"
+                    :model-value="personalData.birthday">
               <div class="row items-center justify-end">
                 <q-btn v-close-popup label="Close" color="primary" flat />
               </div>
@@ -79,10 +81,12 @@ export default {
      * Vlad. 01/08/21
      */
     const submit = async () => {
+      store.commit('General/setMainLoaderState', true);
       const updated = await store.dispatch('User/updateUser', personalData);
       if (updated) {
         await store.dispatch('User/getLoggedInUser');
       }
+      store.commit('General/setMainLoaderState', false);
     };
 
     onMounted(() => {
