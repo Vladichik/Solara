@@ -18,7 +18,7 @@ export class UsersService {
 
   async getLoggedInUser(userID: string): Promise<User> {
     return await this.userModel
-      .findOne({ _id: userID }, { password: 0, username: 0, __v: 0, _id: 0 })
+      .findOne({ _id: userID }, { password: 0, username: 0, __v: 0 })
       .exec();
   }
 

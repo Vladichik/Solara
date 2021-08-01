@@ -3,6 +3,7 @@
            :btn-label="$t('nav_bar.my_account')"
            to="/my-account" />
   <q-form class="sol-form-grid q-pb-md q-pr-lg q-pl-lg">
+    {{user}}
     <q-input square
              filled
              :label="$tm('account_info.first_name')"
@@ -40,6 +41,7 @@
 
 <script>
 import { reactive } from 'vue';
+import { mapState } from 'vuex';
 
 export default {
   setup() {
@@ -56,6 +58,11 @@ export default {
       personalData,
       submit,
     };
+  },
+  computed: {
+    ...mapState({
+      user: (state) => state.User.user,
+    }),
   },
 };
 </script>

@@ -1,8 +1,12 @@
 <template>
   <q-form class="bg-transparent sol-auth-form-grid sol-login-form" @submit="signup()">
     <q-input filled
-             :placeholder="$t('name')"
-             v-model="formData.name"
+             :placeholder="$t('first_name')"
+             v-model="formData.first_name"
+             :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />
+    <q-input filled
+             :placeholder="$t('last_name')"
+             v-model="formData.last_name"
              :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />
     <q-input filled
              :placeholder="$t('email')"
@@ -38,7 +42,6 @@
 
 <script>
 import { defineComponent } from 'vue';
-import AuthAPI from 'src/api/authentication';
 import NotificationsMixins from 'src/mixins/NotificationsMixins';
 
 export default defineComponent({
@@ -47,7 +50,8 @@ export default defineComponent({
   data() {
     return {
       formData: {
-        name: '',
+        first_name: '',
+        last_name: '',
         username: '',
         password: '',
         rep_password: '',
@@ -61,7 +65,8 @@ export default defineComponent({
         const payload = {
           username: this.formData.username,
           password: this.formData.password,
-          name: this.formData.name,
+          first_name: this.formData.first_name,
+          last_name: this.formData.last_name,
         };
         this.$store.dispatch('Auth/signUp', payload).then((resp) => {
           if (resp.status === 302) {

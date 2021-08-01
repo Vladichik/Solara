@@ -21,6 +21,8 @@ export default {
     no_devices: 'You do not have connected devices yet',
   },
   name: 'Name',
+  first_name: 'First name',
+  last_name: 'Last name',
   email: 'E-mail',
   pw: 'Password',
   rp_pw: 'Repeat password',
