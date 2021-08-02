@@ -3,8 +3,8 @@
     <q-tab-panel name="products" class="q-pa-none">
       <products-list :view-device="viewDevice" />
     </q-tab-panel>
-    <q-tab-panel name="device-details">
-      <device-full-view :on-back="getBackToDevicesList" />
+    <q-tab-panel name="device-details" class="q-pa-none">
+      <device-full-view :on-back="getBackToDevicesList" :device="deviceInView" />
     </q-tab-panel>
   </q-tab-panels>
 </template>
