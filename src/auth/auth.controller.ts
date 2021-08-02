@@ -36,9 +36,10 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('/login')
   async login(@Request() req, @Body() credentials) {
+    const user = await this.userService.findUser(credentials.username);
     return this.authService.login({
       username: credentials.username,
-      id: credentials.id,
+      id: user.id,
     });
   }
 

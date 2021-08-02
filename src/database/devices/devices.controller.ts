@@ -19,7 +19,7 @@ export class DevicesController {
   @Post('/device')
   async createDevice(@Res() res, @Body() payload) {
     const device = await this.deviceService.createDevice(payload);
-    if (device) {
+    if (device && device._id) {
       return res.status(HttpStatus.OK).json(device);
     }
     return res
