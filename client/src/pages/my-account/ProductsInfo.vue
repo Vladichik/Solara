@@ -1,13 +1,10 @@
 <template>
-  <navbar :title="$tm('nav_bar.product_info')"
-          :btn-label="$tm('nav_bar.my_account')"
-          to="/my-account" />
   <q-tab-panels v-model="panel" animated>
-    <q-tab-panel name="products" class="q-pt-none q-pl-lg q-pr-lg">
+    <q-tab-panel name="products" class="q-pa-none">
       <products-list :view-device="viewDevice" />
     </q-tab-panel>
     <q-tab-panel name="device-details">
-      <div>sdasd</div>
+      <device-full-view :on-back="getBackToDevicesList" />
     </q-tab-panel>
   </q-tab-panels>
 </template>
@@ -15,10 +12,11 @@
 <script>
 import { defineComponent } from 'vue';
 import ProductsList from 'components/my-account/ProductsList';
+import DeviceFullView from 'components/my-account/DeviceFullView';
 
 export default defineComponent({
   name: 'ProductsInfo',
-  components: { ProductsList },
+  components: { ProductsList, DeviceFullView },
   data() {
     return {
       panel: 'products',
@@ -26,9 +24,24 @@ export default defineComponent({
     };
   },
   methods: {
+    /**
+     * Function that opens device full view
+     * @param device - Device that should be shown in full view
+     * Vlad. 02/08/21
+     */
     viewDevice(device) {
       this.deviceInView = device;
       this.panel = 'device-details';
+    },
+
+    /**
+     * Function that closes device full view and gets
+     * back to devices list
+     * Vlad. 02/08/21
+     */
+    getBackToDevicesList() {
+      this.deviceInView = null;
+      this.panel = 'products';
     },
   },
 });

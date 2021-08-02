@@ -1,12 +1,10 @@
 import DevicesAPI from 'src/api/device';
 
-export function getLoggedInUser({ commit }) {
-  commit('General.setMainLoaderState', true);
+export function getMyDevices({ commit }) {
   return DevicesAPI.getMyDevices()
     .then((resp) => {
-      debugger;
-      if (resp.status === 200 && resp.data.id) {
-        // commit('setUserData', resp.data);
+      if (resp.status === 200 && resp.data) {
+        commit('setMyDevices', resp.data);
       }
     })
     .catch((e) => {});

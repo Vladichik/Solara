@@ -53,10 +53,11 @@ export default {
       leftDrawerOpen.value = !leftDrawerOpen.value;
     };
 
-    const getUserData = () => store.dispatch('User/getLoggedInUser');
-
-    onBeforeMount(() => {
-      getUserData();
+    onBeforeMount(async () => {
+      store.commit('General/setMainLoaderState', true);
+      await store.dispatch('User/getLoggedInUser');
+      await store.dispatch('Devices/getMyDevices');
+      store.commit('General/setMainLoaderState', false);
     });
 
     return {
