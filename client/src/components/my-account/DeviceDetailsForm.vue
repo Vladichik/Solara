@@ -1,6 +1,6 @@
 <template>
   <q-form ref="deviceForm"
-          class="sol-dialog-content sol-form-grid"
+          class="sol-form-grid"
           @submit="saveDevice()">
     <q-select filled :label="$t('pergola_colors')" />
     <q-select filled :label="$t('rafter_size')" />
