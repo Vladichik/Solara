@@ -3,6 +3,7 @@ import { createStore } from 'vuex';
 import General from './general';
 import Auth from './auth';
 import User from './user';
+import Devices from './devices';
 
 // import example from './module-example'
 
@@ -20,6 +21,7 @@ export default store((/* { ssrContext } */) => createStore({
     General,
     Auth,
     User,
+    Devices,
   },
 
   // enable strict mode (adds overhead!)

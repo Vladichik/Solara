@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,
+  Controller, Get,
   HttpStatus,
   Param,
   Post,
@@ -14,6 +14,18 @@ import { DevicesService } from './devices.service';
 @Controller('devices')
 export class DevicesController {
   constructor(private deviceService: DevicesService) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/:userID')
+  async getUserDevices(@Res() res, @Param('userID') userID) {
+    if (userID) {
+      const devices = await this.deviceService.getUserDevices(userID);
+      return res.status(HttpStatus.OK).json(devices);
+    }
+    return res
+      .status(HttpStatus.UNAUTHORIZED)
+      .json({ message: 'User ID was not supplied' });
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post('/device')
