@@ -3,11 +3,11 @@
   <q-form ref="deviceForm"
           class="sol-form-grid q-pl-lg q-pr-lg q-pb-lg"
           @submit="saveDevice()">
-    <q-input filled :label="$t('technician_name')"
+    <q-input filled :label="$t('location_name')"
              v-model="formData.location_name"
              :model-value="formData.location_name"
              :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />
-    <q-input filled :label="$t('technician_name')"
+    <q-input filled :label="$t('device_name')"
              :model-value="formData.device_name"
              v-model="formData.device_name"
              :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />
@@ -44,6 +44,9 @@
            class="bg-grey-3"
            :label="$t('add_photo')"
            icon="photo_camera"
+           size="18px" />
+    <q-btn color="primary"
+           :label="$t('save')"
            size="18px" />
   </q-form>
 </template>
