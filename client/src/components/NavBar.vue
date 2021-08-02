@@ -5,7 +5,7 @@
            :label="btnLabel"
            :to="to"
            class="sol-nav-back-btn q-pl-none" />
-    <h6>{{title}}</h6>
+    <h6 class="sol-nav-bar-ttl">{{title}}</h6>
   </nav>
 </template>
 
@@ -30,5 +30,9 @@ export default defineComponent({
 .sol-nav-back-btn {
   position: absolute;
   left: 24px;
+}
+
+.sol-nav-bar-ttl {
+  font-size: 16px;
 }
 </style>
