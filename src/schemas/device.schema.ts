@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 
 export const DeviceSchema = new mongoose.Schema({
+  user_id: { type: mongoose.Schema.Types.ObjectId, required: true },
   location_name: { type: String, required: true },
   device_name: { type: String, required: true },
   pergola_colors: [{ type: String }],

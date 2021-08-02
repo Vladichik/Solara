@@ -1,7 +1,8 @@
 import { Document } from 'mongoose';
 import mongoose from 'mongoose';
 
-export interface User extends Document {
+export interface Device extends Document {
+  readonly user_id: mongoose.Schema.Types.ObjectId;
   readonly location_name: string;
   readonly device_name: string;
   readonly pergola_colors: string[];
