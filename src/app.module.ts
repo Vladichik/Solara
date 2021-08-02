@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './database/users/users.module';
 import { CryptoGuyModule } from './tools/cryptoguy/cryptoguy.module';
 import { MapboxModule } from './third-party-apis/mapbox/mapbox.module';
+import { DevicesModule } from './database/devices/devices.module';
 import configuration from './config/configurations';
 
 @Module({
@@ -29,6 +30,7 @@ import configuration from './config/configurations';
     UsersModule,
     CryptoGuyModule,
     MapboxModule,
+    DevicesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
