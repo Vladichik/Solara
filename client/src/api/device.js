@@ -30,4 +30,15 @@ export default class DevicesAPI {
       .then((resp) => resp)
       .catch((error) => error.response);
   }
+
+  /**
+   * API call that implements device update
+   * @param device - Object
+   * @returns {Promise<T>}
+   */
+  static updateDevice(device) {
+    return api.put(`${DEVICES_BASE}/device`, device)
+      .then((resp) => resp)
+      .catch((error) => error.response);
+  }
 }

@@ -11,11 +11,15 @@ export class DevicesService {
   ) {}
 
   async getUserDevices(userID: ObjectId): Promise<Device[]> {
-    return this.deviceModel.find({ user_id: userID });
+    return this.deviceModel.find({ user_id: userID }, { _v: 0 });
   }
 
-  async createDevice(user: Partial<Device>): Promise<Device> {
-    const newDevice = await new this.deviceModel(user);
+  async createDevice(device: Partial<Device>): Promise<Device> {
+    const newDevice = await new this.deviceModel(device);
     return newDevice.save();
+  }
+
+  async updateDevice(device: Partial<Device>): Promise<Device> {
+    return this.deviceModel.findByIdAndUpdate({ _id: device.id }, device);
   }
 }

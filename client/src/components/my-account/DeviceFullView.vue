@@ -1,5 +1,5 @@
 <template>
-  <device-image-parallax :on-back="onBack" :device="device" />
+  <device-image-parallax :on-back="onBack" :device="formData" />
   <q-form ref="deviceForm"
           class="sol-form-grid q-pl-lg q-pr-lg q-pb-lg"
           @submit="saveDevice()">
@@ -47,15 +47,17 @@
            size="18px" />
     <q-btn color="primary"
            :label="$t('save')"
+           @click="$refs.deviceForm.submit()"
            size="18px" />
   </q-form>
 </template>
 
 <script>
-import { defineComponent, ref, reactive } from 'vue';
+import { defineComponent, reactive, onBeforeMount } from 'vue';
 import { date } from 'quasar';
 import AddressAutocomplete from 'components/inputs/AddressAutocomplete';
 import DeviceImageParallax from 'components/my-account/DeviceImageParallax';
+import DevicesAPI from 'src/api/device';
 
 export default defineComponent({
   name: 'DeviceFullView',
@@ -64,7 +66,8 @@ export default defineComponent({
     AddressAutocomplete,
     DeviceImageParallax,
   },
-  setup() {
+  setup(props) {
+    const getDatePickerOptions = (d) => d >= date.formatDate(Date.now(), 'DD/MM/YYYY');
     const selectedAddress = reactive({});
     const formData = reactive({
       location_name: null,
@@ -75,11 +78,17 @@ export default defineComponent({
       device_image_url: null,
       address: null,
     });
+
+    const initFormData = () => {
+      if (props.device && props.device.id) {
+        Object.assign(formData, props.device);
+      }
+    };
     /**
      * Function that saves new or edited device data in database
      * Vlad. 27/07/21
      */
-    const saveDevice = () => {
+    const saveDevice = async () => {
       if (selectedAddress.address && selectedAddress.address.place_name) {
         const city = selectedAddress.address.context.find((c) => c.id.includes('place'));
         const district = selectedAddress.address.context.find((c) => c.id.includes('district'));
@@ -95,9 +104,14 @@ export default defineComponent({
           country: country ? country.text : '',
         };
         console.log(formData);
+        const updated = await DevicesAPI.updateDevice(formData);
+        debugger;
       }
     };
-    const getDatePickerOptions = (d) => d >= date.formatDate(Date.now(), 'YYYY/MM/DD');
+
+    onBeforeMount(() => {
+      initFormData();
+    });
     return {
       formData,
       selectedAddress,

@@ -1,6 +1,7 @@
 import {
   Body,
-  Controller, Get,
+  Controller,
+  Get,
   HttpStatus,
   Param,
   Post,
@@ -37,5 +38,17 @@ export class DevicesController {
     return res
       .status(HttpStatus.NOT_IMPLEMENTED)
       .json({ message: 'Device creation failed' });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('/device')
+  async updateDevice(@Res() res, @Body() payload) {
+    const device = await this.deviceService.updateDevice(payload);
+    if (device && device._id) {
+      return res.status(HttpStatus.OK).json(device);
+    }
+    return res
+      .status(HttpStatus.NOT_IMPLEMENTED)
+      .json({ message: 'Device update failed' });
   }
 }
