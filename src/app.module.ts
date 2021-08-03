@@ -11,6 +11,7 @@ import { UsersModule } from './database/users/users.module';
 import { CryptoGuyModule } from './tools/cryptoguy/cryptoguy.module';
 import { MapboxModule } from './third-party-apis/mapbox/mapbox.module';
 import { DevicesModule } from './database/devices/devices.module';
+import { CloudinaryModule } from './third-party-apis/cloudinary/cloudinary.module';
 import configuration from './config/configurations';
 
 @Module({
@@ -31,6 +32,7 @@ import configuration from './config/configurations';
     CryptoGuyModule,
     MapboxModule,
     DevicesModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
