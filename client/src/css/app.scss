@@ -40,7 +40,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .sol-preloader-overlay, .sol-placeholder-overlay {
   opacity: 0.9;
-  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,6 +49,14 @@ h1, h2, h3, h4, h5, h6 {
   top: 0;
   left: 0;
   background: white;
+}
+
+.sol-preloader-overlay {
+  position: fixed;
+}
+
+.sol-placeholder-overlay {
+  position: absolute;
 }
 
 ::-webkit-scrollbar {

@@ -54,6 +54,7 @@
 
 <script>
 import { defineComponent, reactive, onBeforeMount } from 'vue';
+import { useStore } from 'vuex';
 import { date } from 'quasar';
 import AddressAutocomplete from 'components/inputs/AddressAutocomplete';
 import DeviceImageParallax from 'components/my-account/DeviceImageParallax';
@@ -67,6 +68,7 @@ export default defineComponent({
     DeviceImageParallax,
   },
   setup(props) {
+    const store = useStore();
     const getDatePickerOptions = (d) => d >= date.formatDate(Date.now(), 'DD/MM/YYYY');
     const selectedAddress = reactive({});
     const formData = reactive({
@@ -88,36 +90,59 @@ export default defineComponent({
      * Function that saves new or edited device data in database
      * Vlad. 27/07/21
      */
-    const saveDevice = async () => {
-      if (selectedAddress.address && selectedAddress.address.place_name) {
-        const city = selectedAddress.address.context.find((c) => c.id.includes('place'));
-        const district = selectedAddress.address.context.find((c) => c.id.includes('district'));
-        const region = selectedAddress.address.context.find((c) => c.id.includes('region'));
-        const country = selectedAddress.address.context.find((c) => c.id.includes('country'));
-        formData.address = {
-          full: selectedAddress.address.place_name,
-          lat: selectedAddress.address.center[0],
-          long: selectedAddress.address.center[1],
-          city: city ? city.text : '',
-          district: district ? district.text : '',
-          region: region ? region.text : '',
-          country: country ? country.text : '',
-        };
-        console.log(formData);
-        const updated = await DevicesAPI.updateDevice(formData);
-        debugger;
-      }
-    };
+    // const saveDevice = async () => {
+    //   if (selectedAddress.address && selectedAddress.address.place_name) {
+    //     const city = selectedAddress.address.context.find((c) => c.id.includes('place'));
+    //     const district = selectedAddress.address.context.find((c) => c.id.includes('district'));
+    //     const region = selectedAddress.address.context.find((c) => c.id.includes('region'));
+    //     const country = selectedAddress.address.context.find((c) => c.id.includes('country'));
+    //     formData.address = {
+    //       full: selectedAddress.address.place_name,
+    //       lat: selectedAddress.address.center[0],
+    //       long: selectedAddress.address.center[1],
+    //       city: city ? city.text : '',
+    //       district: district ? district.text : '',
+    //       region: region ? region.text : '',
+    //       country: country ? country.text : '',
+    //     };
+    //     console.log(formData);
+    //     // const updated = await DevicesAPI.updateDevice(formData);
+    //     debugger;
+    //   }
+    // };
 
     onBeforeMount(() => {
       initFormData();
     });
     return {
+      store,
       formData,
       selectedAddress,
       getDatePickerOptions,
-      saveDevice,
+      // saveDevice,
     };
+  },
+  methods: {
+    async saveDevice() {
+      if (this.selectedAddress.address && this.selectedAddress.address.place_name) {
+        const city = this.selectedAddress.address.context.find((c) => c.id.includes('place'));
+        const district = this.selectedAddress.address.context.find((c) => c.id.includes('district'));
+        const region = this.selectedAddress.address.context.find((c) => c.id.includes('region'));
+        const country = this.selectedAddress.address.context.find((c) => c.id.includes('country'));
+        this.formData.address = {
+          full: this.selectedAddress.address.place_name,
+          lat: this.selectedAddress.address.center[0],
+          long: this.selectedAddress.address.center[1],
+          city: city ? city.text : '',
+          district: district ? district.text : '',
+          region: region ? region.text : '',
+          country: country ? country.text : '',
+        };
+        this.store.commit('General/setMainLoaderState', true);
+        console.log(this.formData);
+        // const updated = await DevicesAPI.updateDevice(formData);
+      }
+    },
   },
 });
 </script>
