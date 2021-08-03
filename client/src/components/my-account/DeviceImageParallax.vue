@@ -1,5 +1,9 @@
 <template>
+  <div v-if="!device.image_url" class="sol-image-ph q-mb-md">
+    <img :src="placeholder" alt="image placeholder" />
+  </div>
   <q-parallax
+    v-if="device.image_url"
     scroll-target="body"
     :height="400"
     class="q-mb-md"
@@ -18,9 +22,17 @@
 </template>
 
 <script>
+import Icon from 'assets/placeholder.png';
+
 export default {
   name: 'DeviceImageParallax',
   props: ['onBack', 'device'],
+  setup() {
+    const placeholder = Icon;
+    return {
+      placeholder,
+    };
+  },
 };
 </script>
 
@@ -31,5 +43,16 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.7);
+}
+
+.sol-image-ph {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  img {
+    height: 300px;
+  }
 }
 </style>
