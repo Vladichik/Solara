@@ -10,6 +10,6 @@ export default class CloudinaryAPI {
    * Vlad. 03/08/21
    */
   static deleteImageFromCloudinary(imageID) {
-    return api.delete(`${CLOUDINARY_API_BASE}/${imageID}`);
+    return api.post(`${CLOUDINARY_API_BASE}`, { id: imageID });
   }
 }

@@ -44,6 +44,7 @@
            class="bg-grey-3"
            :label="$t('add_photo')"
            icon="photo_camera"
+           @click="openImageUploader()"
            size="18px" />
     <q-btn color="primary"
            :label="$t('save')"
@@ -59,6 +60,7 @@ import { date } from 'quasar';
 import AddressAutocomplete from 'components/inputs/AddressAutocomplete';
 import DeviceImageParallax from 'components/my-account/DeviceImageParallax';
 import DevicesAPI from 'src/api/device';
+import CloudinaryAPI from 'src/api/cloudinary';
 
 export default defineComponent({
   name: 'DeviceFullView',
@@ -86,30 +88,38 @@ export default defineComponent({
         Object.assign(formData, props.device);
       }
     };
-    /**
-     * Function that saves new or edited device data in database
-     * Vlad. 27/07/21
-     */
-    // const saveDevice = async () => {
-    //   if (selectedAddress.address && selectedAddress.address.place_name) {
-    //     const city = selectedAddress.address.context.find((c) => c.id.includes('place'));
-    //     const district = selectedAddress.address.context.find((c) => c.id.includes('district'));
-    //     const region = selectedAddress.address.context.find((c) => c.id.includes('region'));
-    //     const country = selectedAddress.address.context.find((c) => c.id.includes('country'));
-    //     formData.address = {
-    //       full: selectedAddress.address.place_name,
-    //       lat: selectedAddress.address.center[0],
-    //       long: selectedAddress.address.center[1],
-    //       city: city ? city.text : '',
-    //       district: district ? district.text : '',
-    //       region: region ? region.text : '',
-    //       country: country ? country.text : '',
-    //     };
-    //     console.log(formData);
-    //     // const updated = await DevicesAPI.updateDevice(formData);
-    //     debugger;
-    //   }
-    // };
+
+    const updateUploadedImageDataForDevice = async (image) => {
+      if (image) {
+        store.commit('General/setMainLoaderState', true);
+        if (props.device.image_public_id) {
+          await CloudinaryAPI.deleteImageFromCloudinary(props.device.image_public_id);
+        }
+        const deviceUpdateFields = {
+          image_url: image.url,
+          image_public_id: image.public_id,
+          id: props.device.id,
+        };
+        const updated = await DevicesAPI.updateDevice(deviceUpdateFields);
+        store.commit('General/setMainLoaderState', false);
+      }
+    };
+
+    const uploaderWidget = cloudinary.createUploadWidget({
+      cloudName: 'solara',
+      uploadPreset: 'gtvkezma',
+      folder: 'devices',
+      sources: ['local'],
+      multiple: false,
+    }, (error, result) => {
+      if (!error && result && result.event === 'success') {
+        updateUploadedImageDataForDevice(result.info);
+      }
+    });
+
+    const openImageUploader = () => {
+      uploaderWidget.open();
+    };
 
     onBeforeMount(() => {
       initFormData();
@@ -119,10 +129,15 @@ export default defineComponent({
       formData,
       selectedAddress,
       getDatePickerOptions,
+      openImageUploader,
       // saveDevice,
     };
   },
   methods: {
+    /**
+     * Function that saves new or edited device data in database
+     * Vlad. 27/07/21
+     */
     async saveDevice() {
       if (this.selectedAddress.address && this.selectedAddress.address.place_name) {
         const city = this.selectedAddress.address.context.find((c) => c.id.includes('place'));
@@ -141,6 +156,7 @@ export default defineComponent({
         this.store.commit('General/setMainLoaderState', true);
         console.log(this.formData);
         // const updated = await DevicesAPI.updateDevice(formData);
+        this.store.commit('General/setMainLoaderState', false);
       }
     },
   },

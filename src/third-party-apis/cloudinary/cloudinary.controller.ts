@@ -1,8 +1,8 @@
 import {
   Body,
   Controller,
-  HttpStatus,
   Post,
+  HttpStatus,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -14,8 +14,8 @@ export class CloudinaryController {
   constructor(private cloudinaryService: CloudinaryService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post('/delete-image')
-  async createCategory(@Res() res, @Body() publicID) {
+  @Post('')
+  async deleteImage(@Res() res, @Body() publicID) {
     await this.cloudinaryService.deleteImage(publicID.id);
     return res.status(HttpStatus.OK).json(true);
   }

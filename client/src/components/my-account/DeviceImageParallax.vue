@@ -7,7 +7,7 @@
     scroll-target="body"
     :height="400"
     class="q-mb-md"
-    src="https://cdn.quasar.dev/img/parallax2.jpg"
+    :src="device.image_url"
   >
     <div class="absolute-top text-subtitle1 text-center sol-device-img-parallax">
       <q-btn flat
