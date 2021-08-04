@@ -7,18 +7,16 @@
     scroll-target="body"
     :height="400"
     class="q-mb-md"
-    :src="device.image_url"
-  >
-    <div class="absolute-top text-subtitle1 text-center sol-device-img-parallax">
-      <q-btn flat
-             class="absolute-left"
-             color="white"
-             label="back"
-             @click="onBack"
-             icon="arrow_back_ios_new" />
-      <h6 class="text-white">{{ device.device_name }}</h6>
-    </div>
-  </q-parallax>
+    :src="device.image_url" />
+  <div class="absolute-top text-subtitle1 text-center sol-device-img-parallax">
+    <q-btn flat
+           class="absolute-left"
+           color="white"
+           label="back"
+           @click="onBack"
+           icon="arrow_back_ios_new" />
+    <h6 class="text-white">{{ device.device_name }}</h6>
+  </div>
 </template>
 
 <script>
