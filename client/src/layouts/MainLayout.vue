@@ -1,13 +1,10 @@
 <template>
   <q-layout view="hHh lpR fFf" class="sol-main-frame">
-    <q-header class="bg-primary text-white" height-hint="98">
+    <q-header class="bg-white text-primary shadow-1" height-hint="98">
       <q-toolbar>
         <!--        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />-->
         <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
-          </q-avatar>
-          Solara
+          <solara-logo width="150" height="40" class="q-mt-sm" />
         </q-toolbar-title>
       </q-toolbar>
 
@@ -38,10 +35,12 @@
 <script>
 import { ref, onBeforeMount, computed } from 'vue';
 import { useStore } from 'vuex';
+import SolaraLogo from 'components/icons/SolaraLogo';
 import SplashScreen from 'components/splash/SplashScreen';
 
 export default {
   components: {
+    SolaraLogo,
     SplashScreen,
   },
   setup() {

@@ -4,5 +4,6 @@
 /src-cordova
 /.quasar
 /node_modules
+/src/components/icons/SolaraLogo.vue
 .eslintrc.js
 babel.config.js
