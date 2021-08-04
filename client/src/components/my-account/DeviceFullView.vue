@@ -72,7 +72,9 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const getDatePickerOptions = (d) => d >= date.formatDate(Date.now(), 'DD/MM/YYYY');
-    const selectedAddress = reactive({});
+    const selectedAddress = reactive({
+      address: {},
+    });
     const formData = reactive({
       location_name: null,
       device_name: null,
@@ -86,6 +88,9 @@ export default defineComponent({
     const initFormData = () => {
       if (props.device && props.device.id) {
         Object.assign(formData, props.device);
+        if (formData.address) {
+          Object.assign(selectedAddress.address, { place_name: formData.address.full });
+        }
       }
     };
 
@@ -143,6 +148,7 @@ export default defineComponent({
      * Vlad. 27/07/21
      */
     async saveDevice() {
+      debugger;
       if (this.selectedAddress.address && this.selectedAddress.address.place_name) {
         const city = this.selectedAddress.address.context.find((c) => c.id.includes('place'));
         const district = this.selectedAddress.address.context.find((c) => c.id.includes('district'));
