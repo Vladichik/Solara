@@ -101,6 +101,10 @@ export default defineComponent({
           id: props.device.id,
         };
         const updated = await DevicesAPI.updateDevice(deviceUpdateFields);
+        if (updated.status === 200 && updated.data.id) {
+          Object.assign(formData, deviceUpdateFields);
+          await store.dispatch('Devices/getMyDevices');
+        }
         store.commit('General/setMainLoaderState', false);
       }
     };
