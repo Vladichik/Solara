@@ -4,7 +4,7 @@
       <q-toolbar>
         <!--        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />-->
         <q-toolbar-title>
-          <solara-logo width="150" height="40" class="q-mt-sm" />
+          <solara-logo width="120" height="40" class="q-mt-sm" />
         </q-toolbar-title>
       </q-toolbar>
 

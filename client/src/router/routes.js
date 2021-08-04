@@ -5,6 +5,7 @@ const routes = [
   },
   {
     path: '/',
+    redirect: '/home',
     component: () => import('layouts/MainLayout.vue'),
     meta: { requiresAuth: true },
     children: [
