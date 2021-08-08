@@ -51,6 +51,7 @@ export default {
   house_n: 'House No.',
   apt_n: 'Apt. No.',
   zip: 'Zip Code',
+  bill_address: 'Billing Address',
   notifications: {
     user_exists: 'User with this email already exists.',
     wrong_login: 'Wrong login credentials',

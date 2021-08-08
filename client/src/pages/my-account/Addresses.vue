@@ -2,23 +2,20 @@
   <navbar :title="$tm('nav_bar.address')"
           :btn-label="$tm('nav_bar.my_account')"
           to="/my-account" />
-  <billing-address />
+  <manual-address type="billing" :label="$t('bill_address')" />
 </template>
 
 <script>
 import { defineComponent, reactive } from 'vue';
-import BillingAddress from 'components/my-account/BillingAddress';
+import ManualAddress from 'components/my-account/ManualAddress';
 
 export default defineComponent({
   name: 'Address',
   components: {
-    BillingAddress,
+    ManualAddress,
   },
   setup() {
-    const billingAddress = reactive({});
-    return {
-      billingAddress,
-    };
+    return {};
   },
 });
 </script>

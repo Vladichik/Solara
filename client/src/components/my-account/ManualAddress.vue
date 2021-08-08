@@ -1,7 +1,7 @@
 <template>
   <q-expansion-item
     expand-separator
-    label="Billing Address"
+    :label="label"
     header-class="text-white sol-expansion-head"
     class="bg-primary sol-white-arrow"
   >
@@ -43,14 +43,15 @@
 </template>
 
 <script>
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, reactive, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 import AuthAPI from 'src/api/authentication';
 import AddressesAPI from 'src/api/addresses';
 
 export default defineComponent({
-  name: 'address',
-  setup() {
+  name: 'ManualAddress',
+  props: ['label', 'type'],
+  setup(props) {
     const store = useStore();
     const address = reactive({
       user_id: '',
@@ -63,13 +64,32 @@ export default defineComponent({
       zip: '',
     });
 
+    /**
+     * Function that creates or updates Manual (Billing/Shipping) address
+     * in database.
+     * @returns {Promise<void>}
+     * Vlad. 09/08/21
+     */
     const saveAddress = async () => {
       store.commit('General/setMainLoaderState', true);
       address.user_id = AuthAPI.getUserId();
       if (address.user_id && address.user_id.length) {
-        await AddressesAPI.saveAddress(address);
+        const saved = await AddressesAPI.saveAddress(address);
+        store.commit('General/setMainLoaderState', false);
       }
     };
+
+    const getForAddress = () => {
+      store.commit('General/setMainLoaderState', true);
+      const addresses = AddressesAPI.getAddresses();
+      store.commit('General/setMainLoaderState', false);
+      // debugger;
+    };
+
+    onBeforeMount(() => {
+      getForAddress();
+    });
+
     return {
       address,
       saveAddress,
