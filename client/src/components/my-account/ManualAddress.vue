@@ -79,11 +79,16 @@ export default defineComponent({
       }
     };
 
-    const getForAddress = () => {
+    const getForAddress = async () => {
       store.commit('General/setMainLoaderState', true);
-      const addresses = AddressesAPI.getAddresses();
+      const addresses = await AddressesAPI.getAddresses();
       store.commit('General/setMainLoaderState', false);
-      // debugger;
+      if (addresses.status === 200 && addresses.data.length) {
+        const relevantAddress = addresses.data.find((adr) => adr.type === props.type);
+        if (relevantAddress) {
+          Object.assign(address, relevantAddress);
+        }
+      }
     };
 
     onBeforeMount(() => {

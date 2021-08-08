@@ -1,7 +1,7 @@
 import {
   Body,
-  Controller,
-  HttpStatus,
+  Controller, Get,
+  HttpStatus, Param,
   Put,
   Res,
   UseGuards,
@@ -12,6 +12,20 @@ import { AddressesService } from './addresses.service';
 @Controller('addresses')
 export class AddressesController {
   constructor(private addressService: AddressesService) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/manual/:userID')
+  async getUserDevices(@Res() res, @Param('userID') userID) {
+    if (userID) {
+      const devices = await this.addressService.queryManualAddressesByUser(
+        userID,
+      );
+      return res.status(HttpStatus.OK).json(devices);
+    }
+    return res
+      .status(HttpStatus.UNAUTHORIZED)
+      .json({ message: 'User ID was not supplied' });
+  }
 
   @UseGuards(JwtAuthGuard)
   @Put('/manual')
