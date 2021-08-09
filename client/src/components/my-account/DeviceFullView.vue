@@ -137,7 +137,6 @@ export default defineComponent({
       selectedAddress,
       getDatePickerOptions,
       openImageUploader,
-      // saveDevice,
     };
   },
   methods: {
