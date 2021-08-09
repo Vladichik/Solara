@@ -6,18 +6,21 @@
                   type="billing"
                   :label="$t('bill_address')"
                   :manual-addresses="manualAddresses" />
+  <device-addresses />
 </template>
 
 <script>
 import { defineComponent, reactive, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 import ManualAddress from 'components/my-account/ManualAddress';
+import DeviceAddresses from 'components/my-account/DeviceAddresses';
 import AddressesAPI from 'src/api/addresses';
 
 export default defineComponent({
   name: 'Address',
   components: {
     ManualAddress,
+    DeviceAddresses,
   },
   setup() {
     const store = useStore();

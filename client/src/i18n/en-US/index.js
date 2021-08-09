@@ -52,6 +52,8 @@ export default {
   apt_n: 'Apt. No.',
   zip: 'Zip Code',
   bill_address: 'Billing Address',
+  device_adr: 'Device Addresses',
+  add_address: 'Add Address',
   notifications: {
     user_exists: 'User with this email already exists.',
     wrong_login: 'Wrong login credentials',
