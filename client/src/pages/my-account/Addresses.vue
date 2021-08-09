@@ -36,7 +36,6 @@ export default defineComponent({
       store.commit('General/setMainLoaderState', false);
       if (addresses.status === 200 && addresses.data.length) {
         Object.assign(manualAddresses, addresses.data);
-        console.log(manualAddresses);
       }
     };
 

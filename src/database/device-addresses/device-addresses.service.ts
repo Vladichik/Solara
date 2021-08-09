@@ -6,7 +6,7 @@ import { DeviceAddress } from './device-address.interface';
 @Injectable()
 export class DeviceAddressesService {
   constructor(
-    @InjectModel('AddressManual')
+    @InjectModel('DeviceAddress')
     private deviceAddressModel: Model<DeviceAddress>,
   ) {}
 

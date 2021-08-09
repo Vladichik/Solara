@@ -28,7 +28,7 @@
       <router-view />
     </q-page-container>
     <splash-screen />
-    <preloader v-if="processing" />
+    <preloader v-if="processing" fixed />
   </q-layout>
 </template>
 

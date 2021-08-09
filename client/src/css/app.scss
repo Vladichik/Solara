@@ -50,14 +50,11 @@ h1, h2, h3, h4, h5, h6 {
   top: 0;
   left: 0;
   background: white;
-}
-
-.sol-preloader-overlay {
-  position: fixed;
-}
-
-.sol-placeholder-overlay {
   position: absolute;
+
+  &.sol-set-fixed {
+    position: fixed;
+  }
 }
 
 ::-webkit-scrollbar {

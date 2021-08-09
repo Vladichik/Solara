@@ -160,7 +160,7 @@ export default defineComponent({
           country: country ? country.text : '',
         };
         this.store.commit('General/setMainLoaderState', true);
-        console.log(this.formData);
+
         // const updated = await DevicesAPI.updateDevice(formData);
         this.store.commit('General/setMainLoaderState', false);
       }
