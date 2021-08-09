@@ -1,5 +1,5 @@
 <template>
-  <q-dialog persistent v-model="showDialog">
+  <q-dialog persistent v-model="showDialog" @before-hide="resetAddress">
     <q-card class="sol-dialog-default overflow-hidden sol-add-address-dlg">
       <div class="text-h6">{{ $tm('add_address') }}</div>
       <div class="q-pa-md">
@@ -34,6 +34,10 @@ export default defineComponent({
     const processing = ref(false);
     const selectedAddress = reactive({});
     let addressData = reactive({});
+
+    const resetAddress = () => {
+      Object.assign(selectedAddress, { address: { place_name: '' } });
+    };
     const addNewAddress = async () => {
       if (selectedAddress.address && selectedAddress.address.place_name) {
         const city = selectedAddress.address.context.find((c) => c.id.includes('place'));
@@ -54,7 +58,7 @@ export default defineComponent({
           processing.value = true;
           const added = await DeviceAddressesAPI.addDeviceAddress(addressData);
           if (added.status === 200 && added.data.id) {
-            Object.assign(selectedAddress, {});
+            resetAddress();
             showDialog.value = false;
           }
           processing.value = false;
@@ -68,6 +72,7 @@ export default defineComponent({
       addressData,
       processing,
       addNewAddress,
+      resetAddress,
     };
   },
 });

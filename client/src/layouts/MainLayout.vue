@@ -56,6 +56,7 @@ export default {
       store.commit('General/setMainLoaderState', true);
       await store.dispatch('User/getLoggedInUser');
       await store.dispatch('Devices/getMyDevices');
+      await store.dispatch('Addresses/getDeviceAddresses');
       store.commit('General/setMainLoaderState', false);
     });
 

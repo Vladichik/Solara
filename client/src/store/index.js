@@ -1,11 +1,10 @@
 import { store } from 'quasar/wrappers';
 import { createStore } from 'vuex';
 import General from './general';
+import Addresses from './addresses';
 import Auth from './auth';
 import User from './user';
 import Devices from './devices';
-
-// import example from './module-example'
 
 /*
  * If not building with SSR mode, you can
@@ -19,6 +18,7 @@ import Devices from './devices';
 export default store((/* { ssrContext } */) => createStore({
   modules: {
     General,
+    Addresses,
     Auth,
     User,
     Devices,
