@@ -19,14 +19,14 @@ export default class DeviceAddressesAPI {
   }
 
   /**
-   * API call that fetches all manual addresses (Billing/Shipping) from the server
+   * API call that fetches all device addresses related to specific user
    * @returns
    * Vlad. 09/08/21
    */
-  // static getAddresses() {
-  //   const userID = AuthAPI.getUserId();
-  //   return api.get(`${ADDRESSES_BASE}/manual/${userID}`)
-  //     .then((resp) => resp)
-  //     .catch((error) => error.response);
-  // }
+  static getDeviceAddresses() {
+    const userID = AuthAPI.getUserId();
+    return api.get(`${DEVICE_ADDRESSES_BASE}/${userID}`)
+      .then((resp) => resp)
+      .catch((error) => error.response);
+  }
 }

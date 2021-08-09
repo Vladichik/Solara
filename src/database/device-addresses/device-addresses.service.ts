@@ -10,6 +10,10 @@ export class DeviceAddressesService {
     private deviceAddressModel: Model<DeviceAddress>,
   ) {}
 
+  async listDeviceAddresses(userID: ObjectId): Promise<DeviceAddress[]> {
+    return this.deviceAddressModel.find({ user_id: userID }).exec();
+  }
+
   async addAddress(address: DeviceAddress): Promise<DeviceAddress> {
     const newAddress = await new this.deviceAddressModel(address);
     return newAddress.save();
