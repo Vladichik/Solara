@@ -43,14 +43,14 @@
 </template>
 
 <script>
-import { defineComponent, reactive, onBeforeMount } from 'vue';
+import { defineComponent, reactive, watch } from 'vue';
 import { useStore } from 'vuex';
 import AuthAPI from 'src/api/authentication';
 import AddressesAPI from 'src/api/addresses';
 
 export default defineComponent({
   name: 'ManualAddress',
-  props: ['label', 'type'],
+  props: ['label', 'type', 'manualAddresses'],
   setup(props) {
     const store = useStore();
     const address = reactive({
@@ -79,25 +79,33 @@ export default defineComponent({
       }
     };
 
-    const getForAddress = async () => {
-      store.commit('General/setMainLoaderState', true);
-      const addresses = await AddressesAPI.getAddresses();
-      store.commit('General/setMainLoaderState', false);
-      if (addresses.status === 200 && addresses.data.length) {
-        const relevantAddress = addresses.data.find((adr) => adr.type === props.type);
-        if (relevantAddress) {
-          Object.assign(address, relevantAddress);
+    /**
+     * Watcher that receives manual addresses data,
+     * looks for relevant address inside this data and assignes it
+     * to addresses form.
+     * Happens in case address already exists.
+     * Vlad. 09/08/21
+     */
+    watch(props.manualAddresses, (mAddresses) => {
+      if (mAddresses && mAddresses.length) {
+        const mAddress = mAddresses.find((a) => a.type === props.type);
+        if (mAddress) {
+          Object.assign(address, mAddress);
         }
       }
-    };
-
-    onBeforeMount(() => {
-      getForAddress();
     });
+
+    const findRelevantFormAddress = (manualAddresses) => {
+      const relevantAddress = manualAddresses.data.find((adr) => adr.type === props.type);
+      if (relevantAddress) {
+        Object.assign(address, relevantAddress);
+      }
+    };
 
     return {
       address,
       saveAddress,
+      findRelevantFormAddress,
     };
   },
 });
