@@ -7,7 +7,12 @@
   >
     <q-card flat>
       <div class="q-pa-md sol-dev-addresses-head">
-        <q-btn outline icon="add" color="primary" :label="$t('add_address')" />
+        <q-btn outline
+               icon="add"
+               color="primary"
+               :label="$t('add_address')"
+               @click="$refs.addAddressDlg.showDialog = true" />
+        <add-address-dialog ref="addAddressDlg" />
       </div>
     </q-card>
   </q-expansion-item>
@@ -15,9 +20,13 @@
 
 <script>
 import { defineComponent, reactive, watch } from 'vue';
+import AddAddressDialog from 'components/dialogs/AddAddressDialog';
 
 export default defineComponent({
   name: 'DeviceAddresses',
+  components: {
+    AddAddressDialog,
+  },
 });
 </script>
 

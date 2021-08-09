@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, onBeforeMount } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { useStore } from 'vuex';
 import CreateDeviceDialog from 'components/dialogs/CreateDeviceDialog';
 
