@@ -29,7 +29,6 @@
         <q-icon name="event" class="cursor-pointer">
           <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
             <q-date v-model="formData.installation_date"
-                    :model-value="formData.installation_date"
                     :options="getDatePickerOptions">
               <div class="row items-center justify-end">
                 <q-btn v-close-popup label="Close" color="primary" flat />
@@ -63,7 +62,10 @@
 
 <script>
 import {
-  defineComponent, reactive, computed, onBeforeMount,
+  defineComponent,
+  reactive,
+  computed,
+  onBeforeMount,
 } from 'vue';
 import { useStore } from 'vuex';
 import { date } from 'quasar';
@@ -81,7 +83,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    const getDatePickerOptions = (d) => d >= date.formatDate(Date.now(), 'DD/MM/YYYY');
+    const getDatePickerOptions = (d) => d >= date.formatDate(Date.now(), 'YYYY/MM/DD');
     const deviceAddresses = computed(() => store.state.Addresses.deviceAddresses);
     const formData = reactive({
       location_name: null,
