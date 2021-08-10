@@ -20,6 +20,7 @@
 
 <script>
 import { defineComponent, reactive, ref } from 'vue';
+import { useStore } from 'vuex';
 import AddressAutocomplete from 'components/inputs/AddressAutocomplete';
 import DeviceAddressesAPI from 'src/api/device-addresses';
 import AuthAPI from 'src/api/authentication';
@@ -32,6 +33,7 @@ export default defineComponent({
   setup() {
     const showDialog = ref(false);
     const processing = ref(false);
+    const store = useStore();
     const selectedAddress = reactive({});
     let addressData = reactive({});
 
@@ -59,6 +61,7 @@ export default defineComponent({
           const added = await DeviceAddressesAPI.addDeviceAddress(addressData);
           if (added.status === 200 && added.data.id) {
             resetAddress();
+            await store.dispatch('Addresses/getDeviceAddresses');
             showDialog.value = false;
           }
           processing.value = false;

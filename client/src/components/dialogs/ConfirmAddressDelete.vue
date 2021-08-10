@@ -10,32 +10,38 @@
         <q-btn unelevated v-close-popup :label="$t('cancel')" />
         <q-btn unelevated
                color="primary"
-               @click="logout">
+               @click="performDelete">
           {{ $t('confirm') }}
         </q-btn>
       </div>
+      <preloader v-if="processing" />
     </q-card>
   </q-dialog>
 </template>
 
 <script>
 import { defineComponent, ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+import DeviceAddressesAPI from 'src/api/device-addresses';
 
 export default defineComponent({
   name: 'ConfirmAddressDelete',
   props: ['addressToDelete'],
-  setup() {
+  setup(props) {
     const store = useStore();
     const showDialog = ref(false);
+    const processing = ref(false);
 
-    const logout = () => {
+    const performDelete = async () => {
+      processing.value = true;
+      const deleted = await DeviceAddressesAPI.deleteDeviceAddress(props.addressToDelete.id);
+      processing.value = false;
     };
 
     return {
       showDialog,
-      logout,
+      processing,
+      performDelete,
     };
   },
 });
