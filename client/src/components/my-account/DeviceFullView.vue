@@ -39,7 +39,15 @@
         </q-icon>
       </template>
     </q-input>
-    <address-autocomplete :model="selectedAddress" @clear-address="selectedAddress = {}" />
+    <q-select :model-value="formData.address"
+              v-model="formData.address"
+              map-options
+              emit-value
+              filled
+              option-value="id"
+              option-label="place_name"
+              :label="$t('address')"
+              :options="deviceAddresses" />
     <q-btn flat
            class="bg-grey-3"
            :label="$t('add_photo')"
@@ -54,10 +62,12 @@
 </template>
 
 <script>
-import { defineComponent, reactive, onBeforeMount } from 'vue';
+import {
+  defineComponent, reactive, computed, onBeforeMount,
+} from 'vue';
 import { useStore } from 'vuex';
 import { date } from 'quasar';
-import AddressAutocomplete from 'components/inputs/AddressAutocomplete';
+import NotificationsMixins from 'src/mixins/NotificationsMixins';
 import DeviceImageParallax from 'components/my-account/DeviceImageParallax';
 import DevicesAPI from 'src/api/device';
 import CloudinaryAPI from 'src/api/cloudinary';
@@ -65,14 +75,14 @@ import CloudinaryAPI from 'src/api/cloudinary';
 export default defineComponent({
   name: 'DeviceFullView',
   props: ['onBack', 'device'],
+  mixins: [NotificationsMixins],
   components: {
-    AddressAutocomplete,
     DeviceImageParallax,
   },
   setup(props) {
     const store = useStore();
     const getDatePickerOptions = (d) => d >= date.formatDate(Date.now(), 'DD/MM/YYYY');
-    const selectedAddress = reactive({});
+    const deviceAddresses = computed(() => store.state.Addresses.deviceAddresses);
     const formData = reactive({
       location_name: null,
       device_name: null,
@@ -86,9 +96,6 @@ export default defineComponent({
     const initFormData = () => {
       if (props.device && props.device.id) {
         Object.assign(formData, props.device);
-        if (props.device.address) {
-          Object.assign(selectedAddress, { address: props.device.address });
-        }
       }
     };
 
@@ -134,7 +141,7 @@ export default defineComponent({
     return {
       store,
       formData,
-      selectedAddress,
+      deviceAddresses,
       getDatePickerOptions,
       openImageUploader,
     };
@@ -145,25 +152,15 @@ export default defineComponent({
      * Vlad. 27/07/21
      */
     async saveDevice() {
-      if (this.selectedAddress.address && this.selectedAddress.address.place_name) {
-        const city = this.selectedAddress.address.context.find((c) => c.id.includes('place'));
-        const district = this.selectedAddress.address.context.find((c) => c.id.includes('district'));
-        const region = this.selectedAddress.address.context.find((c) => c.id.includes('region'));
-        const country = this.selectedAddress.address.context.find((c) => c.id.includes('country'));
-        this.formData.address = {
-          place_name: this.selectedAddress.address.place_name,
-          lat: this.selectedAddress.address.center[0],
-          long: this.selectedAddress.address.center[1],
-          city: city ? city.text : '',
-          district: district ? district.text : '',
-          region: region ? region.text : '',
-          country: country ? country.text : '',
-        };
-        this.store.commit('General/setMainLoaderState', true);
-
-        // const updated = await DevicesAPI.updateDevice(formData);
-        this.store.commit('General/setMainLoaderState', false);
+      this.store.commit('General/setMainLoaderState', true);
+      const updated = await DevicesAPI.updateDevice(this.formData);
+      if (updated.status === 200) {
+        await this.$store.dispatch('Devices/getMyDevices');
+        this.showInfoNotification(this.$tm('notifications.data_saved'));
+      } else {
+        this.showWarningNotification(this.$tm('notifications.saving_failed'));
       }
+      this.store.commit('General/setMainLoaderState', false);
     },
   },
 });
