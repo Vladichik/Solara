@@ -20,6 +20,8 @@ export default {
   placeholder: {
     no_devices: 'You do not have connected devices yet',
   },
+  delete_address: 'Delete Address',
+  addr_delete_msg: 'Please confirm address deletion:',
   name: 'Name',
   first_name: 'First name',
   last_name: 'Last name',

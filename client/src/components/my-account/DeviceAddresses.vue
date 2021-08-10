@@ -17,35 +17,51 @@
       <q-list bordered separator>
         <q-item v-for="address in addresses" :key="address.id" class="sol-address-list">
           <span>{{ address.place_name }}</span>
-          <q-btn flat outline icon="delete" size="md" />
+          <q-btn flat outline
+                 icon="delete"
+                 size="md"
+                 @click="openConfirmAddressDelete(address)" />
         </q-item>
       </q-list>
+      <confirm-address-delete ref="deleteAddressDlg" :address-to-delete="addressToDelete" />
     </q-card>
   </q-expansion-item>
 </template>
 
 <script>
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, reactive } from 'vue';
 import { useStore } from 'vuex';
 import AddAddressDialog from 'components/dialogs/AddAddressDialog';
+import ConfirmAddressDelete from 'components/dialogs/ConfirmAddressDelete';
 
 export default defineComponent({
   name: 'DeviceAddresses',
   components: {
     AddAddressDialog,
+    ConfirmAddressDelete,
   },
   setup() {
     const store = useStore();
     const addresses = computed(() => store.state.Addresses.deviceAddresses);
+    const addressToDelete = reactive({});
+
     return {
       addresses,
+      addressToDelete,
     };
+  },
+  methods: {
+    openConfirmAddressDelete(address) {
+      Object.assign(this.addressToDelete, address);
+      this.$refs.deleteAddressDlg.showDialog = true;
+    },
   },
 });
 </script>
 
 <style lang="scss">
 @import "src/css/mixins";
+
 .sol-address-list {
   font-size: 16px;
   align-items: center;
