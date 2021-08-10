@@ -35,6 +35,10 @@ export default defineComponent({
     const performDelete = async () => {
       processing.value = true;
       const deleted = await DeviceAddressesAPI.deleteDeviceAddress(props.addressToDelete.id);
+      if (deleted.status === 200) {
+        await store.dispatch('Addresses/getDeviceAddresses');
+        showDialog.value = false;
+      }
       processing.value = false;
     };
 

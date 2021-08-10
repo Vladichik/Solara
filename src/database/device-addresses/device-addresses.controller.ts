@@ -5,7 +5,7 @@ import {
   HttpStatus,
   Param,
   Post,
-  Put,
+  Delete,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -40,5 +40,19 @@ export class DeviceAddressesController {
     return res
       .status(HttpStatus.NOT_IMPLEMENTED)
       .json({ message: 'Address could not be saved' });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/:addressID')
+  async deleteDeviceAddress(@Res() res, @Param('addressID') addressID) {
+    if (addressID) {
+      const devices = await this.deviceAddressesService.deleteAddress(
+        addressID,
+      );
+      return res.status(HttpStatus.OK).json(devices);
+    }
+    return res
+      .status(HttpStatus.UNAUTHORIZED)
+      .json({ message: 'Address ID was not supplied' });
   }
 }
