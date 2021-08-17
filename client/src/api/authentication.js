@@ -22,6 +22,12 @@ export default class AuthAPI {
       .catch((error) => error.response);
   }
 
+  static orviboLogin() {
+    return api.post('orvibo/login')
+      .then((resp) => resp)
+      .catch((error) => error.response);
+  }
+
   /**
    * Function that performs LogIn sequence
    * @param credentials - Object with login credentials

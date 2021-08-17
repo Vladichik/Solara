@@ -37,6 +37,7 @@ import { ref, onBeforeMount, computed } from 'vue';
 import { useStore } from 'vuex';
 import SolaraLogo from 'components/icons/SolaraLogo';
 import SplashScreen from 'components/splash/SplashScreen';
+import AuthAPI from 'src/api/authentication';
 
 export default {
   components: {
@@ -58,6 +59,7 @@ export default {
       await store.dispatch('Devices/getMyDevices');
       await store.dispatch('Addresses/getDeviceAddresses');
       store.commit('General/setMainLoaderState', false);
+      await AuthAPI.orviboLogin();
     });
 
     return {

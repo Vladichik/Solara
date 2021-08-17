@@ -14,6 +14,7 @@ import { DevicesModule } from './database/devices/devices.module';
 import { CloudinaryModule } from './third-party-apis/cloudinary/cloudinary.module';
 import { AddressesModule } from './database/addresses/addresses.module';
 import { DeviceAddressesModule } from './database/device-addresses/device-addresses.module';
+import { OrviboModule } from './third-party-apis/orvibo/orvibo.module';
 import configuration from './config/configurations';
 
 @Module({
@@ -37,6 +38,7 @@ import configuration from './config/configurations';
     CloudinaryModule,
     AddressesModule,
     DeviceAddressesModule,
+    OrviboModule,
   ],
   controllers: [AppController],
   providers: [AppService],
