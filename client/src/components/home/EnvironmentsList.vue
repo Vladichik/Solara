@@ -25,10 +25,15 @@
 </template>
 
 <script>
-import { computed, reactive, onBeforeMount } from 'vue';
+import {
+  defineComponent,
+  computed,
+  reactive,
+  onBeforeMount,
+} from 'vue';
 import { useStore } from 'vuex';
 
-export default {
+export default defineComponent({
   name: 'EnvironmentsList',
   props: ['enterDevice'],
   setup() {
@@ -72,7 +77,7 @@ export default {
       this.groupListsByEnvironments(dev);
     },
   },
-};
+});
 </script>
 
 <style scoped>
