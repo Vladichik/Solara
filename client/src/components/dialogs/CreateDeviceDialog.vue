@@ -35,6 +35,7 @@ import {
   reactive,
   computed,
 } from 'vue';
+
 import { useStore } from 'vuex';
 import DevicesAPI from 'src/api/device';
 import NotificationsMixins from 'src/mixins/NotificationsMixins';
@@ -77,10 +78,11 @@ export default defineComponent({
         const device = await DevicesAPI.createDevice(this.deviceData);
         this.processing = false;
         if (device && device.data.id) {
+          await this.$store.dispatch('Devices/getMyDevices');
           this.showDialog = false;
-          this.showWarningNotification(this.$tm('notification.device_creation_fail'), 2000);
+          this.showInfoNotification(this.$tm('notifications.device_created'), 2000);
         } else {
-          this.showWarningNotification(this.$tm('notification.device_creation_fail'), 2000);
+          this.showWarningNotification(this.$tm('notifications.device_creation_fail'), 2000);
         }
       }
     },

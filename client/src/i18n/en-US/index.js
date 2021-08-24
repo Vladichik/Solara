@@ -62,6 +62,7 @@ export default {
     data_saved: 'Changes saved successfully',
     saving_failed: 'Could not save changes',
     device_creation_fail: 'Device creation failed',
+    device_created: 'Device created successfully',
   },
   my_account_links: [
     { name: 'Payment Info', icon: 'credit_card', path: '/payment-info' },

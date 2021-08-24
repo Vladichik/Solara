@@ -59,7 +59,7 @@ export default {
       await store.dispatch('Devices/getMyDevices');
       await store.dispatch('Addresses/getDeviceAddresses');
       store.commit('General/setMainLoaderState', false);
-      await AuthAPI.orviboLogin();
+      // await AuthAPI.orviboLogin();
     });
 
     return {
