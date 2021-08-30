@@ -4,6 +4,10 @@ const routes = [
     component: () => import('layouts/AuthenticationLayout.vue'),
   },
   {
+    path: '/orvibo-oauth/:code?',
+    component: () => import('layouts/OrviboAuth.vue'),
+  },
+  {
     path: '/',
     redirect: '/home',
     component: () => import('layouts/MainLayout.vue'),

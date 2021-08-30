@@ -1,6 +1,7 @@
 <template>
   <q-tab-panels v-model="panel" animated>
     <q-tab-panel name="list" class="q-pa-none">
+      <a :href="getOrviboAuthUrl()">authenticate</a>
       <environments-list :enter-device="enterDevice" />
     </q-tab-panel>
     <q-tab-panel name="device" class="q-pa-none">
@@ -14,6 +15,7 @@ import { defineComponent, ref, reactive } from 'vue';
 import { useStore } from 'vuex';
 import EnvironmentsList from 'components/home/EnvironmentsList';
 import DeviceControlPanel from 'components/home/DeviceControlPanel';
+import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
 
 export default defineComponent({
   name: 'Home',
@@ -22,6 +24,7 @@ export default defineComponent({
     DeviceControlPanel,
   },
   setup() {
+    const { getOrviboAuthUrl } = DataGettersCompositions();
     const store = useStore();
     const panel = ref('list');
     const selectedDevice = reactive({});
@@ -41,6 +44,7 @@ export default defineComponent({
       selectedDevice,
       enterDevice,
       goHome,
+      getOrviboAuthUrl,
     };
   },
 });

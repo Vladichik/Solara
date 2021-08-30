@@ -9,7 +9,7 @@ export class OrviboController {
   @UseGuards(JwtAuthGuard)
   @Post('/login')
   async login(@Request() req, @Body() credentials) {
-    const user = await this.orviboService.login();
+    const user = await this.orviboService.login(credentials);
     return user;
   }
 }

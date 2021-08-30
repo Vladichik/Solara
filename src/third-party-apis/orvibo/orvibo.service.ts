@@ -1,7 +1,6 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { ConfigService } from '@nestjs/config';
-import { CryptoGuyService } from '../../tools/cryptoguy/cryptoguy.service';
 
 @Injectable()
 export class OrviboService {
@@ -13,7 +12,6 @@ export class OrviboService {
   constructor(
     private httpService: HttpService,
     private configService: ConfigService,
-    private cryptoService: CryptoGuyService,
   ) {
     this.baseUrl = configService.get<string>('ORVIBO_BASE_URL');
     this.clientId = configService.get<string>('ORVIBO_CLIENT_ID');
@@ -21,29 +19,20 @@ export class OrviboService {
     this.auth = configService.get<string>('ORVIBO_AUTH');
   }
 
-  async login(): Promise<AxiosResponse<any>> {
-    const authParams = {
-      requestId: '34234',
-      namespace: 'Account.Login',
-      version: 1,
-      user: {
-        account: 'nadav@patiocover.us',
-        encryptPassword: '801UgiUnvuBRL1ai',
-        encryptClientSecret: this.clientSecret,
-        authentication: this.auth,
-      },
-      signInfo: {
-        appID: this.clientId,
-        sign: this.cryptoService.getSignHash('Account.Login+34234+', this.clientSecret),
-        time: new Date(),
-      },
-    };
-    console.log(authParams);
-    const call = await this.httpService
-      .post(`${this.baseUrl}`, authParams)
+  /**
+   * Function that receives authentication code from client side and performs
+   * authentication in Orvibo Cloud
+   * @param credentials - object that contains code
+   * Vlad. 28/08/21
+   */
+  async login(credentials: any): Promise<AxiosResponse<any>> {
+    return await this.httpService
+      .get(
+        `${this.baseUrl}oauth/token?grant_type=authorization_code&client_id=${this.clientId}&client_secret=${this.clientSecret}&code=${credentials.code}&redirect_uri=http://localhost:8082/`,
+      )
+      // .post(`${this.baseUrl}`, authParams)
       .toPromise()
       .then((resp) => resp.data)
       .catch((e) => e);
-    return call;
   }
 }
