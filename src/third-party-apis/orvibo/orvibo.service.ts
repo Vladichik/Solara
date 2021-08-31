@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { HttpService, Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { ConfigService } from '@nestjs/config';
@@ -43,24 +44,21 @@ export class OrviboService {
 
   async getUserDevices(props: OrviboDeviceQueryProps): Promise<any> {
     const namespace = 'Device.Discovery';
-    const requestId = '67584f220d484cf2b690f8903597506f';
-    const time = new Date().getTime();
+    const requestId = uuidv4();
+    const time = Math.floor(new Date().getTime() / 1000);
     const payload = {
       namespace: namespace,
       requestId: requestId,
       version: 1,
       accessToken: props.access_token,
-      familyId: props.user_id,
       signInfo: {
         appId: this.clientId,
         sign: this.cryptoService.getSignHash(
           `${namespace}${requestId}1${props.access_token}${time}${this.clientSecret}`,
-          this.clientSecret,
         ),
-        time: new Date(),
+        time: time,
       },
     };
-    // namespace+requestId+version+accessToken+time+appKey
     const call = await this.httpService
       .post(this.baseUrl, payload)
       .toPromise()
