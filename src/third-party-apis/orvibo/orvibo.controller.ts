@@ -33,4 +33,11 @@ export class OrviboController {
     const sent = await this.orviboService.sendCommandToDevice(command);
     return res.status(HttpStatus.OK).json(sent);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/get-device-status')
+  async getDeviceStatus(@Request() req, @Res() res, @Body() payload) {
+    const status = await this.orviboService.getDeviceStatus(payload);
+    return res.status(HttpStatus.OK).json(status);
+  }
 }

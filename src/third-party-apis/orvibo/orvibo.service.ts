@@ -51,6 +51,11 @@ export class OrviboService {
       .catch((e) => e);
   }
 
+  /**
+   * Function that makes HTTP calls to Orvibo cloud.
+   * @param payload - request payload
+   * Vlad. 06/09/21
+   */
   async callOrviboCloud(payload: any): Promise<any> {
     return await this.httpService
       .post(this.baseUrl, payload)
@@ -84,6 +89,12 @@ export class OrviboService {
     return this.callOrviboCloud(payload);
   }
 
+  /**
+   * Orvibo API call that sends OPEN/CLOSE/STOP commands to bound
+   * device.
+   * @param props - Object
+   * Vlad. 06/09/21
+   */
   async sendCommandToDevice(props: DeviceCommandProps): Promise<any> {
     const namespace = 'Device.Control';
     const requestId = uuidv4();
@@ -95,6 +106,33 @@ export class OrviboService {
       accessToken: props.access_token,
       deviceId: props.deviceId,
       action: props.action,
+      signInfo: {
+        appId: this.clientId,
+        sign: this.cryptoService.getSignHash(
+          `${namespace}${requestId}1${props.access_token}${time}${this.clientSecret}`,
+        ),
+        time: time,
+      },
+    };
+    return this.callOrviboCloud(payload);
+  }
+
+  /**
+   * Orvibo API call that gets bound device status.
+   * @param props - Object
+   * Vlad. 06/09/21
+   */
+  async getDeviceStatus(props: DeviceCommandProps): Promise<any> {
+    const namespace = 'Device.Query';
+    const requestId = uuidv4();
+    const time = this.getRequestTime();
+    const payload = {
+      namespace: namespace,
+      requestId: requestId,
+      version: 1,
+      accessToken: props.access_token,
+      deviceId: props.deviceId,
+      action: 'QueryCloseStatus',
       signInfo: {
         appId: this.clientId,
         sign: this.cryptoService.getSignHash(

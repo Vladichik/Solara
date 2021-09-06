@@ -1,7 +1,7 @@
 <template>
   <section class="sol-device-control-panel">
     <navbar :absolute="true"
-            :title="device.device_name"
+            :title="getDeviceName(device.deviceId)"
             :btn-label="$tm('nav_bar.my_account')" :go-back="goHome" />
     <div class="sol-controls-ring-holder">
       <div class="sol-controls-ring shadow-5"></div>
@@ -16,10 +16,21 @@ import {
   reactive,
   onBeforeMount,
 } from 'vue';
+import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
+import OrviboAPI from 'src/api/orvibo';
 
 export default defineComponent({
   name: 'DeviceControlPanel',
   props: ['device', 'goHome'],
+  setup(props) {
+    const { getDeviceName } = DataGettersCompositions();
+    onBeforeMount(async () => {
+      const status = await OrviboAPI.getDeviceStatus({ deviceId: props.device.deviceId });
+    });
+    return {
+      getDeviceName,
+    };
+  },
 });
 </script>
 
