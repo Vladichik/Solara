@@ -1,11 +1,11 @@
 <template>
   <q-expansion-item
     v-for="group in groupedDevices"
-    :key="group.name"
+    :key="group.uid"
     expand-separator
     class="bg-primary sol-white-arrow"
     header-class="text-white sol-expansion-head"
-    :label="group.name"
+    :label="group.deviceName"
   >
     <q-list separator>
       <q-item clickable
@@ -14,7 +14,7 @@
               v-for="device in group.devices"
               :key="device.id" @click="enterDevice(device)" >
         <q-item-section>
-          <q-item-label>{{ device.device_name }}</q-item-label>
+          <q-item-label>{{ device.deviceName }}</q-item-label>
         </q-item-section>
         <q-item-section avatar>
           <q-icon color="grey-5" name="arrow_forward_ios" size="xs" />
@@ -38,7 +38,7 @@ export default defineComponent({
   props: ['enterDevice'],
   setup() {
     const store = useStore();
-    const myDevices = computed(() => store.state.Devices.myDevices);
+    const myDevices = computed(() => store.state.Devices.myOrviboDevices);
     const groupedDevices = reactive([]);
 
     /**
@@ -47,18 +47,21 @@ export default defineComponent({
      */
     const groupListsByEnvironments = () => {
       if (myDevices.value && myDevices.value.length) {
+        const cloned = JSON.parse(JSON.stringify(myDevices.value));
+        const onlyAllOnes = cloned.filter((device) => device.deviceTypeName.includes('allone_pro'));
         myDevices.value.forEach((device) => {
-          const foundGroup = groupedDevices.find((g) => g.name === device.location_name);
-          if (foundGroup) {
-            foundGroup.devices.push(device);
-          } else {
-            const newGroup = {
-              name: device.location_name,
-              devices: [device],
-            };
-            groupedDevices.push(newGroup);
+          if (!device.subDeviceType.includes('allone_pro')) {
+            const foundGroup = onlyAllOnes.find((g) => g.uid === device.uid);
+            if (foundGroup) {
+              if (!foundGroup.devices) {
+                foundGroup.devices = [];
+              }
+              foundGroup.devices.push(device);
+            }
           }
         });
+        Object.assign(groupedDevices, onlyAllOnes);
+        console.log(onlyAllOnes);
       }
     };
 

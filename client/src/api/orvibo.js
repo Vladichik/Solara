@@ -39,11 +39,27 @@ export default class OrviboAPI {
     };
   }
 
+  /**
+   * API call that fetches all devices related to logged in user
+   * @returns {{message: string}|Promise<AxiosResponse<any>>}
+   * Vlad. 03/09/21
+   */
   static getUserDeviceList() {
     if (this.tokenIsValid()) {
       const payload = this.basicPayloadData();
       return api.post(`${ORVIBO_API_BASE}/get-devices`, payload);
     }
     return this.expiredToken();
+  }
+
+  /**
+   * API call that sends command to Orvibo device
+   * @param action - Object that contains device details and command
+   * @returns {Promise<AxiosResponse<any>>}
+   * VLad. 06/09/21
+   */
+  static sendCommandToDevice(action) {
+    const payload = Object.assign(this.basicPayloadData(), action);
+    return api.post(`${ORVIBO_API_BASE}/operate-device`, payload);
   }
 }

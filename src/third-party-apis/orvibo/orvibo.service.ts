@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { HttpService, Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { ConfigService } from '@nestjs/config';
-import { OrviboDeviceQueryProps } from './types';
+import { OrviboDeviceQueryProps, DeviceCommandProps } from './types';
 import { CryptoGuyService } from '../../tools/cryptoguy/cryptoguy.service';
 
 @Injectable()
@@ -26,6 +26,15 @@ export class OrviboService {
   }
 
   /**
+   * Function that generates time for specific request
+   * @private
+   * Vlad. 06/09/21
+   */
+  getRequestTime() {
+    return Math.floor(new Date().getTime() / 1000);
+  }
+
+  /**
    * Function that receives authentication code from client side and performs
    * authentication in Orvibo Cloud
    * @param credentials - object that contains code
@@ -42,10 +51,23 @@ export class OrviboService {
       .catch((e) => e);
   }
 
+  async callOrviboCloud(payload: any): Promise<any> {
+    return await this.httpService
+      .post(this.baseUrl, payload)
+      .toPromise()
+      .then((resp) => resp.data)
+      .catch((e) => e);
+  }
+
+  /**
+   * Function that gets all user devices bound to his account
+   * @param props
+   * Vlad. 06/09/21
+   */
   async getUserDevices(props: OrviboDeviceQueryProps): Promise<any> {
     const namespace = 'Device.Discovery';
     const requestId = uuidv4();
-    const time = Math.floor(new Date().getTime() / 1000);
+    const time = this.getRequestTime();
     const payload = {
       namespace: namespace,
       requestId: requestId,
@@ -59,11 +81,28 @@ export class OrviboService {
         time: time,
       },
     };
-    const call = await this.httpService
-      .post(this.baseUrl, payload)
-      .toPromise()
-      .then((resp) => resp.data)
-      .catch((e) => e);
-    return call;
+    return this.callOrviboCloud(payload);
+  }
+
+  async sendCommandToDevice(props: DeviceCommandProps): Promise<any> {
+    const namespace = 'Device.Control';
+    const requestId = uuidv4();
+    const time = this.getRequestTime();
+    const payload = {
+      namespace: namespace,
+      requestId: requestId,
+      version: 1,
+      accessToken: props.access_token,
+      deviceId: props.deviceId,
+      action: props.action,
+      signInfo: {
+        appId: this.clientId,
+        sign: this.cryptoService.getSignHash(
+          `${namespace}${requestId}1${props.access_token}${time}${this.clientSecret}`,
+        ),
+        time: time,
+      },
+    };
+    return this.callOrviboCloud(payload);
   }
 }
