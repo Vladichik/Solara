@@ -2,8 +2,7 @@ import * as mongoose from 'mongoose';
 
 export const DeviceSchema = new mongoose.Schema({
   user_id: { type: mongoose.Schema.Types.ObjectId, required: true },
-  location_name: { type: String, required: true },
-  device_name: { type: String, required: true },
+  orvibo_id: { type: String, required: true },
   pergola_colors: [{ type: String }],
   rafter_size: Number,
   louvered_size: Number,

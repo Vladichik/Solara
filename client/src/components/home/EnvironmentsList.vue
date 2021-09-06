@@ -61,7 +61,6 @@ export default defineComponent({
           }
         });
         Object.assign(groupedDevices, onlyAllOnes);
-        console.log(onlyAllOnes);
       }
     };
 

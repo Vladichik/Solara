@@ -5,7 +5,7 @@
   <div class="q-mb-md sol-new-device-btn-frame">
     <q-btn outline
            color="primary"
-           :label="$t('add_device')"
+           :label="$t('add_device_det')"
            size="18px"
            @click="$refs.createDeviceDialog.showDialog = true" />
   </div>
@@ -19,7 +19,7 @@
               :key="device.id"
               @click="viewDevice(device)">
         <q-item-section>
-          <q-item-label>{{ device.device_name }}</q-item-label>
+          <q-item-label>{{ getDeviceName(device.orvibo_id) }}</q-item-label>
         </q-item-section>
         <q-item-section avatar>
           <q-icon color="grey-5" name="arrow_forward_ios" size="xs" />
@@ -34,16 +34,19 @@
 import { defineComponent, computed } from 'vue';
 import { useStore } from 'vuex';
 import CreateDeviceDialog from 'components/dialogs/CreateDeviceDialog';
+import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
 
 export default defineComponent({
   name: 'ProductsList',
   props: ['viewDevice'],
   components: { CreateDeviceDialog },
   setup() {
+    const { getDeviceName } = DataGettersCompositions();
     const store = useStore();
     const myDevices = computed(() => store.state.Devices.myDevices);
     return {
       myDevices,
+      getDeviceName,
     };
   },
 });

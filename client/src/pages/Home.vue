@@ -18,7 +18,6 @@ import { useStore } from 'vuex';
 import EnvironmentsList from 'components/home/EnvironmentsList';
 import DeviceControlPanel from 'components/home/DeviceControlPanel';
 import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
-import OrviboAPI from 'src/api/orvibo';
 
 export default defineComponent({
   name: 'Home',
@@ -42,18 +41,12 @@ export default defineComponent({
       Object.assign(selectedDevice, {});
     };
 
-    // const operateDevice = async (action) => {
-    // await OrviboAPI.sendCommandToDevice
-    // ({ deviceId: '7cb34b3ca654475682aa16534234322f', action });
-    // };
-
     return {
       panel,
       selectedDevice,
       enterDevice,
       goHome,
       getOrviboAuthUrl,
-      // operateDevice,
     };
   },
 });

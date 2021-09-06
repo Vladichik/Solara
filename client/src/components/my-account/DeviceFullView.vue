@@ -3,14 +3,14 @@
   <q-form ref="deviceForm"
           class="sol-form-grid q-pl-lg q-pr-lg q-pb-lg"
           @submit="saveDevice()">
-    <q-input filled :label="$t('location_name')"
-             v-model="formData.location_name"
-             :model-value="formData.location_name"
-             :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />
-    <q-input filled :label="$t('device_name')"
-             :model-value="formData.device_name"
-             v-model="formData.device_name"
-             :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />
+<!--    <q-input filled :label="$t('location_name')"-->
+<!--             v-model="formData.location_name"-->
+<!--             :model-value="formData.location_name"-->
+<!--             :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />-->
+<!--    <q-input filled :label="$t('device_name')"-->
+<!--             :model-value="formData.device_name"-->
+<!--             v-model="formData.device_name"-->
+<!--             :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />-->
     <q-select filled :label="$t('pergola_colors')" />
     <q-select filled :label="$t('rafter_size')" />
     <q-select filled :label="$t('louvered_size')" />
@@ -86,8 +86,8 @@ export default defineComponent({
     const getDatePickerOptions = (d) => d >= date.formatDate(Date.now(), 'YYYY/MM/DD');
     const deviceAddresses = computed(() => store.state.Addresses.deviceAddresses);
     const formData = reactive({
-      location_name: null,
-      device_name: null,
+      // location_name: null,
+      // device_name: null,
       technician_name: null,
       technician_company: null,
       installation_date: null,

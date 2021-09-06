@@ -59,7 +59,6 @@ export default {
       await store.dispatch('Devices/getMyDevicesFromOrvibo');
       await store.dispatch('Addresses/getDeviceAddresses');
       store.commit('General/setMainLoaderState', false);
-      const ddd = await OrviboAPI.getUserDeviceList();
     });
 
     return {
