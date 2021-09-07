@@ -4,7 +4,21 @@
             :title="getDeviceName(device.deviceId)"
             :btn-label="$tm('nav_bar.my_account')" :go-back="goHome" />
     <div class="sol-controls-ring-holder">
-      <div class="sol-controls-ring shadow-5"></div>
+      <div class="sol-controls-ring shadow-5">
+        <div class="sol-ring-btn-base q-pl-md q-pr-md">
+          <div class="sol-ctr-button-frame">
+            <q-btn class="text-blue-grey-3" round color="white" icon="menu" size="md" />
+            <span class="text-blue-grey-3">Open</span>
+          </div>
+          <div>
+            <q-btn round color="primary" icon="pause" size="lg" />
+          </div>
+          <div class="sol-ctr-button-frame">
+            <q-btn class="text-blue-grey-3" round color="white" icon="stop" size="md" />
+            <span class="text-blue-grey-3">Close</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </template>
@@ -24,8 +38,8 @@ export default defineComponent({
   props: ['device', 'goHome'],
   setup(props) {
     const { getDeviceName } = DataGettersCompositions();
-    onBeforeMount(async () => {
-      const status = await OrviboAPI.getDeviceStatus({ deviceId: props.device.deviceId });
+    onBeforeMount(() => {
+      console.log(props.device);
     });
     return {
       getDeviceName,
@@ -36,6 +50,7 @@ export default defineComponent({
 
 <style lang="scss">
 @import "src/css/mixins";
+
 .sol-device-control-panel {
   height: calc(100vh - 130px);
   position: relative;
@@ -45,9 +60,9 @@ export default defineComponent({
 
 .sol-controls-ring-holder {
   position: fixed;
-  height: 500px;
+  height: 300px;
   width: 100%;
-  bottom: -250px;
+  bottom: -150px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -56,9 +71,27 @@ export default defineComponent({
 .sol-controls-ring {
   width: 100%;
   height: 100%;
-  max-width: 500px;
+  max-width: 300px;
   background: white;
   margin: 0 10px;
   border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.sol-ring-btn-base {
+  width: 100%;
+  margin: 0 0 80px 0;
+  justify-content: space-around;
+  align-items: center;
+  @include setGridAuto(auto, null, "columns");
+}
+
+.sol-ctr-button-frame {
+  justify-items: center;
+  @include setGridAuto(auto, 4px, "rows");
+  span {
+    font-size: 13px;
+  }
 }
 </style>
