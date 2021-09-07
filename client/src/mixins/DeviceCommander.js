@@ -10,41 +10,47 @@ export default function () {
 
   /**
    * Sending command to open motor/patio
-   * @param deviceId - String
+   * @param device - Object
    * @returns {Promise<void>}
    * Vlad. 07/09/21
    */
-  const openDevice = async (deviceId) => {
-    const sent = await sendCommandToDevice({
-      deviceId,
-      action: 'TurnOn',
-    });
+  const openDevice = async (device) => {
+    if (device.online === 'online') {
+      const sent = await sendCommandToDevice({
+        deviceId: device.deviceId,
+        action: 'TurnOn',
+      });
+    }
   };
 
   /**
    * Sending command to close motor/patio
-   * @param deviceId - String
+   * @param device - Object
    * @returns {Promise<void>}
    * Vlad. 07/09/21
    */
-  const closeDevice = async (deviceId) => {
-    const sent = await sendCommandToDevice({
-      deviceId,
-      action: 'TurnOff',
-    });
+  const closeDevice = async (device) => {
+    if (device.online === 'online') {
+      const sent = await sendCommandToDevice({
+        deviceId: device.deviceId,
+        action: 'TurnOff',
+      });
+    }
   };
 
   /**
    * Sending command to pause/stop the process
-   * @param deviceId - String
+   * @param device - Object
    * @returns {Promise<void>}
    * Vlad. 07/09/21
    */
-  const stopProcess = async (deviceId) => {
-    const sent = await sendCommandToDevice({
-      deviceId,
-      action: 'Pause',
-    });
+  const stopProcess = async (device) => {
+    if (device.online === 'online') {
+      const sent = await sendCommandToDevice({
+        deviceId: device.deviceId,
+        action: 'Pause',
+      });
+    }
   };
 
   return {

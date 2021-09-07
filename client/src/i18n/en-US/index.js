@@ -91,6 +91,9 @@ export default {
   louvered_size: 'Louvered size',
   num_motors: 'Number of motors',
   add_photo: 'Device Photo',
+  open: 'Open',
+  close: 'Close',
+  device_offline: 'This device is OFFLINE',
   states: [
     {
       name: 'Alabama',

@@ -5,30 +5,31 @@
             :btn-label="$tm('nav_bar.my_account')" :go-back="goHome" />
     <div class="sol-controls-ring-holder">
       <div class="sol-controls-ring shadow-5">
-        <div class="sol-ring-btn-base q-pl-md q-pr-md">
+        <div class="sol-ring-btn-base q-pl-md q-pr-md" v-if="isOnline">
           <div class="sol-ctr-button-frame">
             <q-btn class="text-blue-grey-3"
                    round color="white"
                    icon="menu"
                    size="md"
-                   @click="openDevice(device.deviceId)" />
-            <span class="text-blue-grey-3">Open</span>
+                   @click="openDevice(device)" />
+            <span class="text-blue-grey-3">{{$t('open')}}</span>
           </div>
           <div>
             <q-btn round color="primary"
                    icon="pause"
                    size="lg"
-                   @click="stopProcess(device.deviceId)" />
+                   @click="stopProcess(device)" />
           </div>
           <div class="sol-ctr-button-frame">
             <q-btn class="text-blue-grey-3"
                    round color="white"
                    icon="stop"
                    size="md"
-                   @click="closeDevice(device.deviceId)" />
-            <span class="text-blue-grey-3">Close</span>
+                   @click="closeDevice(device)" />
+            <span class="text-blue-grey-3">{{$t('close')}}</span>
           </div>
         </div>
+        <device-offline-flag v-if="!isOnline" />
       </div>
     </div>
   </section>
@@ -39,22 +40,30 @@ import {
   defineComponent,
   computed,
   reactive,
+  ref,
   onBeforeMount,
 } from 'vue';
 import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
 import DeviceCommander from 'src/mixins/DeviceCommander';
-import OrviboAPI from 'src/api/orvibo';
+import DeviceOfflineFlag from 'components/home/DeviceOfflineFlag';
 
 export default defineComponent({
   name: 'DeviceControlPanel',
   props: ['device', 'goHome'],
+  components: {
+    DeviceOfflineFlag,
+  },
   setup(props) {
     const { getDeviceName } = DataGettersCompositions();
     const { openDevice, closeDevice, stopProcess } = DeviceCommander();
+    const isOnline = ref(true);
+
     onBeforeMount(() => {
+      isOnline.value = props.device.online === 'online';
       console.log(props.device);
     });
     return {
+      isOnline,
       getDeviceName,
       openDevice,
       closeDevice,
