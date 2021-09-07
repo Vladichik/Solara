@@ -71,9 +71,4 @@ export default class OrviboAPI {
     const payload = Object.assign(this.basicPayloadData(), action);
     return api.post(`${ORVIBO_API_BASE}/operate-device`, payload);
   }
-
-  static getDeviceStatus(devicesData) {
-    const payload = Object.assign(this.basicPayloadData(), devicesData);
-    return api.post(`${ORVIBO_API_BASE}/get-device-status`, payload);
-  }
 }

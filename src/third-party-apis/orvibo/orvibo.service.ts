@@ -116,31 +116,4 @@ export class OrviboService {
     };
     return this.callOrviboCloud(payload);
   }
-
-  /**
-   * Orvibo API call that gets bound device status.
-   * @param props - Object
-   * Vlad. 06/09/21
-   */
-  async getDeviceStatus(props: DeviceCommandProps): Promise<any> {
-    const namespace = 'Device.Query';
-    const requestId = uuidv4();
-    const time = this.getRequestTime();
-    const payload = {
-      namespace: namespace,
-      requestId: requestId,
-      version: 1,
-      accessToken: props.access_token,
-      deviceId: props.deviceId,
-      action: 'QueryCloseStatus',
-      signInfo: {
-        appId: this.clientId,
-        sign: this.cryptoService.getSignHash(
-          `${namespace}${requestId}1${props.access_token}${time}${this.clientSecret}`,
-        ),
-        time: time,
-      },
-    };
-    return this.callOrviboCloud(payload);
-  }
 }

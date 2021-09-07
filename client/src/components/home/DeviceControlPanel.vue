@@ -7,14 +7,25 @@
       <div class="sol-controls-ring shadow-5">
         <div class="sol-ring-btn-base q-pl-md q-pr-md">
           <div class="sol-ctr-button-frame">
-            <q-btn class="text-blue-grey-3" round color="white" icon="menu" size="md" />
+            <q-btn class="text-blue-grey-3"
+                   round color="white"
+                   icon="menu"
+                   size="md"
+                   @click="openDevice(device.deviceId)" />
             <span class="text-blue-grey-3">Open</span>
           </div>
           <div>
-            <q-btn round color="primary" icon="pause" size="lg" />
+            <q-btn round color="primary"
+                   icon="pause"
+                   size="lg"
+                   @click="stopProcess(device.deviceId)" />
           </div>
           <div class="sol-ctr-button-frame">
-            <q-btn class="text-blue-grey-3" round color="white" icon="stop" size="md" />
+            <q-btn class="text-blue-grey-3"
+                   round color="white"
+                   icon="stop"
+                   size="md"
+                   @click="closeDevice(device.deviceId)" />
             <span class="text-blue-grey-3">Close</span>
           </div>
         </div>
@@ -31,6 +42,7 @@ import {
   onBeforeMount,
 } from 'vue';
 import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
+import DeviceCommander from 'src/mixins/DeviceCommander';
 import OrviboAPI from 'src/api/orvibo';
 
 export default defineComponent({
@@ -38,11 +50,15 @@ export default defineComponent({
   props: ['device', 'goHome'],
   setup(props) {
     const { getDeviceName } = DataGettersCompositions();
+    const { openDevice, closeDevice, stopProcess } = DeviceCommander();
     onBeforeMount(() => {
       console.log(props.device);
     });
     return {
       getDeviceName,
+      openDevice,
+      closeDevice,
+      stopProcess,
     };
   },
 });
@@ -79,6 +95,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
 }
+
 .sol-ring-btn-base {
   width: 100%;
   margin: 0 0 80px 0;
@@ -90,6 +107,7 @@ export default defineComponent({
 .sol-ctr-button-frame {
   justify-items: center;
   @include setGridAuto(auto, 4px, "rows");
+
   span {
     font-size: 13px;
   }
