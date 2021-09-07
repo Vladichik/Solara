@@ -1,9 +1,9 @@
 <template>
   <q-tab-panels v-model="panel" animated>
     <q-tab-panel name="list" class="q-pa-none">
-      <a :href="getOrviboAuthUrl()">authenticate</a>
-<!--      <q-btn @click="operateDevice('TurnOn')">OPEN</q-btn>-->
-<!--      <q-btn @click="operateDevice('TurnOff')">CLOSE</q-btn>-->
+      <a :href="getOrviboAuthUrl()"
+         class="sol-orvibo-auth-btn"
+         id="orvibo-auth-btn" />
       <environments-list :enter-device="enterDevice" />
     </q-tab-panel>
     <q-tab-panel name="device" class="q-pa-none">

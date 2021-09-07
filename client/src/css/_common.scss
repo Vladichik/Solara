@@ -15,3 +15,7 @@
 .sol-grid-twin-cols {
   @include setGridAuto(1fr, 20px, "columns");
 }
+
+.sol-orvibo-auth-btn {
+  display: none;
+}

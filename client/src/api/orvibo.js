@@ -25,6 +25,14 @@ export default class OrviboAPI {
     return { message: 'TOKEN_EXPIRED' };
   }
 
+  static triggerOrviboAuthentication() {
+    const button = document.getElementById('orvibo-auth-btn');
+    if (button) {
+      localStorage.removeItem(Constants.ORVIBO_TOKEN_KEY);
+      button.click();
+    }
+  }
+
   /**
    * Function that generates basic query params for Orvibo cloud calls
    * @returns {{access_token: *, user_id}}
@@ -49,6 +57,7 @@ export default class OrviboAPI {
       const payload = this.basicPayloadData();
       return api.post(`${ORVIBO_API_BASE}/get-devices`, payload);
     }
+    this.triggerOrviboAuthentication();
     return this.expiredToken();
   }
 
