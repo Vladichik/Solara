@@ -1,6 +1,8 @@
 <template>
   <section class="sol-auth-view bg-grey-4 full-height q-pr-lg q-pl-lg q-pb-md">
-    <div></div>
+    <div class="sol-logo-frame">
+      <solara-logo :height="50" />
+    </div>
     <q-tab-panels
       v-model="activeTab"
       animated
@@ -23,10 +25,12 @@ import { mapState } from 'vuex';
 import Login from 'components/auth/Login';
 import Signup from 'components/auth/Signup';
 import Forgot from 'components/auth/Forgot';
+import SolaraLogo from 'components/icons/SolaraLogo';
 
 export default {
   name: 'AuthenticationLayout',
   components: {
+    SolaraLogo,
     Login,
     Signup,
     Forgot,
@@ -72,12 +76,18 @@ export default {
   @include setGrid(null, null, 100px 1fr, null, "rows");
 }
 
-.sol-auth-panels {
+.sol-auth-panels, .sol-logo-frame {
   max-width: 600px;
   width: 100%;
 }
 
 .sol-auth-form-grid {
   @include setGridAuto(auto, 10px, "rows");
+}
+
+.sol-logo-frame {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
