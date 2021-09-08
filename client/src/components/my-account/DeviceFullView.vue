@@ -146,7 +146,6 @@ export default defineComponent({
      * Vlad. 27/07/21
      */
     async saveDevice() {
-      debugger;
       if (this.selectedAddress.address && this.selectedAddress.address.place_name) {
         const city = this.selectedAddress.address.context.find((c) => c.id.includes('place'));
         const district = this.selectedAddress.address.context.find((c) => c.id.includes('district'));
