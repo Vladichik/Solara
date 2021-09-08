@@ -7,4 +7,6 @@ export default () => ({
   ORVIBO_CLIENT_ID: 'solara',
   ORVIBO_SECRET: '90c01f53bd55434cade9abead9a77ded',
   ORVIBO_AUTH: '8428ca11723d491e89268a7242f60653',
+  WEATHER_API_SECRET: '55e03e48dcd04a19b87110610210809',
+  WEATHER_API_URL: 'https://api.weatherapi.com/v1/current.json',
 });

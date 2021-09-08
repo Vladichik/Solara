@@ -15,6 +15,7 @@ import { CloudinaryModule } from './third-party-apis/cloudinary/cloudinary.modul
 import { AddressesModule } from './database/addresses/addresses.module';
 import { DeviceAddressesModule } from './database/device-addresses/device-addresses.module';
 import { OrviboModule } from './third-party-apis/orvibo/orvibo.module';
+import { WeatherModule } from './third-party-apis/weather/weather.module';
 import configuration from './config/configurations';
 
 @Module({
@@ -39,6 +40,7 @@ import configuration from './config/configurations';
     AddressesModule,
     DeviceAddressesModule,
     OrviboModule,
+    WeatherModule,
   ],
   controllers: [AppController],
   providers: [AppService],
