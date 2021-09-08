@@ -1,6 +1,6 @@
 <template>
   <section class="sol-auth-view bg-grey-4 full-height q-pr-lg q-pl-lg q-pb-md">
-    <div>logo</div>
+    <div></div>
     <q-tab-panels
       v-model="activeTab"
       animated
