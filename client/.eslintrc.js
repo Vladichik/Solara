@@ -71,6 +71,7 @@ module.exports = {
     'no-unused-vars': 'off',
     'func-names': 'off',
     'no-undef': 'off',
+    'max-len': 'off',
 
 
     // allow debugger during development only

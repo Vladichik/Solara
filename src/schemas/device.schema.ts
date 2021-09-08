@@ -10,7 +10,10 @@ export const DeviceSchema = new mongoose.Schema({
   technician_name: String,
   technician_company: String,
   installation_date: Date,
-  address: mongoose.Schema.Types.Mixed,
+  address: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'DeviceAddress',
+  },
   image_url: String,
   image_public_id: String,
 }).set('toJSON', {
