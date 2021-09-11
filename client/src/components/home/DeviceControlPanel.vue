@@ -3,6 +3,19 @@
     <navbar :absolute="true"
             :title="getDeviceName(device.deviceId)"
             :btn-label="$tm('nav_bar.my_account')" :go-back="goHome" />
+    <div class="sol-control-panel-main full-height">
+      <div class="sol-weather-content">
+        <div>
+          {{date.formatDate(currentWeather.last_updated_epoch, 'MMMM Do')}}
+        </div>
+        <span>{{weatherLocation.name}}</span>
+        <div class="sol-condition-block">
+          <q-img spinner-color="white" :src="getIconUrl" style="height: 80px; width: 80px" />
+          <span class="sol-degrees-elem">{{getCentigradeTemp}}</span>
+        </div>
+        <span>{{currentWeather.condition ? currentWeather.condition.text : ''}}</span>
+      </div>
+    </div>
     <div class="sol-controls-ring-holder">
       <div class="sol-controls-ring shadow-5">
         <div class="sol-ring-btn-base q-pl-md q-pr-md" v-if="isOnline">
@@ -39,13 +52,17 @@
 import {
   defineComponent,
   computed,
-  reactive,
   ref,
+  ComputedRef,
   onBeforeMount,
 } from 'vue';
+import { useStore } from 'vuex';
+import { date } from 'quasar';
 import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
 import DeviceCommander from 'src/mixins/DeviceCommander';
 import DeviceOfflineFlag from 'components/home/DeviceOfflineFlag';
+
+import WeatherAPI from 'src/api/weather';
 
 export default defineComponent({
   name: 'DeviceControlPanel',
@@ -56,14 +73,75 @@ export default defineComponent({
   setup(props) {
     const { getDeviceName } = DataGettersCompositions();
     const { openDevice, closeDevice, stopProcess } = DeviceCommander();
+    const store = useStore();
     const isOnline = ref(true);
+    const solaraDevice = ref({});
+    const currentWeather = ref({});
+    const weatherLocation = ref({});
+    const myDevices = computed(() => store.state.Devices.myDevices);
+
+    const getWeatherForDevice = () => {
+      if (myDevices.value && myDevices.value.length) {
+        // eslint-disable-next-line max-len
+        solaraDevice.value = myDevices.value.find((device) => device.orvibo_id === props.device.deviceId);
+        if (solaraDevice.value && solaraDevice.value.address) {
+          const payload = {
+            city: solaraDevice.value.address.city,
+            lat: solaraDevice.value.address.lat,
+            long: solaraDevice.value.address.long,
+          };
+          store.commit('General/setMainLoaderState', true);
+          WeatherAPI.getWeatherForDevice(payload).then((weather) => {
+            store.commit('General/setMainLoaderState', false);
+            if (weather.data && weather.data.current) {
+              currentWeather.value = weather.data.current;
+              weatherLocation.value = weather.data.location;
+              console.log(weather.data);
+            } else {
+              currentWeather.value = {};
+              weatherLocation.value = {};
+            }
+          });
+        }
+      }
+    };
+
+    /**
+     * Computed property that assembles weather icon url from weather api
+     * @type {ComputedRef<unknown>}
+     * Vlad. 11/09/21
+     */
+    const getIconUrl = computed(() => {
+      if (currentWeather.value && currentWeather.value.condition && currentWeather.value.condition.icon) {
+        return `https:${currentWeather.value.condition.icon}`;
+      }
+      return '';
+    });
+
+    /**
+     * Function that formats current weather temperature.
+     * @type {ComputedRef<unknown>}
+     * Vlad. 11/09/21
+     */
+    const getCentigradeTemp = computed(() => {
+      if (currentWeather.value && currentWeather.value.temp_c) {
+        return `${Math.round(currentWeather.value.temp_c)}\xB0`;
+      }
+      return '';
+    });
 
     onBeforeMount(() => {
       isOnline.value = props.device.online === 'online';
+      getWeatherForDevice();
       console.log(props.device);
     });
     return {
       isOnline,
+      currentWeather,
+      weatherLocation,
+      getIconUrl,
+      getCentigradeTemp,
+      date,
       getDeviceName,
       openDevice,
       closeDevice,
@@ -79,8 +157,20 @@ export default defineComponent({
 .sol-device-control-panel {
   height: calc(100vh - 130px);
   position: relative;
-  background: yellow;
-  @include setGrid(null, null, 1fr 200px, null, "rows");
+}
+
+.sol-control-panel-main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sol-weather-content {
+  font-size: 18px;
+  justify-items: center;
+  @include setGridAuto(auto, 10px, "rows");
 }
 
 .sol-controls-ring-holder {
@@ -120,5 +210,15 @@ export default defineComponent({
   span {
     font-size: 13px;
   }
+}
+
+.sol-condition-block {
+  align-items: center;
+  justify-content: center;
+  @include setGridAuto(auto, null, "columns");
+}
+
+.sol-degrees-elem {
+  font-size: 27px;
 }
 </style>

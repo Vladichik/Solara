@@ -1,6 +1,7 @@
 import { Injectable, HttpService } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { ConfigService } from '@nestjs/config';
+import { WeatherParams } from './types';
 
 @Injectable()
 export class WeatherService {
@@ -28,8 +29,11 @@ export class WeatherService {
       .catch((e) => e);
   }
 
-  async getCurrentWeather(params: any): Promise<any> {
-    const p = `&q=${params.city}`;
+  async getCurrentWeather(params: Partial<WeatherParams>): Promise<any> {
+    let p = `&q=${params.city}`;
+    if (!params.city || !params.city.length) {
+      p = `&q=${params.lat},${params.long}`;
+    }
     return await this.callWeatherAPI(p);
   }
 }
