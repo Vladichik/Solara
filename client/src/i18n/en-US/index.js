@@ -94,6 +94,7 @@ export default {
   open: 'Open',
   close: 'Close',
   device_offline: 'This device is OFFLINE',
+  patio: 'Patio',
   states: [
     {
       name: 'Alabama',

@@ -1,9 +1,11 @@
 import { computed } from 'vue';
 import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
 import { Constants } from 'src/config/constants';
 
 export default function () {
   const store = useStore();
+  const { t } = useI18n();
   const myOrviboDevice = computed(() => store.state.Devices.myOrviboDevices);
   /**
    * Function that generates url for authentication in Orvibo Cloud
@@ -17,14 +19,14 @@ export default function () {
 
   /**
    * Function that gets the name of the device by deviceId
-   * @param deviceId - String
+   * @param assembly - Object
    * @returns {string|*|string}
    * Vlad. 06/09/21
    */
-  const getDeviceName = (deviceId) => {
+  const getDeviceName = (assembly) => {
     if (myOrviboDevice.value && myOrviboDevice.value.length) {
-      const name = myOrviboDevice.value.find((d) => d.deviceId === deviceId);
-      return name ? name.deviceName : '';
+      const name = myOrviboDevice.value.find((d) => d.deviceId === assembly.hub_id);
+      return name ? `${t(assembly.assembly_type)} - ${name.deviceName}` : '';
     }
     return '';
   };

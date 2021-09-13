@@ -19,7 +19,7 @@
               :key="device.id"
               @click="viewDevice(device)">
         <q-item-section>
-          <q-item-label>{{ getDeviceName(device.orvibo_id) }}</q-item-label>
+          <q-item-label>{{ getDeviceName(device) }}</q-item-label>
         </q-item-section>
         <q-item-section avatar>
           <q-icon color="grey-5" name="arrow_forward_ios" size="xs" />

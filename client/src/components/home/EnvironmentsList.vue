@@ -12,7 +12,7 @@
               v-ripple
               class="q-pt-lg q-pb-lg bg-white"
               v-for="device in group.devices"
-              :key="device.id" @click="enterDevice(device)" >
+              :key="device.id" @click="enterDevice(group)">
         <q-item-section>
           <q-item-label>{{ device.deviceName }}</q-item-label>
         </q-item-section>
@@ -26,10 +26,10 @@
 
 <script>
 import {
-  defineComponent,
   computed,
-  reactive,
+  defineComponent,
   onBeforeMount,
+  reactive,
 } from 'vue';
 import { useStore } from 'vuex';
 
@@ -50,13 +50,16 @@ export default defineComponent({
         const cloned = JSON.parse(JSON.stringify(myDevices.value));
         const onlyAllOnes = cloned.filter((device) => device.deviceTypeName.includes('allone_pro'));
         myDevices.value.forEach((device) => {
-          if (!device.subDeviceType.includes('allone_pro')) {
+          if (device.subDeviceType.includes('allone_pro')) {
             const foundGroup = onlyAllOnes.find((g) => g.uid === device.uid);
             if (foundGroup) {
               if (!foundGroup.devices) {
                 foundGroup.devices = [];
               }
-              foundGroup.devices.push(device);
+              // const findPatio = groupMotorsIntoPatio(device.uid);
+              // if (findPatio && findPatio.assemblyMotors.length) {
+              //   foundGroup.devices.push(findPatio);
+              // }
             }
           }
         });

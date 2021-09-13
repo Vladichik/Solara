@@ -2,10 +2,8 @@
   <q-select :model-value="selectedDevice"
             v-model="selectedDevice"
             map-options
-            emit-value
             filled
-            option-value="deviceId"
-            option-label="deviceName"
+            option-label="device_name"
             :label="$t('select_device')"
             :options="pickerOptions"
             v-if="!noAvailableDevices"
@@ -34,11 +32,33 @@ export default defineComponent({
 
     const preparePickerData = () => {
       if (myOrviboDevices.value && myOrviboDevices.value.length) {
+        const options = [];
+        const groups = [];
         noAvailableDevices.value = false;
         const cloned = JSON.parse(JSON.stringify(myOrviboDevices.value));
         const filtered = cloned.filter((device) => !device.deviceTypeName.includes('allone_pro')
-        && !myDevices.value.some((d) => d.orvibo_id === device.deviceId));
-        Object.assign(pickerOptions, filtered);
+          && !myDevices.value.some((d) => d.orvibo_ids.includes(device.deviceId)));
+
+        // Determining how many unique groups/hubs user has
+        filtered.forEach((d) => {
+          if (!groups.includes(d.uid)) {
+            groups.push(d.uid);
+          }
+        });
+
+        if (groups.length) {
+          groups.forEach((g) => {
+            const hub = cloned.find((dev) => dev.uid === g && dev.deviceTypeName.includes('allone_pro'));
+            options.push({
+              device_name: `Patio - ${hub.deviceName}`,
+              hub_id: hub.deviceId,
+              assembly_type: 'patio',
+              device_ids: filtered.filter((d) => d.uid === g && d.deviceTypeName === 'curtain').map((dev) => dev.deviceId),
+            });
+          });
+        }
+        // && !myDevices.value.some((d) => d.orvibo_id === device.deviceId));
+        Object.assign(pickerOptions, options);
         if (!filtered.length) {
           noAvailableDevices.value = true;
         }

@@ -5,7 +5,7 @@
       <q-form ref="newDeviceForm" class="sol-dialog-content sol-form-grid" @submit="createDevice()">
         <device-picker-for-details
           :model="deviceData"
-          @on-device-selected="(deviceId) => deviceData.orvibo_id = deviceId" />
+          @on-device-selected="(device) => setSelectedDevice(device)" />
       </q-form>
       <div class="sol-dialog-footer">
         <q-btn unelevated v-close-popup :label="$t('cancel')" />
@@ -45,18 +45,34 @@ export default defineComponent({
 
     const deviceData = reactive({
       user_id: null,
-      orvibo_id: null,
+      orvibo_ids: null,
+      hub_id: null,
+      assembly_type: null,
     });
 
+    /**
+     * Function that updates Orvibo device data in deviceData object
+     * @param data
+     * Vlad. 13/09/21
+     */
+    const setSelectedDevice = (data) => {
+      deviceData.orvibo_ids = data.device_ids;
+      deviceData.hub_id = data.hub_id;
+      deviceData.assembly_type = data.assembly_type;
+    };
+
     const resetForm = () => {
-      deviceData.orvibo_id = null;
+      deviceData.orvibo_ids = null;
       deviceData.user_id = null;
+      deviceData.assembly_type = null;
+      deviceData.hub_id = null;
     };
     return {
       showDialog,
       deviceData,
       processing,
       user,
+      setSelectedDevice,
       resetForm,
     };
   },
