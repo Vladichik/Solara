@@ -14,7 +14,7 @@
               v-for="device in group.devices"
               :key="device.id" @click="enterDevice(group)">
         <q-item-section>
-          <q-item-label>{{ device.deviceName }}</q-item-label>
+          <q-item-label>{{ $t(device.assembly_type) }}</q-item-label>
         </q-item-section>
         <q-item-section avatar>
           <q-icon color="grey-5" name="arrow_forward_ios" size="xs" />
@@ -38,32 +38,32 @@ export default defineComponent({
   props: ['enterDevice'],
   setup() {
     const store = useStore();
-    const myDevices = computed(() => store.state.Devices.myOrviboDevices);
+    const myDevicesOrvibo = computed(() => store.state.Devices.myOrviboDevices);
+    const myDevices = computed(() => store.state.Devices.myDevices);
     const groupedDevices = reactive([]);
 
     /**
-     * Function that groups devices by environments
+     * Function that groups environments
+     * and populates environments with devices from Solara database
      * Vlad. 24/08/21
      */
     const groupListsByEnvironments = () => {
-      if (myDevices.value && myDevices.value.length) {
-        const cloned = JSON.parse(JSON.stringify(myDevices.value));
-        const onlyAllOnes = cloned.filter((device) => device.deviceTypeName.includes('allone_pro'));
-        myDevices.value.forEach((device) => {
+      if (myDevicesOrvibo.value && myDevicesOrvibo.value.length && myDevices.value && myDevices.value.length) {
+        const cloned = JSON.parse(JSON.stringify(myDevicesOrvibo.value));
+        const clonedMyDevices = JSON.parse(JSON.stringify(myDevices.value));
+
+        const hubsOnly = cloned.filter((device) => device.deviceTypeName.includes('allone_pro'));
+        const orviboRegisteredDevices = cloned.map((d) => d.deviceId);
+        myDevicesOrvibo.value.forEach((device) => {
           if (device.subDeviceType.includes('allone_pro')) {
-            const foundGroup = onlyAllOnes.find((g) => g.uid === device.uid);
+            const foundGroup = hubsOnly.find((g) => g.uid === device.uid);
             if (foundGroup) {
-              if (!foundGroup.devices) {
-                foundGroup.devices = [];
-              }
-              // const findPatio = groupMotorsIntoPatio(device.uid);
-              // if (findPatio && findPatio.assemblyMotors.length) {
-              //   foundGroup.devices.push(findPatio);
-              // }
+              foundGroup.devices = clonedMyDevices.filter((md) => md.hub_id === foundGroup.deviceId
+              && md.orvibo_ids.some((oid) => orviboRegisteredDevices.includes(oid)));
             }
           }
         });
-        Object.assign(groupedDevices, onlyAllOnes);
+        Object.assign(groupedDevices, hubsOnly);
       }
     };
 
