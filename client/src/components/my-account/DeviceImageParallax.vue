@@ -15,7 +15,7 @@
            label="back"
            @click="onBack"
            icon="arrow_back_ios_new" />
-    <h6 class="text-white">{{ getDeviceName(device.orvibo_id) }}</h6>
+    <h6 class="text-white">{{ getDeviceName(device) }}</h6>
   </div>
 </template>
 
