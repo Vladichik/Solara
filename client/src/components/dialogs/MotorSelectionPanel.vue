@@ -9,18 +9,21 @@
           <span>{{$t('all')}}</span>
           <q-toggle
             v-model="selectedAllState"
+            :model-value="selectedAllState"
             checked-icon="check"
             color="green"
             unchecked-icon="clear"
             indeterminate-icon="help_outline"
             size="lg"
             :indeterminate-value="null"
+            @update:model-value="onSelectAllToggled"
           />
         </q-item>
         <q-item v-for="item in panelItems" :key="item.deviceId" class="sol-motor-panel-item">
           <span>{{item.deviceName}}</span>
           <q-toggle
             v-model="selectedMotors"
+            :model-value="selectedMotors"
             checked-icon="check"
             color="green"
             unchecked-icon="clear"
@@ -81,7 +84,19 @@ export default defineComponent({
       }
     };
 
-    watch(selectedMotors, (motors) => {
+    /**
+     * Function that fires when SELECT ALL toggle selected
+     * Vlad. 14/09/21
+     */
+    const onSelectAllToggled = () => {
+      if (selectedAllState.value) {
+        selectedMotors.value = panelItems.value.map((d) => d.deviceId);
+      } else {
+        selectedMotors.value = [];
+      }
+    };
+
+    watch(selectedMotors, () => {
       getIndeterminateState();
     });
 
@@ -91,6 +106,7 @@ export default defineComponent({
       selectedAllState,
       selectedMotors,
       setDevicesList,
+      onSelectAllToggled,
     };
   },
 });
