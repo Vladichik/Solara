@@ -2,7 +2,11 @@
   <section class="sol-device-control-panel">
     <navbar :absolute="true"
             :title="getDeviceName(device)"
-            :btn-label="$tm('nav_bar.my_account')" :go-back="goHome" />
+            :btn-label="$tm('nav_bar.home')" :go-back="goHome" />
+    <q-btn flat no-caps
+           icon="control_camera"
+           class="sol-motors-panel-trigger"
+           label="Motors" @click="$refs.motorSelectionPanel.showDialog = true" />
     <div class="sol-control-panel-main full-height">
       <div class="sol-weather-content">
         <div>
@@ -42,9 +46,9 @@
             <span class="text-blue-grey-3">{{$t('close')}}</span>
           </div>
         </div>
-<!--        <device-offline-flag v-if="!isOnline" />-->
       </div>
     </div>
+    <motor-selection-panel :device="device" ref="motorSelectionPanel" />
   </section>
 </template>
 
@@ -58,6 +62,7 @@ import {
 } from 'vue';
 import { useStore } from 'vuex';
 import { date } from 'quasar';
+import MotorSelectionPanel from 'components/dialogs/MotorSelectionPanel';
 import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
 import DeviceCommander from 'src/mixins/DeviceCommander';
 
@@ -66,6 +71,9 @@ import WeatherAPI from 'src/api/weather';
 export default defineComponent({
   name: 'DeviceControlPanel',
   props: ['device', 'goHome'],
+  components: {
+    MotorSelectionPanel,
+  },
   setup(props) {
     const { getDeviceName } = DataGettersCompositions();
     const { openDevice, closeDevice, stopProcess } = DeviceCommander();
@@ -212,5 +220,12 @@ export default defineComponent({
 
 .sol-degrees-elem {
   font-size: 27px;
+}
+
+.sol-motors-panel-trigger {
+  position: absolute;
+  right: 10px;
+  color: white;
+  top: 11px;
 }
 </style>

@@ -95,6 +95,8 @@ export default {
   close: 'Close',
   device_offline: 'This device is OFFLINE',
   patio: 'Patio',
+  select_motor: 'Select motor/s you want to operate',
+  all: 'All',
   states: [
     {
       name: 'Alabama',
