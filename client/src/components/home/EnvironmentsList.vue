@@ -12,7 +12,7 @@
               v-ripple
               class="q-pt-lg q-pb-lg bg-white"
               v-for="device in group.devices"
-              :key="device.id" @click="enterDevice(group)">
+              :key="device.id" @click="enterDevice(device)">
         <q-item-section>
           <q-item-label>{{ $t(device.assembly_type) }}</q-item-label>
         </q-item-section>

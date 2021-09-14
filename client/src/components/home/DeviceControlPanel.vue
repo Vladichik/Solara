@@ -1,12 +1,12 @@
 <template>
   <section class="sol-device-control-panel">
     <navbar :absolute="true"
-            :title="getDeviceName(device.deviceId)"
+            :title="getDeviceName(device)"
             :btn-label="$tm('nav_bar.my_account')" :go-back="goHome" />
     <div class="sol-control-panel-main full-height">
       <div class="sol-weather-content">
         <div>
-          {{date.formatDate(currentWeather.last_updated_epoch, 'MMMM Do')}}
+          {{date.formatDate(new Date(), 'MMMM Do')}}
         </div>
         <span>{{weatherLocation.name}}</span>
         <div class="sol-condition-block">
@@ -18,7 +18,7 @@
     </div>
     <div class="sol-controls-ring-holder">
       <div class="sol-controls-ring shadow-5">
-        <div class="sol-ring-btn-base q-pl-md q-pr-md" v-if="isOnline">
+        <div class="sol-ring-btn-base q-pl-md q-pr-md">
           <div class="sol-ctr-button-frame">
             <q-btn class="text-blue-grey-3"
                    round color="white"
@@ -42,7 +42,7 @@
             <span class="text-blue-grey-3">{{$t('close')}}</span>
           </div>
         </div>
-        <device-offline-flag v-if="!isOnline" />
+<!--        <device-offline-flag v-if="!isOnline" />-->
       </div>
     </div>
   </section>
@@ -60,21 +60,16 @@ import { useStore } from 'vuex';
 import { date } from 'quasar';
 import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
 import DeviceCommander from 'src/mixins/DeviceCommander';
-import DeviceOfflineFlag from 'components/home/DeviceOfflineFlag';
 
 import WeatherAPI from 'src/api/weather';
 
 export default defineComponent({
   name: 'DeviceControlPanel',
   props: ['device', 'goHome'],
-  components: {
-    DeviceOfflineFlag,
-  },
   setup(props) {
     const { getDeviceName } = DataGettersCompositions();
     const { openDevice, closeDevice, stopProcess } = DeviceCommander();
     const store = useStore();
-    const isOnline = ref(true);
     const solaraDevice = ref({});
     const currentWeather = ref({});
     const weatherLocation = ref({});
@@ -82,7 +77,6 @@ export default defineComponent({
 
     const getWeatherForDevice = () => {
       if (myDevices.value && myDevices.value.length) {
-        // eslint-disable-next-line max-len
         solaraDevice.value = myDevices.value.find((device) => device.orvibo_id === props.device.deviceId);
         if (solaraDevice.value && solaraDevice.value.address) {
           const payload = {
@@ -131,12 +125,10 @@ export default defineComponent({
     });
 
     onBeforeMount(() => {
-      isOnline.value = props.device.online === 'online';
       getWeatherForDevice();
       console.log(props.device);
     });
     return {
-      isOnline,
       currentWeather,
       weatherLocation,
       getIconUrl,
