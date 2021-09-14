@@ -1,5 +1,5 @@
 <template>
-  <q-dialog v-model="showDialog" position="bottom" @before-show="setDevicesList">
+  <q-dialog v-model="showDialog" position="bottom" @before-show="setDevicesList" @before-hide="$emit('on-panel-close', selectedMotors)">
     <q-card style="width: 300px">
       <q-card-section>
         <span class="q-pa-md">{{$t('select_motor')}}</span>
@@ -67,6 +67,7 @@ export default defineComponent({
       if (myOrviboDevices.value && myOrviboDevices.value.length) {
         const oIds = props.device.orvibo_ids;
         panelItems.value = myOrviboDevices.value.filter((d) => oIds?.includes(d.deviceId));
+        selectedMotors.value = props.device.selected_ids;
       }
     };
 

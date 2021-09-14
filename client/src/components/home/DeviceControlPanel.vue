@@ -48,7 +48,9 @@
         </div>
       </div>
     </div>
-    <motor-selection-panel :device="device" ref="motorSelectionPanel" />
+    <motor-selection-panel :device="device"
+                           ref="motorSelectionPanel"
+                           @on-panel-close="saveSelectedMotors" />
   </section>
 </template>
 
@@ -65,6 +67,7 @@ import { date } from 'quasar';
 import MotorSelectionPanel from 'components/dialogs/MotorSelectionPanel';
 import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
 import DeviceCommander from 'src/mixins/DeviceCommander';
+import DevicesAPI from 'src/api/device';
 
 import WeatherAPI from 'src/api/weather';
 
@@ -132,6 +135,21 @@ export default defineComponent({
       return '';
     });
 
+    /**
+     * Function that updates selected Motors for device in Solara Database
+     * @param selectedMotors - array of motor ids
+     * @returns {Promise<void>}
+     * Vlad. 14/09/21
+     */
+    const saveSelectedMotors = async (selectedMotors) => {
+      store.commit('General/setMainLoaderState', true);
+      const cloned = JSON.parse(JSON.stringify(props.device));
+      cloned.selected_ids = selectedMotors;
+      Object.assign(props.device, cloned);
+      await DevicesAPI.updateDevice(props.device);
+      store.commit('General/setMainLoaderState', false);
+    };
+
     onBeforeMount(() => {
       getWeatherForDevice();
       console.log(props.device);
@@ -146,6 +164,7 @@ export default defineComponent({
       openDevice,
       closeDevice,
       stopProcess,
+      saveSelectedMotors,
     };
   },
 });
