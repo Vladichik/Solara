@@ -10,18 +10,28 @@
     <div class="sol-control-panel-main full-height">
       <div class="sol-weather-content">
         <div>
-          {{date.formatDate(currentWeather.last_updated_epoch * 1000, 'MMMM Do')}}
+          {{ date.formatDate(currentWeather.last_updated_epoch * 1000, 'MMMM Do') }}
         </div>
-        <span>{{weatherLocation.name}}</span>
+        <span>{{ weatherLocation.name }}</span>
         <div class="sol-condition-block">
           <q-img spinner-color="white" :src="getIconUrl" style="height: 80px; width: 80px" />
-          <span class="sol-degrees-elem">{{getCentigradeTemp}}</span>
+          <span class="sol-degrees-elem">{{ getCentigradeTemp }}</span>
         </div>
-        <span>{{currentWeather.condition ? currentWeather.condition.text : ''}}</span>
+        <span>{{ currentWeather.condition ? currentWeather.condition.text : '' }}</span>
       </div>
     </div>
     <div class="sol-controls-ring-holder">
       <div class="sol-controls-ring shadow-5">
+        <div class="sol-ring-btn-upper">
+          <div class="sol-ctr-button-frame">
+            <q-btn class="text-blue-grey-3"
+                   round color="white"
+                   icon="menu"
+                   size="md"
+                   @click="beginSemiOpenProcess(device)" />
+            <span class="text-blue-grey-3">{{ $t('semi_open') }}</span>
+          </div>
+        </div>
         <div class="sol-ring-btn-base q-pl-md q-pr-md">
           <div class="sol-ctr-button-frame">
             <q-btn class="text-blue-grey-3"
@@ -29,12 +39,12 @@
                    icon="menu"
                    size="md"
                    @click="openDevice(device)" />
-            <span class="text-blue-grey-3">{{$t('open')}}</span>
+            <span class="text-blue-grey-3">{{ $t('open') }}</span>
           </div>
           <div>
             <q-btn round color="primary"
                    icon="pause"
-                   size="lg"
+                   size="17px"
                    @click="stopProcess(device)" />
           </div>
           <div class="sol-ctr-button-frame">
@@ -43,7 +53,7 @@
                    icon="stop"
                    size="md"
                    @click="closeDevice(device)" />
-            <span class="text-blue-grey-3">{{$t('close')}}</span>
+            <span class="text-blue-grey-3">{{ $t('close') }}</span>
           </div>
         </div>
       </div>
@@ -78,8 +88,13 @@ export default defineComponent({
     MotorSelectionPanel,
   },
   setup(props) {
+    const {
+      openDevice,
+      closeDevice,
+      stopProcess,
+      beginSemiOpenProcess,
+    } = DeviceCommander();
     const { getDeviceName } = DataGettersCompositions();
-    const { openDevice, closeDevice, stopProcess } = DeviceCommander();
     const store = useStore();
     const solaraDevice = ref({});
     const currentWeather = ref({});
@@ -164,6 +179,7 @@ export default defineComponent({
       openDevice,
       closeDevice,
       stopProcess,
+      beginSemiOpenProcess,
       saveSelectedMotors,
     };
   },
@@ -246,5 +262,13 @@ export default defineComponent({
   right: 10px;
   color: white;
   top: 11px;
+}
+
+.sol-ring-btn-upper {
+  position: absolute;
+  top: 10px;
+  width: 100%;
+  justify-content: center;
+  @include setGridAuto(auto, 10px, "columns");
 }
 </style>

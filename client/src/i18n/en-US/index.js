@@ -93,6 +93,7 @@ export default {
   add_photo: 'Device Photo',
   open: 'Open',
   close: 'Close',
+  semi_open: 'Semi open',
   device_offline: 'This device is OFFLINE',
   patio: 'Patio',
   select_motor: 'Select motor/s you want to operate',

@@ -72,6 +72,7 @@ module.exports = {
     'func-names': 'off',
     'no-undef': 'off',
     'max-len': 'off',
+    'no-use-before-define': 'off',
 
 
     // allow debugger during development only
