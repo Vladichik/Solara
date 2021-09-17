@@ -101,7 +101,6 @@ export default defineComponent({
             if (weather.data && weather.data.current) {
               currentWeather.value = weather.data.current;
               weatherLocation.value = weather.data.location;
-              console.log(weather.data);
             } else {
               currentWeather.value = {};
               weatherLocation.value = {};
