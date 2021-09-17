@@ -10,7 +10,7 @@
     <div class="sol-control-panel-main full-height">
       <div class="sol-weather-content">
         <div>
-          {{date.formatDate(new Date(), 'MMMM Do')}}
+          {{date.formatDate(currentWeather.last_updated_epoch * 1000, 'MMMM Do')}}
         </div>
         <span>{{weatherLocation.name}}</span>
         <div class="sol-condition-block">
@@ -101,6 +101,7 @@ export default defineComponent({
             if (weather.data && weather.data.current) {
               currentWeather.value = weather.data.current;
               weatherLocation.value = weather.data.location;
+              console.log(weather.data);
             } else {
               currentWeather.value = {};
               weatherLocation.value = {};
