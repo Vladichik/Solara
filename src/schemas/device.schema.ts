@@ -19,6 +19,8 @@ export const DeviceSchema = new mongoose.Schema({
   },
   image_url: String,
   image_public_id: String,
+  receipt_url: String,
+  receipt_public_id: String,
 }).set('toJSON', {
   virtuals: true,
 });
