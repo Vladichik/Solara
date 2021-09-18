@@ -111,6 +111,7 @@ export default defineComponent({
      * Function that saves uploaded device image url
      * in Solara DB
      * @param image - Image Object
+     * @param isReceipt - Boolean is true when called from receipt upload poceess
      * @returns {Promise<void>}
      */
     const updateUploadedImageDataForDevice = async (image, isReceipt) => {
@@ -149,7 +150,7 @@ export default defineComponent({
       cloudName: 'solara',
       uploadPreset: 'gtvkezma',
       folder: 'devices',
-      sources: ['local'],
+      sources: ['local', 'camera'],
       multiple: false,
     }, (error, result) => {
       if (!error && result && result.event === 'success') {
@@ -165,7 +166,7 @@ export default defineComponent({
       cloudName: 'solara',
       uploadPreset: 'nqfah6p5',
       folder: 'receipts',
-      sources: ['local'],
+      sources: ['local', 'camera'],
       multiple: false,
     }, (error, result) => {
       if (!error && result && result.event === 'success') {
