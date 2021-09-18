@@ -47,12 +47,23 @@
               option-label="place_name"
               :label="$t('address')"
               :options="deviceAddresses" />
-    <q-btn flat
-           class="bg-grey-3"
-           :label="$t('add_receipt')"
-           icon="receipt"
-           @click="openReceiptUploader()"
-           size="18px" />
+    <q-card flat class="bg-grey-3">
+      <q-card-section class="sol-receipt-btn-sec">
+        <q-btn flat
+               class="bg-grey-5"
+               :label="$t('add_receipt')"
+               icon="upload"
+               @click="openReceiptUploader()"
+               size="18px" />
+        <a :href="getReceiptDownloadLink" v-if="device.receipt_url">
+          <q-btn flat
+                 class="bg-grey-5 full-width"
+                 :label="$t('download_receipt')"
+                 icon="download"
+                 size="18px"/>
+        </a>
+      </q-card-section>
+    </q-card>
     <q-btn flat
            class="bg-grey-3"
            :label="$t('add_photo')"
@@ -68,10 +79,10 @@
 
 <script>
 import {
-  defineComponent,
-  reactive,
   computed,
+  defineComponent,
   onBeforeMount,
+  reactive,
 } from 'vue';
 import { useStore } from 'vuex';
 import { date } from 'quasar';
@@ -91,6 +102,17 @@ export default defineComponent({
     const store = useStore();
     const getDatePickerOptions = (d) => d >= date.formatDate(Date.now(), 'YYYY/MM/DD');
     const deviceAddresses = computed(() => store.state.Addresses.deviceAddresses);
+
+    const getReceiptDownloadLink = computed(() => {
+      if (props.device && props.device.receipt_url) {
+        const url = props.device.receipt_url;
+        const atn = '/fl_attachment';
+        const position = url.indexOf('upload');
+        return [url.slice(0, position + 6), atn, url.slice(position + 6)].join('');
+      }
+      return '';
+    });
+
     const formData = reactive({
       // location_name: null,
       // device_name: null,
@@ -189,6 +211,7 @@ export default defineComponent({
       store,
       formData,
       deviceAddresses,
+      getReceiptDownloadLink,
       getDatePickerOptions,
       openImageUploader,
       openReceiptUploader,
@@ -213,3 +236,16 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss">
+@import "src/css/mixins";
+
+.sol-receipt-btn-sec {
+  align-content: center;
+  @include setGridAuto(auto, 10px, "rows");
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+</style>

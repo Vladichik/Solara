@@ -92,6 +92,7 @@ export default {
   num_motors: 'Number of motors',
   add_photo: 'Device Photo',
   add_receipt: 'Upload Receipt',
+  download_receipt: 'Download Receipt',
   open: 'Open',
   close: 'Close',
   semi_open: 'Semi open',
