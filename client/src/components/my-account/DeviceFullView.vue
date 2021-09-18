@@ -49,6 +49,12 @@
               :options="deviceAddresses" />
     <q-btn flat
            class="bg-grey-3"
+           :label="$t('add_receipt')"
+           icon="receipt"
+           @click="openReceiptUploader()"
+           size="18px" />
+    <q-btn flat
+           class="bg-grey-3"
            :label="$t('add_photo')"
            icon="photo_camera"
            @click="openImageUploader()"
@@ -101,17 +107,31 @@ export default defineComponent({
       }
     };
 
-    const updateUploadedImageDataForDevice = async (image) => {
+    /**
+     * Function that saves uploaded device image url
+     * in Solara DB
+     * @param image - Image Object
+     * @returns {Promise<void>}
+     */
+    const updateUploadedImageDataForDevice = async (image, isReceipt) => {
       if (image) {
         store.commit('General/setMainLoaderState', true);
-        if (props.device.image_public_id) {
-          await CloudinaryAPI.deleteImageFromCloudinary(props.device.image_public_id);
-        }
         const deviceUpdateFields = {
-          image_url: image.url,
-          image_public_id: image.public_id,
           id: props.device.id,
         };
+        if (isReceipt) {
+          if (props.device.receipt_public_id) {
+            await CloudinaryAPI.deleteImageFromCloudinary(props.device.receipt_public_id);
+          }
+          deviceUpdateFields.receipt_url = image.url;
+          deviceUpdateFields.receipt_public_id = image.public_id;
+        } else {
+          if (props.device.image_public_id) {
+            await CloudinaryAPI.deleteImageFromCloudinary(props.device.image_public_id);
+          }
+          deviceUpdateFields.image_url = image.url;
+          deviceUpdateFields.image_public_id = image.public_id;
+        }
         const updated = await DevicesAPI.updateDevice(deviceUpdateFields);
         if (updated.status === 200 && updated.data.id) {
           Object.assign(formData, deviceUpdateFields);
@@ -121,6 +141,10 @@ export default defineComponent({
       }
     };
 
+    /**
+     * Cloudinary instance for Device Image upload
+     * Vlad.
+     */
     const uploaderWidget = cloudinary.createUploadWidget({
       cloudName: 'solara',
       uploadPreset: 'gtvkezma',
@@ -133,8 +157,28 @@ export default defineComponent({
       }
     });
 
+    /**
+     * Cloudinary instance for Receipt image upload
+     * Vlad.
+     */
+    const uploaderWidgetForReceipt = cloudinary.createUploadWidget({
+      cloudName: 'solara',
+      uploadPreset: 'nqfah6p5',
+      folder: 'receipts',
+      sources: ['local'],
+      multiple: false,
+    }, (error, result) => {
+      if (!error && result && result.event === 'success') {
+        updateUploadedImageDataForDevice(result.info, true);
+      }
+    });
+
     const openImageUploader = () => {
       uploaderWidget.open();
+    };
+
+    const openReceiptUploader = () => {
+      uploaderWidgetForReceipt.open();
     };
 
     onBeforeMount(() => {
@@ -146,6 +190,7 @@ export default defineComponent({
       deviceAddresses,
       getDatePickerOptions,
       openImageUploader,
+      openReceiptUploader,
     };
   },
   methods: {

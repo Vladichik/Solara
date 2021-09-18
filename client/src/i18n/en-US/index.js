@@ -91,6 +91,7 @@ export default {
   louvered_size: 'Louvered size',
   num_motors: 'Number of motors',
   add_photo: 'Device Photo',
+  add_receipt: 'Upload Receipt',
   open: 'Open',
   close: 'Close',
   semi_open: 'Semi open',

@@ -116,7 +116,7 @@ export default defineComponent({
             if (weather.data && weather.data.current) {
               currentWeather.value = weather.data.current;
               weatherLocation.value = weather.data.location;
-              console.log(weather.data);
+              // console.log(weather.data);
             } else {
               currentWeather.value = {};
               weatherLocation.value = {};
@@ -167,7 +167,7 @@ export default defineComponent({
 
     onBeforeMount(() => {
       getWeatherForDevice();
-      console.log(props.device);
+      // console.log(props.device);
     });
     return {
       currentWeather,
