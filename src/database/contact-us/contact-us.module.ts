@@ -6,7 +6,7 @@ import { ContactUsSchema } from '../../schemas/contact.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: 'ContactUs', schema: ContactUsSchema }]),
+    MongooseModule.forFeature([{ name: 'Contact', schema: ContactUsSchema }]),
   ],
   providers: [ContactUsService],
   controllers: [ContactUsController],

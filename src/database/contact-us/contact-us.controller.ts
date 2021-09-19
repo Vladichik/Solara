@@ -9,7 +9,7 @@ export class ContactUsController {
   @UseGuards(JwtAuthGuard)
   @Get('')
   async getUserDevices(@Res() res) {
-    const contactInfo = this.cuService.getSolaraContactDetails();
+    const contactInfo = await this.cuService.getSolaraContactDetails();
     return res.status(HttpStatus.OK).json(contactInfo);
   }
 }
