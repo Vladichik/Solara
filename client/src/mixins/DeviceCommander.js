@@ -50,6 +50,7 @@ export default function () {
       }
       index += 1;
       if (payload.deviceIds[index]) {
+        await timeout(1000);
         await sendCommandToDevice(payload, cameFromSemiOpen);
       } else {
         store.commit('General/setMainLoaderState', false);
