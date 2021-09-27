@@ -23,7 +23,6 @@ export class OrviboService {
     this.clientId = configService.get<string>('ORVIBO_CLIENT_ID');
     this.clientSecret = configService.get<string>('ORVIBO_SECRET');
     this.auth = configService.get<string>('ORVIBO_AUTH');
-    console.log(this.baseUrl);
   }
 
   /**
