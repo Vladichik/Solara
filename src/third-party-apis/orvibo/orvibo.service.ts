@@ -18,12 +18,12 @@ export class OrviboService {
     private configService: ConfigService,
     private cryptoService: CryptoGuyService,
   ) {
+    this.baseUrl = process.env.ORVIBO_BASE_URL;
     this.authUrl = configService.get<string>('ORVIBO_AUTH_URL');
-    this.baseUrl = configService.get<string>('ORVIBO_BASE_URL');
     this.clientId = configService.get<string>('ORVIBO_CLIENT_ID');
     this.clientSecret = configService.get<string>('ORVIBO_SECRET');
     this.auth = configService.get<string>('ORVIBO_AUTH');
-    console.log(process.env);
+    console.log(this.baseUrl);
   }
 
   /**
