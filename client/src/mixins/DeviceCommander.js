@@ -4,7 +4,7 @@ import OrviboAPI from 'src/api/orvibo';
 export default function () {
   const store = useStore();
   let index = 0;
-  // const myOrviboDevice = computed(() => store.state.Devices.myOrviboDevices);
+
   const timeout = async (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   /**
