@@ -25,7 +25,6 @@ import configuration from './config/configurations';
       rootPath: join(__dirname, '..', 'client/dist/spa'),
     }),
     ConfigModule.forRoot({
-      // ignoreEnvFile: true,
       envFilePath: '.env',
       load: [configuration],
       isGlobal: true,
