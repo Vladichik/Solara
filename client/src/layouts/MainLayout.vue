@@ -28,7 +28,7 @@
       <router-view />
     </q-page-container>
     <splash-screen />
-    <preloader v-if="processing" />
+    <preloader v-if="processing" fixed />
   </q-layout>
 </template>
 
@@ -55,7 +55,9 @@ export default {
     onBeforeMount(async () => {
       store.commit('General/setMainLoaderState', true);
       await store.dispatch('User/getLoggedInUser');
+      await store.dispatch('Devices/getMyDevicesFromOrvibo');
       await store.dispatch('Devices/getMyDevices');
+      await store.dispatch('Addresses/getDeviceAddresses');
       store.commit('General/setMainLoaderState', false);
     });
 

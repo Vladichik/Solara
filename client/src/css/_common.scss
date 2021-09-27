@@ -1,0 +1,21 @@
+@import "mixins";
+
+.sol-white-arrow {
+  .q-item__section--side {
+    color: white;
+  }
+  //.q-select__dropdown-icon
+}
+
+.sol-expansion-head {
+  height: 70px;
+  font-size: 16px;
+}
+
+.sol-grid-twin-cols {
+  @include setGridAuto(1fr, 20px, "columns");
+}
+
+.sol-orvibo-auth-btn {
+  display: none;
+}

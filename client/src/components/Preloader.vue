@@ -1,5 +1,5 @@
 <template>
-  <section class="sol-preloader-overlay">
+  <section :class="['sol-preloader-overlay', { 'sol-set-fixed': fixed }]">
     <q-spinner-bars color="primary" size="3em" />
   </section>
 </template>
@@ -9,11 +9,6 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'Preloader',
-  props: ['dark', 'rounded'],
+  props: ['fixed'],
 });
 </script>
-<style lang="scss">
-.sc-pr-rounded {
-  border-radius: 15px;
-}
-</style>

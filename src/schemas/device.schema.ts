@@ -2,8 +2,10 @@ import * as mongoose from 'mongoose';
 
 export const DeviceSchema = new mongoose.Schema({
   user_id: { type: mongoose.Schema.Types.ObjectId, required: true },
-  location_name: { type: String, required: true },
-  device_name: { type: String, required: true },
+  orvibo_ids: [{ type: String, required: true }],
+  selected_ids: [{ type: String }],
+  hub_id: { type: String, required: true },
+  assembly_type: String,
   pergola_colors: [{ type: String }],
   rafter_size: Number,
   louvered_size: Number,
@@ -11,9 +13,14 @@ export const DeviceSchema = new mongoose.Schema({
   technician_name: String,
   technician_company: String,
   installation_date: Date,
-  address: mongoose.Schema.Types.Mixed,
+  address: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'DeviceAddress',
+  },
   image_url: String,
   image_public_id: String,
+  receipt_url: String,
+  receipt_public_id: String,
 }).set('toJSON', {
   virtuals: true,
 });

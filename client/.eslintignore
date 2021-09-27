@@ -5,5 +5,6 @@
 /.quasar
 /node_modules
 /src/components/icons/SolaraLogo.vue
+/src/components/icons/CloudIcon.vue
 .eslintrc.js
 babel.config.js

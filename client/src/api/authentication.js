@@ -23,9 +23,21 @@ export default class AuthAPI {
   }
 
   /**
+   * API call that implements authentication in Orvibo Cloud.
+   * @param code - String from url parameter after triggering orvibo authentication
+   * @returns {Promise}
+   * Vlad. 28/08/21
+   */
+  static orviboLogin(code) {
+    return api.post('orvibo/login', { code })
+      .then((resp) => resp)
+      .catch((error) => error.response);
+  }
+
+  /**
    * Function that performs LogIn sequence
    * @param credentials - Object with login credentials
-   * @return {Promise<T>}
+   * @return {Promise}
    * Vlad. 15/1/21
    */
   static signIn(credentials) {
@@ -59,6 +71,20 @@ export default class AuthAPI {
   static setAuthToken(token) {
     localStorage.setItem(Constants.AUTH_TOKEN_KEY, token);
     api.defaults.headers.Authorization = token;
+  }
+
+  /**
+   * Function that sets Orvibo token in local storage for ORVIBO API calls
+   * @param token
+   * Vlad. 28/08/21
+   */
+  static setOrviboToken(token) {
+    const tokenData = {
+      access_token: token.access_token,
+      expires_in: token.expires_in,
+      user_id: token.user_id,
+    };
+    localStorage.setItem(Constants.ORVIBO_TOKEN_KEY, JSON.stringify(tokenData));
   }
 
   /**

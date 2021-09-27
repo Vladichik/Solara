@@ -15,20 +15,23 @@
            label="back"
            @click="onBack"
            icon="arrow_back_ios_new" />
-    <h6 class="text-white">{{ device.device_name }}</h6>
+    <h6 class="text-white">{{ getDeviceName(device) }}</h6>
   </div>
 </template>
 
 <script>
 import Icon from 'assets/placeholder.png';
+import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
 
 export default {
   name: 'DeviceImageParallax',
   props: ['onBack', 'device'],
   setup() {
+    const { getDeviceName } = DataGettersCompositions();
     const placeholder = Icon;
     return {
       placeholder,
+      getDeviceName,
     };
   },
 };

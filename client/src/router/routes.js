@@ -4,6 +4,10 @@ const routes = [
     component: () => import('layouts/AuthenticationLayout.vue'),
   },
   {
+    path: '/orvibo-oauth/:code?',
+    component: () => import('layouts/OrviboAuth.vue'),
+  },
+  {
     path: '/',
     redirect: '/home',
     component: () => import('layouts/MainLayout.vue'),
@@ -17,7 +21,7 @@ const routes = [
         children: [
           { path: '', component: () => import('pages/my-account/MainTabs.vue') },
           { path: '/personal-info', component: () => import('pages/my-account/PersonalInfo.vue') },
-          { path: '/address', component: () => import('pages/my-account/Address.vue') },
+          { path: '/address', component: () => import('pages/my-account/Addresses.vue') },
           { path: '/products-info', component: () => import('pages/my-account/ProductsInfo.vue') },
         ],
       },

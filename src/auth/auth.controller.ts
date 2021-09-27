@@ -7,18 +7,21 @@ import {
   Body,
   HttpStatus,
   HttpException,
+  HttpService,
 } from '@nestjs/common';
 
 import { LocalAuthGuard } from './local-auth.guard';
 import { AuthService } from './auth.service';
 import { UsersService } from '../database/users/users.service';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
     private userService: UsersService,
-  ) {}
+  ) {
+  }
 
   @Post('/signup')
   async signUp(@Res() res, @Body() user) {
@@ -51,5 +54,11 @@ export class AuthController {
     // } else {
     //   return res.status(HttpStatus.NO_CONTENT).json();
     // }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/forgot')
+  async loginIntoOrvibo(@Res() res, @Body() data) {
+
   }
 }

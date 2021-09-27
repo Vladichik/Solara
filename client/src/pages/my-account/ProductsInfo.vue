@@ -23,6 +23,11 @@ export default defineComponent({
       deviceInView: null,
     };
   },
+  async created() {
+    this.$store.commit('General/setMainLoaderState', true);
+    await this.$store.dispatch('Devices/getMyDevices');
+    this.$store.commit('General/setMainLoaderState', false);
+  },
   methods: {
     /**
      * Function that opens device full view

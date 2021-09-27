@@ -31,9 +31,6 @@ export class AuthService {
       username: user.username,
       id: user.id,
     };
-    // const options = {
-    //   expiresIn: '60d',
-    // };
     return {
       access_token: `Bearer ${this.jwtService.sign(payload)}`,
     };

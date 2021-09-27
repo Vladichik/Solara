@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { createHash } from 'crypto';
 
 @Injectable()
 export class CryptoGuyService {
@@ -10,5 +11,9 @@ export class CryptoGuyService {
 
   async verify(password: string, hash: string) {
     return await bcrypt.compare(password, hash);
+  }
+
+  getSignHash(text: string) {
+    return createHash('sha1').update(text).digest('hex');
   }
 }

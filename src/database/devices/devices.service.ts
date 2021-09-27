@@ -11,7 +11,9 @@ export class DevicesService {
   ) {}
 
   async getUserDevices(userID: ObjectId): Promise<Device[]> {
-    return this.deviceModel.find({ user_id: userID }, { _v: 0 });
+    return this.deviceModel
+      .find({ user_id: userID }, { _v: 0 })
+      .populate('address');
   }
 
   async createDevice(device: Partial<Device>): Promise<Device> {
