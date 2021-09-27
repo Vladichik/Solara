@@ -95,6 +95,7 @@ export default class AuthAPI {
   static clearAuthToken() {
     delete api.defaults.headers.Authorization;
     localStorage.removeItem(Constants.AUTH_TOKEN_KEY);
+    localStorage.removeItem(Constants.ORVIBO_TOKEN_KEY);
   }
 
   /**
