@@ -3,4 +3,6 @@ export const Constants = Object.freeze({
   ORVIBO_TOKEN_KEY: 'orvibo_token',
   ORVIBO_BASE_URL: 'https://oauthcn.orvibo.com/oauth/',
   ORVIBO_CLIENT_ID: 'solara_en',
+  MOTOR_MARK: 'curtain',
+  HUB_MARK: 'allone_pro',
 });
