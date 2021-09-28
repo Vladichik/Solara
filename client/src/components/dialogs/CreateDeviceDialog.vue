@@ -59,6 +59,7 @@ export default defineComponent({
       deviceData.orvibo_ids = data.device_ids;
       deviceData.hub_id = data.hub_id;
       deviceData.assembly_type = data.assembly_type;
+      deviceData.favorites_set = data.device_ids.map((id) => ({ orvibo_id: id, state: 'open' }));
     };
 
     const resetForm = () => {
@@ -66,6 +67,7 @@ export default defineComponent({
       deviceData.user_id = null;
       deviceData.assembly_type = null;
       deviceData.hub_id = null;
+      deviceData.favorites_set = null;
     };
     return {
       showDialog,

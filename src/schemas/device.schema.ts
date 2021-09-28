@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-import { Schema } from 'mongoose';
 
 export const DeviceSchema = new mongoose.Schema({
   user_id: { type: mongoose.Schema.Types.ObjectId, required: true },
@@ -20,7 +19,7 @@ export const DeviceSchema = new mongoose.Schema({
   receipt_public_id: String,
   favorites_set: [
     {
-      id: Schema.Types.ObjectId,
+      orvibo_id: String,
       state: {
         type: String,
         enum: ['close', 'open', 'quarter_open', 'semi_open', 'almost_open'],
