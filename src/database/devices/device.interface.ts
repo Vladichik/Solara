@@ -15,4 +15,5 @@ export interface Device extends Document {
   readonly address: mongoose.Schema.Types.Mixed;
   readonly image_url: string;
   readonly image_public_id: string;
+  readonly favorites_set: any;
 }

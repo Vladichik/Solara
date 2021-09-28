@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { Schema } from 'mongoose';
 
 export const DeviceSchema = new mongoose.Schema({
   user_id: { type: mongoose.Schema.Types.ObjectId, required: true },
@@ -13,14 +14,23 @@ export const DeviceSchema = new mongoose.Schema({
   technician_name: String,
   technician_company: String,
   installation_date: Date,
-  address: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'DeviceAddress',
-  },
   image_url: String,
   image_public_id: String,
   receipt_url: String,
   receipt_public_id: String,
+  favorites_set: [
+    {
+      id: Schema.Types.ObjectId,
+      state: {
+        type: String,
+        enum: ['close', 'open', 'quarter_open', 'semi_open', 'almost_open'],
+      },
+    },
+  ],
+  address: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'DeviceAddress',
+  },
 }).set('toJSON', {
   virtuals: true,
 });
