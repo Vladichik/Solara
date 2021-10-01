@@ -3,14 +3,14 @@
   <q-form ref="deviceForm"
           class="sol-form-grid q-pl-lg q-pr-lg q-pb-lg"
           @submit="saveDevice()">
-<!--    <q-input filled :label="$t('location_name')"-->
-<!--             v-model="formData.location_name"-->
-<!--             :model-value="formData.location_name"-->
-<!--             :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />-->
-<!--    <q-input filled :label="$t('device_name')"-->
-<!--             :model-value="formData.device_name"-->
-<!--             v-model="formData.device_name"-->
-<!--             :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />-->
+    <!--    <q-input filled :label="$t('location_name')"-->
+    <!--             v-model="formData.location_name"-->
+    <!--             :model-value="formData.location_name"-->
+    <!--             :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />-->
+    <!--    <q-input filled :label="$t('device_name')"-->
+    <!--             :model-value="formData.device_name"-->
+    <!--             v-model="formData.device_name"-->
+    <!--             :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />-->
     <q-select filled
               multiple
               map-options
@@ -21,7 +21,18 @@
               :model-value="formData.patio_colors"
               :label="$t('pergola_colors')"
               :options="colorOptions" />
-    <q-select filled :label="$t('rafter_size')" />
+    <q-select filled
+              multiple
+              v-model="formData.rafter_size"
+              :model-value="formData.rafter_size"
+              :label="$t('rafter_size')"
+              :options="rafterSizes" />
+    <q-select filled
+              multiple
+              v-model="formData.louver_size"
+              :model-value="formData.louver_size"
+              :label="$t('louver_size')"
+              :options="louverSizes" />
     <q-select filled
               map-options
               emit-value
@@ -31,7 +42,11 @@
               :model-value="formData.louver_type"
               :options="louverTypeOptions"
               :label="$t('louver_type')" />
-    <q-select filled :label="$t('num_motors')" />
+    <q-select filled
+              :label="$t('num_motors')"
+              v-model="formData.amount_of_motors"
+              :model-value="formData.amount_of_motors"
+              :options="amountsOfMotors" />
     <q-input filled :label="$t('technician_name')"
              v-model="formData.technician_name" />
     <q-input filled
@@ -77,7 +92,7 @@
                  class="bg-grey-5 full-width"
                  :label="$t('download_receipt')"
                  icon="download"
-                 size="18px"/>
+                 size="18px" />
         </a>
       </q-card-section>
     </q-card>
@@ -123,6 +138,9 @@ export default defineComponent({
     const deviceAddresses = computed(() => store.state.Addresses.deviceAddresses);
     const colorOptions = tm('patio_color_opts');
     const louverTypeOptions = tm('louver_type_opts');
+    const rafterSizes = Array.apply(0, Array(98 - 1)).map((element, index) => index + 4);
+    const louverSizes = Array.apply(0, Array(21 - 1)).map((element, index) => index + 4);
+    const amountsOfMotors = Array.from({ length: 20 }, (_, i) => i + 1);
 
     const getReceiptDownloadLink = computed(() => {
       if (props.device && props.device.receipt_url) {
@@ -144,6 +162,9 @@ export default defineComponent({
       address: null,
       patio_colors: null,
       louver_type: null,
+      rafter_size: null,
+      louver_size: null,
+      amount_of_motors: null,
     });
 
     const initFormData = () => {
@@ -236,7 +257,10 @@ export default defineComponent({
       deviceAddresses,
       getReceiptDownloadLink,
       colorOptions,
+      rafterSizes,
+      louverSizes,
       louverTypeOptions,
+      amountsOfMotors,
       getDatePickerOptions,
       openImageUploader,
       openReceiptUploader,
@@ -268,6 +292,7 @@ export default defineComponent({
 .sol-receipt-btn-sec {
   align-content: center;
   @include setGridAuto(auto, 10px, "rows");
+
   a {
     text-decoration: none;
     color: inherit;

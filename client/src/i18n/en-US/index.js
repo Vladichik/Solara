@@ -89,6 +89,7 @@ export default {
   pergola_colors: 'Patio Cover colors',
   rafter_size: 'Rafter size',
   louver_type: 'Louver type',
+  louver_size: 'Louver size',
   num_motors: 'Number of motors',
   add_photo: 'Device Photo',
   add_receipt: 'Upload Receipt',

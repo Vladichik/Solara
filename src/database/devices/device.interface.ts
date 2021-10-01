@@ -7,8 +7,9 @@ export interface Device extends Document {
   readonly device_name: string;
   readonly patio_colors: string[];
   readonly rafter_size: number[];
+  readonly louver_size: number[];
   readonly louver_type: string;
-  readonly num_motors: number;
+  readonly amount_of_motors: number;
   readonly technician_name: string;
   readonly technician_company: string;
   readonly installation_date: Date;
