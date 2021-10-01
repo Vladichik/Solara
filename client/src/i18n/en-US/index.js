@@ -100,6 +100,7 @@ export default {
   patio: 'Patio',
   select_motor: 'Select motor/s you want to operate',
   all: 'All',
+  mode: 'Mode',
   states: [
     {
       name: 'Alabama',

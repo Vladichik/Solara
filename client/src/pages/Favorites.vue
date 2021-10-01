@@ -15,8 +15,14 @@
           <q-item-label>{{ $t(device.assembly_type) }}</q-item-label>
         </q-item-section>
         <q-list class="sol-favorite-parts-list">
-          <q-item class="q-pl-md q-pr-md text-blue-grey-8" v-for="part in device.favorites_set" :key="part.orvibo_id">
-            {{ getPartName(part.orvibo_id) }}
+          <q-item class="sol-favorite-part-row text-blue-grey-8" v-for="part in device.favorites_set"
+                  :key="part.orvibo_id">
+            <q-item-section>{{ getPartName(part.orvibo_id) }}</q-item-section>
+            <q-item-section>
+              <motor-favorites-picker
+                :part="part"
+                @on-mode-selected="(val) => updateDeviceData(val, device)" />
+            </q-item-section>
           </q-item>
         </q-list>
       </q-item>
@@ -35,9 +41,14 @@ import {
 import { useStore } from 'vuex';
 import OrviboAndSolaraDevicesCombiner from 'src/mixins/OrviboAndSolaraDevicesCombiner';
 import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
+import MotorFavoritesPicker from 'components/inputs/MotorFavoritesPicker';
+import DevicesAPI from 'src/api/device';
 
 export default defineComponent({
   name: 'Favorites',
+  components: {
+    MotorFavoritesPicker,
+  },
   setup() {
     const { generateEnvironments } = OrviboAndSolaraDevicesCombiner();
     const { getPartName } = DataGettersCompositions();
@@ -48,7 +59,26 @@ export default defineComponent({
     const prepareFavoritesList = () => {
       const env = generateEnvironments();
       Object.assign(environments, env);
-      console.log(env);
+    };
+
+    /**
+     * Function that is triggered after each device favorite setup change
+     * it saves changed favorites settings in Solara atabase
+     * @param pickerData - Selected option object
+     * @param device - Object, device which settings have been changed
+     * @returns {Promise<void>}
+     * Vlad. 01/10/21
+     */
+    const updateDeviceData = async (pickerData, device) => {
+      const partToUpdate = device.favorites_set.find((part) => part.orvibo_id === pickerData.orvibo_id);
+      if (!partToUpdate) return;
+      store.commit('General/setMainLoaderState', true);
+      partToUpdate.state = pickerData.state;
+      const updated = await DevicesAPI.updateDevice(device);
+      if (updated.status === 200 && updated.data.id) {
+        await store.dispatch('Devices/getMyDevices');
+      }
+      store.commit('General/setMainLoaderState', false);
     };
 
     onBeforeMount(() => {
@@ -62,6 +92,7 @@ export default defineComponent({
     return {
       environments,
       getPartName,
+      updateDeviceData,
     };
   },
 });
@@ -73,6 +104,7 @@ export default defineComponent({
 .sol-favorites-devices-list {
   padding: 10px 0 0 0 !important;
   flex-direction: column;
+
   .q-item__label {
     font-size: 18px;
   }
@@ -80,12 +112,23 @@ export default defineComponent({
 
 .sol-favorite-parts-list {
   @include setGridAuto(60px, null, "rows");
+
   .q-item {
     align-items: center;
     border-top: solid 1px lightgray;
+
     &:last-child {
       border-bottom: solid 1px lightgray;
     }
   }
+
+  .q-item__section {
+    margin: 0;
+  }
+}
+
+.sol-favorite-part-row {
+  padding: 0 0 0 15px;
+  @include setGrid(1fr 180px, 10px, null, null, "columns");
 }
 </style>
