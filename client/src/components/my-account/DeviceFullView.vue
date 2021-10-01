@@ -11,9 +11,26 @@
 <!--             :model-value="formData.device_name"-->
 <!--             v-model="formData.device_name"-->
 <!--             :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />-->
-    <q-select filled :label="$t('pergola_colors')" />
+    <q-select filled
+              multiple
+              map-options
+              emit-value
+              option-value="key"
+              option-label="text"
+              v-model="formData.patio_colors"
+              :model-value="formData.patio_colors"
+              :label="$t('pergola_colors')"
+              :options="colorOptions" />
     <q-select filled :label="$t('rafter_size')" />
-    <q-select filled :label="$t('louvered_size')" />
+    <q-select filled
+              map-options
+              emit-value
+              option-value="key"
+              option-label="text"
+              v-model="formData.louver_type"
+              :model-value="formData.louver_type"
+              :options="louverTypeOptions"
+              :label="$t('louver_type')" />
     <q-select filled :label="$t('num_motors')" />
     <q-input filled :label="$t('technician_name')"
              v-model="formData.technician_name" />
@@ -86,6 +103,7 @@ import {
 } from 'vue';
 import { useStore } from 'vuex';
 import { date } from 'quasar';
+import { useI18n } from 'vue-i18n';
 import NotificationsMixins from 'src/mixins/NotificationsMixins';
 import DeviceImageParallax from 'components/my-account/DeviceImageParallax';
 import DevicesAPI from 'src/api/device';
@@ -100,8 +118,11 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
+    const { tm } = useI18n();
     const getDatePickerOptions = (d) => d >= date.formatDate(Date.now(), 'YYYY/MM/DD');
     const deviceAddresses = computed(() => store.state.Addresses.deviceAddresses);
+    const colorOptions = tm('patio_color_opts');
+    const louverTypeOptions = tm('louver_type_opts');
 
     const getReceiptDownloadLink = computed(() => {
       if (props.device && props.device.receipt_url) {
@@ -121,6 +142,8 @@ export default defineComponent({
       installation_date: null,
       device_image_url: null,
       address: null,
+      patio_colors: null,
+      louver_type: null,
     });
 
     const initFormData = () => {
@@ -212,6 +235,8 @@ export default defineComponent({
       formData,
       deviceAddresses,
       getReceiptDownloadLink,
+      colorOptions,
+      louverTypeOptions,
       getDatePickerOptions,
       openImageUploader,
       openReceiptUploader,

@@ -5,9 +5,9 @@ export interface Device extends Document {
   readonly user_id: mongoose.Schema.Types.ObjectId;
   readonly location_name: string;
   readonly device_name: string;
-  readonly pergola_colors: string[];
-  readonly rafter_size: number;
-  readonly louvered_size: number;
+  readonly patio_colors: string[];
+  readonly rafter_size: number[];
+  readonly louver_type: string;
   readonly num_motors: number;
   readonly technician_name: string;
   readonly technician_company: string;

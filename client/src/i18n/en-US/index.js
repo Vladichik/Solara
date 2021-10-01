@@ -86,9 +86,9 @@ export default {
   technician_name: 'Technician name',
   technician_company: 'Technician company name',
   install_date: 'Installation date',
-  pergola_colors: 'Pergola colors',
+  pergola_colors: 'Patio Cover colors',
   rafter_size: 'Rafter size',
-  louvered_size: 'Louvered size',
+  louver_type: 'Louver type',
   num_motors: 'Number of motors',
   add_photo: 'Device Photo',
   add_receipt: 'Upload Receipt',
@@ -101,6 +101,18 @@ export default {
   select_motor: 'Select motor/s you want to operate',
   all: 'All',
   mode: 'Mode',
+  patio_color_opts: [
+    { text: 'White', key: 'white' },
+    { text: 'Adobe', key: 'adobe' },
+    { text: 'Cameo', key: 'cameo' },
+    { text: 'Latte', key: 'latte' },
+    { text: 'Spanish Brown', key: 'spanish_brown' },
+    { text: 'Custom', key: 'custom' },
+  ],
+  louver_type_opts: [
+    { text: 'Extruded', key: 'extruded' },
+    { text: 'Roll Formed', key: 'roll_formed' },
+  ],
   states: [
     {
       name: 'Alabama',

@@ -6,9 +6,14 @@ export const DeviceSchema = new mongoose.Schema({
   selected_ids: [{ type: String }],
   hub_id: { type: String, required: true },
   assembly_type: String,
-  pergola_colors: [{ type: String }],
-  rafter_size: Number,
-  louvered_size: Number,
+  patio_colors: [
+    {
+      type: String,
+      enum: ['white', 'adobe', 'cameo', 'latte', 'spanish_brown', 'custom'],
+    },
+  ],
+  rafter_size: [Number],
+  louver_type: { type: String, enum: ['extruded', 'roll_formed'] },
   num_motors: Number,
   technician_name: String,
   technician_company: String,
