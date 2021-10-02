@@ -10,6 +10,7 @@ export interface Device extends Document {
   readonly louver_size: number[];
   readonly louver_type: string;
   readonly amount_of_motors: number;
+  readonly motor_type: string;
   readonly technician_name: string;
   readonly technician_company: string;
   readonly installation_date: Date;

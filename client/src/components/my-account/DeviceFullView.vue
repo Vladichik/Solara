@@ -47,6 +47,15 @@
               v-model="formData.amount_of_motors"
               :model-value="formData.amount_of_motors"
               :options="amountsOfMotors" />
+    <q-select filled
+              map-options
+              emit-value
+              option-value="key"
+              option-label="text"
+              v-model="formData.motor_type"
+              :model-value="formData.motor_type"
+              :options="motorsTypeOptions"
+              :label="$t('motor_type')" />
     <q-input filled :label="$t('technician_name')"
              v-model="formData.technician_name" />
     <q-input filled
@@ -123,6 +132,7 @@ import NotificationsMixins from 'src/mixins/NotificationsMixins';
 import DeviceImageParallax from 'components/my-account/DeviceImageParallax';
 import DevicesAPI from 'src/api/device';
 import CloudinaryAPI from 'src/api/cloudinary';
+import { Constants } from 'src/config/constants';
 
 export default defineComponent({
   name: 'DeviceFullView',
@@ -138,6 +148,7 @@ export default defineComponent({
     const deviceAddresses = computed(() => store.state.Addresses.deviceAddresses);
     const colorOptions = tm('patio_color_opts');
     const louverTypeOptions = tm('louver_type_opts');
+    const motorsTypeOptions = tm('motor_type_opts');
     const rafterSizes = Array.apply(0, Array(98 - 1)).map((element, index) => index + 4);
     const louverSizes = Array.apply(0, Array(21 - 1)).map((element, index) => index + 4);
     const amountsOfMotors = Array.from({ length: 20 }, (_, i) => i + 1);
@@ -165,11 +176,14 @@ export default defineComponent({
       rafter_size: null,
       louver_size: null,
       amount_of_motors: null,
+      motor_type: null,
     });
 
     const initFormData = () => {
       if (props.device && props.device.id) {
         Object.assign(formData, props.device);
+      } else {
+        formData.motor_type = Constants.MOTOR_TI;
       }
     };
 
@@ -261,6 +275,7 @@ export default defineComponent({
       louverSizes,
       louverTypeOptions,
       amountsOfMotors,
+      motorsTypeOptions,
       getDatePickerOptions,
       openImageUploader,
       openReceiptUploader,

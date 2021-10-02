@@ -1,3 +1,5 @@
+import { Constants } from 'src/config/constants';
+
 export default {
   main_tabs: [
     { name: 'Home', route: '/home', icon: 'home' },
@@ -91,6 +93,7 @@ export default {
   louver_type: 'Louver type',
   louver_size: 'Louver size',
   num_motors: 'Number of motors',
+  motor_type: 'Motor Type',
   add_photo: 'Device Photo',
   add_receipt: 'Upload Receipt',
   download_receipt: 'Download Receipt',
@@ -113,6 +116,10 @@ export default {
   louver_type_opts: [
     { text: 'Extruded', key: 'extruded' },
     { text: 'Roll Formed', key: 'roll_formed' },
+  ],
+  motor_type_opts: [
+    { text: 'Sito Motor', key: Constants.MOTOR_SITO },
+    { text: 'TiMotion Motor', key: Constants.MOTOR_TI },
   ],
   states: [
     {

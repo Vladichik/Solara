@@ -5,4 +5,8 @@ export const Constants = Object.freeze({
   ORVIBO_CLIENT_ID: 'solara_en',
   MOTOR_MARK: 'curtain',
   HUB_MARK: 'allone_pro',
+  MOTOR_SITO: 'SITO_MOTOR',
+  MOTOR_TI: 'TI_MOTION_MOTOR',
+  SITO_MOTOR_SPEED: 10000,
+  TI_MOTION_MOTOR_SPEED: 20000,
 });

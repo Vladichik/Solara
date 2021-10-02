@@ -6,12 +6,6 @@ export const DeviceSchema = new mongoose.Schema({
   selected_ids: [{ type: String }],
   hub_id: { type: String, required: true },
   assembly_type: String,
-  patio_colors: [
-    {
-      type: String,
-      enum: ['white', 'adobe', 'cameo', 'latte', 'spanish_brown', 'custom'],
-    },
-  ],
   rafter_size: [Number],
   louver_size: [Number],
   louver_type: { type: String, enum: ['extruded', 'roll_formed'] },
@@ -23,6 +17,13 @@ export const DeviceSchema = new mongoose.Schema({
   image_public_id: String,
   receipt_url: String,
   receipt_public_id: String,
+  motor_type: { type: String, enum: ['SITO_MOTOR', 'TI_MOTION_MOTOR'] },
+  patio_colors: [
+    {
+      type: String,
+      enum: ['white', 'adobe', 'cameo', 'latte', 'spanish_brown', 'custom'],
+    },
+  ],
   favorites_set: [
     {
       orvibo_id: String,
