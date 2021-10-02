@@ -16,6 +16,7 @@ import {
   defineComponent,
   ref,
 } from 'vue';
+import { Constants } from 'src/config/constants';
 
 export default defineComponent({
   name: 'MotorFavoritesPicker',
@@ -23,10 +24,10 @@ export default defineComponent({
   setup(props) {
     const state = ref(props.part.state);
     const options = [
-      { key: 'open', text: 'Open' },
-      { key: 'quarter_open', text: 'Quarter Open' },
-      { key: 'semi_open', text: 'Semi Open' },
-      { key: 'almost_open', text: 'Almost Open' },
+      { key: 'OPEN', text: 'Open' },
+      { key: Constants.MOTOR_QT_OPEN, text: 'Quarter Open' },
+      { key: Constants.MOTOR_SEM_OPEN, text: 'Semi Open' },
+      { key: Constants.MOTOR_ALM_OPEN, text: 'Almost Open' },
       { key: 'close', text: 'Close' },
     ];
     return {
@@ -36,7 +37,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-
-</style>

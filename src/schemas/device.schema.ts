@@ -17,7 +17,7 @@ export const DeviceSchema = new mongoose.Schema({
   image_public_id: String,
   receipt_url: String,
   receipt_public_id: String,
-  motor_type: { type: String, enum: ['SITO_MOTOR', 'TI_MOTION_MOTOR'] },
+  motor_type: { type: String, enum: ['SITO_MOTOR', 'TIM_MOTOR'] },
   patio_colors: [
     {
       type: String,
@@ -29,7 +29,7 @@ export const DeviceSchema = new mongoose.Schema({
       orvibo_id: String,
       state: {
         type: String,
-        enum: ['close', 'open', 'quarter_open', 'semi_open', 'almost_open'],
+        enum: ['CLOSE', 'OPEN', 'QUARTER_OPEN', 'SEMI_OPEN', 'ALMOST_OPEN'],
       },
     },
   ],

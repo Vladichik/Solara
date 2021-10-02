@@ -25,6 +25,7 @@
             </q-item-section>
           </q-item>
         </q-list>
+        <q-btn @click="triggerFavoritesPreset(device)">Trigger</q-btn>
       </q-item>
     </q-list>
   </q-expansion-item>
@@ -41,6 +42,7 @@ import {
 import { useStore } from 'vuex';
 import OrviboAndSolaraDevicesCombiner from 'src/mixins/OrviboAndSolaraDevicesCombiner';
 import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
+import DeviceCommander from 'src/mixins/DeviceCommander';
 import MotorFavoritesPicker from 'components/inputs/MotorFavoritesPicker';
 import DevicesAPI from 'src/api/device';
 
@@ -52,6 +54,7 @@ export default defineComponent({
   setup() {
     const { generateEnvironments } = OrviboAndSolaraDevicesCombiner();
     const { getPartName } = DataGettersCompositions();
+    const { triggerFavoritesPreset } = DeviceCommander();
     const store = useStore();
     const environments = reactive([]);
     const myDevices = computed(() => store.state.Devices.myDevices);
@@ -93,6 +96,7 @@ export default defineComponent({
       environments,
       getPartName,
       updateDeviceData,
+      triggerFavoritesPreset,
     };
   },
 });
