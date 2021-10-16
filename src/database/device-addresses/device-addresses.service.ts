@@ -10,6 +10,22 @@ export class DeviceAddressesService {
     private deviceAddressModel: Model<DeviceAddress>,
   ) {}
 
+  /**
+   * Function that groups all addresses by districts and returns
+   * array of existing districts. Functionality needed for scheduled
+   * weather task
+   * Vlad. 16/10/21
+   */
+  async getAddressDistricts(): Promise<Array<any>> {
+    const districts = await this.deviceAddressModel.aggregate([
+      { $group: { _id: '$district' } },
+    ]);
+    if (districts.length) {
+      return districts.map((district) => district._id);
+    }
+    return [];
+  }
+
   async listDeviceAddresses(userID: ObjectId): Promise<DeviceAddress[]> {
     return this.deviceAddressModel.find({ user_id: userID }).exec();
   }

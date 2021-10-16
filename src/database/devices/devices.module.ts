@@ -10,5 +10,6 @@ import { DeviceSchema } from '../../schemas/device.schema';
   ],
   controllers: [DevicesController],
   providers: [DevicesService],
+  exports: [DevicesService],
 })
 export class DevicesModule {}

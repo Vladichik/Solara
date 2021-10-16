@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronModule } from './cron/cron.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -32,6 +34,8 @@ import configuration from './config/configurations';
     MongooseModule.forRootAsync({
       useClass: MongoConfig,
     }),
+    ScheduleModule.forRoot(),
+    CronModule,
     AuthModule,
     UsersModule,
     CryptoGuyModule,

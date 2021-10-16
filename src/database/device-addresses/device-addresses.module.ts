@@ -12,5 +12,6 @@ import { DevicesAddressSchema } from '../../schemas/devices-address.schema';
   ],
   providers: [DeviceAddressesService],
   controllers: [DeviceAddressesController],
+  exports: [DeviceAddressesService],
 })
 export class DeviceAddressesModule {}
