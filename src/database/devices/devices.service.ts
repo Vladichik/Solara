@@ -24,4 +24,8 @@ export class DevicesService {
   async updateDevice(device: Partial<Device>): Promise<Device> {
     return this.deviceModel.findByIdAndUpdate({ _id: device.id }, device);
   }
+
+  async operateDevicesAccordingToWeatherForecast(weatherData: Array<any>) {
+
+  }
 }

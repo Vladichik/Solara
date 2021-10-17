@@ -1,12 +1,17 @@
+import { Logger } from '@nestjs/common';
 import { Injectable, HttpService } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { WeatherParams } from './types';
+import { WeatherParams, ForecastResponse, AnalyzedWeather } from './types';
 import { DeviceAddressesService } from '../../database/device-addresses/device-addresses.service';
+import { DevicesService } from '../../database/devices/devices.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class WeatherService {
   private readonly weatherSecret: string;
   private readonly weatherUrl: string;
+  private readonly snowCodes: number[];
+  private readonly rainCodes: number[];
   private allWeathers = [];
   private flowIndex = 0;
   private districts = [];
@@ -15,19 +20,34 @@ export class WeatherService {
     private httpService: HttpService,
     private configService: ConfigService,
     private deviceAddressSrv: DeviceAddressesService,
+    private devicesSrv: DevicesService,
   ) {
     this.weatherSecret = configService.get<string>('WEATHER_API_SECRET');
     this.weatherUrl = configService.get<string>('WEATHER_API_URL');
+    this.snowCodes = configService.get<number[]>('WEATHER_SNOW_CODES');
+    this.rainCodes = configService.get<number[]>('WEATHER_RAIN_CODES');
+  }
+
+  /**
+   * Function that assembles the url for relevant weather request.
+   * @param params - String, required url params for weather query
+   * @param type - The weather type query (Current weather/Forecast/ etc.)
+   * // For more details please check https://www.weatherapi.com/docs/
+   */
+  assembleApiEndEndpoint(params, type) {
+    return `${this.weatherUrl}${type}.json?key=${this.weatherSecret}${params}&aqi=no`;
   }
 
   /**
    * Function that receives params for weather query and call Weather API
+   * @param type - String, key to API assembler
    * @param params - String
    * Vlad. 08/09/21
    */
-  callWeatherAPI(params: any): Promise<any> {
+  callWeatherAPI(params: any, type = 'current'): Promise<any> {
+    const url = this.assembleApiEndEndpoint(params, type);
     return this.httpService
-      .get(`${this.weatherUrl}?key=${this.weatherSecret}${params}&aqi=no`)
+      .get(url)
       .toPromise()
       .then((resp) => resp.data)
       .catch((e) => e);
@@ -60,18 +80,53 @@ export class WeatherService {
    */
   async getWeatherForDistrict() {
     if (this.districts[this.flowIndex]) {
-      console.log(this.districts[this.flowIndex]);
-      const weather = await this.callWeatherAPI(
-        `&q=${this.districts[this.flowIndex]}`,
+      const forecast = await this.callWeatherAPI(
+        `&q=${this.districts[this.flowIndex]}&aqi=no&alerts=no`,
+        'forecast',
       );
-      if (weather) {
-        weather.solara_district = this.districts[this.flowIndex];
-        this.allWeathers.push(weather);
+      const analyzedForecast = this.analyzeForecast(forecast);
+      if (analyzedForecast && analyzedForecast.code) {
+        analyzedForecast.district = this.districts[this.flowIndex];
+        this.allWeathers.push(analyzedForecast);
       }
       this.flowIndex += 1;
       await this.getWeatherForDistrict();
     } else if (this.allWeathers.length) {
-      console.log(this.allWeathers);
+      Logger.log(`Operation made for ${this.allWeathers.length} regions`);
+      await this.devicesSrv.operateDevicesAccordingToWeatherForecast(
+        this.allWeathers,
+      );
     }
+  }
+
+  /**
+   * Function that analyzes received forecast and returns relevant data object
+   * in case forecast has hazardous weather conditions
+   * @param forecast
+   * Vlad. 18/10/21
+   */
+  analyzeForecast(forecast: ForecastResponse): Partial<AnalyzedWeather> {
+    if (forecast.forecast && forecast.forecast.forecastday) {
+      const forecastData = forecast.forecast.forecastday[0].hour;
+      const hour = moment().add(1, 'hours').get('hour');
+      if (!forecastData || !forecastData.length) return {};
+      const relForecast = forecastData.find((h) => h.time.includes(`${hour}:`));
+      if (!relForecast) return;
+      if (this.snowCodes.includes(relForecast.condition.code)) {
+        return {
+          code: relForecast.condition.code,
+          text: relForecast.condition.text,
+          condition: 'SNOW',
+        };
+      }
+      if (this.rainCodes.includes(relForecast.condition.code)) {
+        return {
+          code: relForecast.condition.code,
+          text: relForecast.condition.text,
+          condition: 'RAIN',
+        };
+      }
+    }
+    return {};
   }
 }
