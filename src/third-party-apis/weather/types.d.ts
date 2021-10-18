@@ -15,4 +15,5 @@ export interface AnalyzedWeather {
   condition: string;
   code: number;
   text: string;
+  action: string;
 }

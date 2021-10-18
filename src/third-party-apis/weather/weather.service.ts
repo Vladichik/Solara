@@ -12,6 +12,9 @@ export class WeatherService {
   private readonly weatherUrl: string;
   private readonly snowCodes: number[];
   private readonly rainCodes: number[];
+  private readonly maxWindSpeed: number;
+  private readonly actOn: string;
+  private readonly actOff: string;
   private allWeathers = [];
   private flowIndex = 0;
   private districts = [];
@@ -26,6 +29,9 @@ export class WeatherService {
     this.weatherUrl = configService.get<string>('WEATHER_API_URL');
     this.snowCodes = configService.get<number[]>('WEATHER_SNOW_CODES');
     this.rainCodes = configService.get<number[]>('WEATHER_RAIN_CODES');
+    this.maxWindSpeed = configService.get<number>('WEATHER_MAX_WIND');
+    this.actOn = configService.get<string>('ORVIBO_ACT_ON');
+    this.actOff = configService.get<string>('ORVIBO_ACT_OFF');
   }
 
   /**
@@ -111,12 +117,21 @@ export class WeatherService {
       const hour = moment().add(1, 'hours').get('hour');
       if (!forecastData || !forecastData.length) return {};
       const relForecast = forecastData.find((h) => h.time.includes(`${hour}:`));
-      if (!relForecast) return;
+      if (!relForecast) return {};
+      if (relForecast.wind_mph >= this.maxWindSpeed) {
+        return {
+          code: relForecast.condition.code,
+          text: relForecast.condition.text,
+          condition: 'WIND',
+          action: this.actOn,
+        };
+      }
       if (this.snowCodes.includes(relForecast.condition.code)) {
         return {
           code: relForecast.condition.code,
           text: relForecast.condition.text,
           condition: 'SNOW',
+          action: this.actOff,
         };
       }
       if (this.rainCodes.includes(relForecast.condition.code)) {
@@ -124,6 +139,7 @@ export class WeatherService {
           code: relForecast.condition.code,
           text: relForecast.condition.text,
           condition: 'RAIN',
+          action: this.actOff,
         };
       }
     }
