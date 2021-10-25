@@ -118,7 +118,9 @@ export class WeatherService {
   analyzeForecast(forecast: ForecastResponse): Partial<AnalyzedWeather> {
     if (forecast.forecast && forecast.forecast.forecastday) {
       const forecastData = forecast.forecast.forecastday[0].hour;
-      const hour = moment().add(1, 'hours').get('hour');
+      const hour = moment(forecast.location.localtime)
+        .add(1, 'hours')
+        .get('hour');
       if (!forecastData || !forecastData.length) return {};
       const relForecast = forecastData.find((h) => h.time.includes(`${hour}:`));
       if (!relForecast) return {};
