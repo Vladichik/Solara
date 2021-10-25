@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 
 export interface Device extends Document {
   readonly user_id: mongoose.Schema.Types.ObjectId;
+  readonly orvibo_ids: string[];
   readonly location_name: string;
   readonly device_name: string;
   readonly patio_colors: string[];

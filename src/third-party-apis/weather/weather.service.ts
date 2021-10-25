@@ -73,6 +73,7 @@ export class WeatherService {
    * Vlad. 17/10/21
    */
   async startScheduledTaskForWeatherHazards() {
+    this.flowIndex = 0;
     this.districts = await this.deviceAddressSrv.getAddressDistricts();
     if (this.districts && this.districts.length) {
       await this.getWeatherForDistrict();
@@ -102,6 +103,9 @@ export class WeatherService {
       await this.devicesSrv.operateDevicesAccordingToWeatherForecast(
         this.allWeathers,
       );
+    } else {
+      const date = moment().format('HH:mm DD/MM/YYYY');
+      Logger.log(`No weather hazards found at ${date}`);
     }
   }
 
