@@ -148,6 +148,9 @@ export class WeatherService {
           action: this.actOff,
         };
       }
+      // if (relForecast.is_day === 1 ) {
+      //
+      // }
     }
     return {};
   }

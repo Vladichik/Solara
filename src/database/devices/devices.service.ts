@@ -2,12 +2,14 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { Device } from './device.interface';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class DevicesService {
   constructor(
     @InjectModel('Device')
     private deviceModel: Model<Device>,
+    private userSrv: UsersService,
   ) {}
 
   async getUserDevices(userID: ObjectId): Promise<Device[]> {
@@ -50,6 +52,8 @@ export class DevicesService {
       );
       return;
     }
+    const userIds = devicesToOperate.flatMap((d) => d.user_id);
+    const relevantUsers = await this.userSrv.findUsers(userIds);
     const readyOperationalData = devicesToOperate.flatMap((device) => {
       const district = weatherData.find(
         // @ts-ignore

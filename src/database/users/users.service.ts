@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { User } from './user.interface';
 import { CryptoGuyService } from '../../tools/cryptoguy/cryptoguy.service';
 
@@ -14,6 +14,10 @@ export class UsersService {
 
   async findUser(username: string): Promise<User> {
     return await this.userModel.findOne({ username: username }).exec();
+  }
+
+  async findUsers(userIDs: ObjectId[]) {
+    return this.userModel.find({ _id: { $in: userIDs } });
   }
 
   async getLoggedInUser(userID: string): Promise<User> {

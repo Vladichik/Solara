@@ -30,6 +30,8 @@
 
 ```bash
 $ npm install
+
+create .env file with relevant data (ask admin)
 ```
 
 ## Running the app
