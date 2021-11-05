@@ -47,6 +47,8 @@ export default defineComponent({
         const loggedIn = await AuthAPI.orviboLogin(route.query.code);
         if (loggedIn.data && loggedIn.data.access_token) {
           AuthAPI.setOrviboToken(loggedIn.data);
+          // Saving orvibo token in Solara database to give server access to the
+          // user devices
           const userData = {
             ...user.value,
             orvibo_id: loggedIn.data.user_id,
