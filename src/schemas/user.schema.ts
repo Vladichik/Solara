@@ -8,8 +8,11 @@ export const UserSchema = new mongoose.Schema({
   last_name: String,
   first_name: String,
   birthday: Date,
-  email: { type: String },
-  avatar: { type: String },
+  email: String,
+  avatar: String,
+  orvibo_id: String,
+  orvibo_token: String,
+  orvibo_token_exp: Number,
 }).set('toJSON', {
   virtuals: true,
 });
