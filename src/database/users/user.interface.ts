@@ -1,6 +1,8 @@
 import { Document } from 'mongoose';
 
 export interface User extends Document {
+  readonly orvibo_token: string;
+  readonly orvibo_id: string;
   readonly username: string;
   readonly password: string;
   readonly phone: string;

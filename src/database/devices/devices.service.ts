@@ -55,6 +55,9 @@ export class DevicesService {
     const userIds = devicesToOperate.flatMap((d) => d.user_id);
     const relevantUsers = await this.userSrv.findUsers(userIds);
     const readyOperationalData = devicesToOperate.flatMap((device) => {
+      const ownerUser = relevantUsers.find(
+        (u) => u.id === device.user_id.toString(),
+      );
       const district = weatherData.find(
         // @ts-ignore
         (d) => d.district === device.address.district,
@@ -62,8 +65,9 @@ export class DevicesService {
       return device.orvibo_ids.map((id) => ({
         part_id: id,
         action: district.action,
+        user_id: ownerUser.orvibo_id,
+        token: ownerUser.orvibo_token,
       }));
     });
-    debugger;
   }
 }
