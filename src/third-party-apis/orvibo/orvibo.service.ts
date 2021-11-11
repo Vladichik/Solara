@@ -2,7 +2,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { HttpService, Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { ConfigService } from '@nestjs/config';
-import { OrviboDeviceQueryProps, DeviceCommandProps } from './types';
+import {
+  OrviboDeviceQueryProps,
+  DeviceCommandProps,
+  OrviboRefreshTokenProps,
+} from './types';
 import { CryptoGuyService } from '../../tools/cryptoguy/cryptoguy.service';
 
 @Injectable()
@@ -46,6 +50,23 @@ export class OrviboService {
         `${this.authUrl}?grant_type=authorization_code&client_id=${this.clientId}&client_secret=${this.clientSecret}&code=${credentials.code}&redirect_uri=http://localhost:8082/`,
       )
       // .post(`${this.baseUrl}`, authParams)
+      .toPromise()
+      .then((resp) => resp.data)
+      .catch((e) => e);
+  }
+
+  /**
+   * Function that calls Orvibo cloud for token refresh
+   * @param data - Object with refresh token
+   * Vlad. 11/11/21
+   */
+  async refreshToken(
+    data: OrviboRefreshTokenProps,
+  ): Promise<AxiosResponse<any>> {
+    return await this.httpService
+      .get(
+        `${this.authUrl}?grant_type=refresh_token&client_id=${this.clientId}&client_secret=${this.clientSecret}&refresh_token=${data.refresh_token}`,
+      )
       .toPromise()
       .then((resp) => resp.data)
       .catch((e) => e);

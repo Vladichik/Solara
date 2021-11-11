@@ -69,5 +69,6 @@ export class DevicesService {
         token: ownerUser.orvibo_token,
       }));
     });
+    debugger;
   }
 }

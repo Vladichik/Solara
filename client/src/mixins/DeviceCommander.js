@@ -42,7 +42,6 @@ export default function () {
    */
   const sendCommandToDevice = async (payload, cameFromSemiOpen) => {
     if (payload.deviceIds && payload.deviceIds.length) {
-      console.log(payload.action);
       store.commit('General/setMainLoaderState', true);
       await OrviboAPI.sendCommandToDevice({
         deviceId: payload.deviceIds[index],

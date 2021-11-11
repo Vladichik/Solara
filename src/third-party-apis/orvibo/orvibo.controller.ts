@@ -33,4 +33,11 @@ export class OrviboController {
     const sent = await this.orviboService.sendCommandToDevice(command);
     return res.status(HttpStatus.OK).json(sent);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/refresh-token')
+  async refreshClientToken(@Request() req, @Res() res, @Body() payload) {
+    const sent = await this.orviboService.refreshToken(payload);
+    return res.status(HttpStatus.OK).json(sent);
+  }
 }

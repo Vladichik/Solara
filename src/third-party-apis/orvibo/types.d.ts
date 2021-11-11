@@ -3,6 +3,10 @@ export interface OrviboDeviceQueryProps {
   user_id: string;
 }
 
+export interface OrviboRefreshTokenProps {
+  refresh_token: string;
+}
+
 export interface DeviceCommandProps {
   access_token: string;
   user_id: string;
