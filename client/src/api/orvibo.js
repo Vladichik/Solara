@@ -80,6 +80,7 @@ export default class OrviboAPI {
         orvibo_id: data.user_id,
         orvibo_token: `Bearer ${data.access_token}`,
         orvibo_token_exp: data.expires_in,
+        orvibo_refresh_token: data.refresh_token,
       };
       await UserAPI.updateUser(tokenData);
     }

@@ -12,6 +12,7 @@ export const UserSchema = new mongoose.Schema({
   avatar: String,
   orvibo_id: String,
   orvibo_token: String,
+  orvibo_refresh_token: String,
   orvibo_token_exp: Number,
 }).set('toJSON', {
   virtuals: true,

@@ -54,6 +54,7 @@ export default defineComponent({
             orvibo_id: loggedIn.data.user_id,
             orvibo_token: `Bearer ${loggedIn.data.access_token}`,
             orvibo_token_exp: loggedIn.data.expires_in,
+            orvibo_refresh_token: loggedIn.data.refresh_token,
           };
           await store.dispatch('User/updateUser', userData);
           await router.push('/home');

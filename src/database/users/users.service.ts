@@ -47,4 +47,15 @@ export class UsersService {
   async updateUser(userID: string, user: Partial<User>) {
     return this.userModel.updateOne({ _id: userID }, user);
   }
+
+  tokenIsValid(user: User) {
+    const tokensData = user.orvibo_token;
+    const tokenExpiry = user.orvibo_token_exp;
+    if (tokensData && tokenExpiry) {
+      const date = new Date();
+      date.setUTCSeconds(tokenExpiry);
+      return date > new Date();
+    }
+    return false;
+  }
 }
