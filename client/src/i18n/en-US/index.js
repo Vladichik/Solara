@@ -34,6 +34,7 @@ export default {
   signup: 'Sign Up',
   logout: 'Log out',
   confirm: 'Confirm',
+  remind_pw: 'Remind Password',
   i_am_sure: 'I am sure',
   logout_msg: 'Are you sure you want to logout?',
   confirm_logout: 'Confirm Logout',
@@ -65,6 +66,8 @@ export default {
     saving_failed: 'Could not save changes',
     device_creation_fail: 'Device creation failed',
     device_created: 'Device created successfully',
+    forgot_pw_sent: 'The password has been sent to your email',
+    forgot_pw_absent: 'There is no registered user with such email',
   },
   my_account_links: [
     { name: 'Payment Info', icon: 'credit_card', path: '/payment-info' },
