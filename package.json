@@ -33,6 +33,7 @@
     "@nestjs/serve-static": "^2.1.4",
     "bcrypt": "^5.0.1",
     "cloudinary": "^1.26.3",
+    "crypto-js": "^4.1.1",
     "moment": "^2.29.1",
     "mongoose": "^5.13.2",
     "passport": "^0.4.1",

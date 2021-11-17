@@ -29,10 +29,10 @@ export class UsersService {
   async createUser(user: User): Promise<any> {
     const userExists = await this.findUser(user.username);
     if (!userExists) {
-      const pwHash = await this.cryptoService.hashPassword(user.password);
+      const encryptedPW = await this.cryptoService.encrypt(user.password);
       const friendData = {
         username: user.username,
-        password: pwHash,
+        password: encryptedPW,
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.username,
@@ -57,5 +57,10 @@ export class UsersService {
       return date > new Date();
     }
     return false;
+  }
+
+  async refreshUsersTokens(users: User[]): Promise<boolean> {
+    const usersToRefresh = users.filter((user) => this.tokenIsValid(user));
+    return true;
   }
 }
