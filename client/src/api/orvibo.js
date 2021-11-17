@@ -23,10 +23,6 @@ export default class OrviboAPI {
     return false;
   }
 
-  static expiredToken() {
-    return { message: 'TOKEN_EXPIRED' };
-  }
-
   static triggerOrviboAuthentication() {
     const button = document.getElementById('orvibo-auth-btn');
     if (button) {
@@ -83,6 +79,10 @@ export default class OrviboAPI {
         orvibo_refresh_token: data.refresh_token,
       };
       await UserAPI.updateUser(tokenData);
+    }
+    if (data && data.error === 'invalid_grant') {
+      localStorage.removeItem(Constants.ORVIBO_TOKEN_KEY);
+      this.triggerOrviboAuthentication();
     }
   }
 
