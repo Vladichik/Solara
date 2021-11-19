@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import {
   OrviboDeviceQueryProps,
   DeviceCommandProps,
-  OrviboRefreshTokenProps,
+  OrviboRefreshTokenProps, RefreshTokenResponse,
 } from './types';
 import { CryptoGuyService } from '../../tools/cryptoguy/cryptoguy.service';
 
@@ -62,7 +62,7 @@ export class OrviboService {
    */
   async refreshToken(
     data: OrviboRefreshTokenProps,
-  ): Promise<AxiosResponse<any>> {
+  ): Promise<RefreshTokenResponse> {
     return await this.httpService
       .get(
         `${this.authUrl}?grant_type=refresh_token&client_id=${this.clientId}&client_secret=${this.clientSecret}&refresh_token=${data.refresh_token}`,

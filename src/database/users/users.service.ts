@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
-import { User } from './user.interface';
+import { User, TokenData } from './user.interface';
 import { CryptoGuyService } from '../../tools/cryptoguy/cryptoguy.service';
+import { OrviboService } from '../../third-party-apis/orvibo/orvibo.service';
 
 @Injectable()
 export class UsersService {
@@ -10,6 +11,7 @@ export class UsersService {
     @InjectModel('User')
     private userModel: Model<User>,
     private cryptoService: CryptoGuyService,
+    private orviboService: OrviboService,
   ) {}
 
   async findUser(username: string): Promise<User> {
@@ -48,9 +50,9 @@ export class UsersService {
     return this.userModel.updateOne({ _id: userID }, user);
   }
 
-  tokenIsValid(user: User) {
-    const tokensData = user.orvibo_token;
-    const tokenExpiry = user.orvibo_token_exp;
+  tokenIsValid(user: TokenData) {
+    const tokensData = user.token;
+    const tokenExpiry = user.token_exp;
     if (tokensData && tokenExpiry) {
       const date = new Date();
       date.setUTCSeconds(tokenExpiry);
@@ -59,8 +61,45 @@ export class UsersService {
     return false;
   }
 
-  async refreshUsersTokens(users: User[]): Promise<boolean> {
-    const usersToRefresh = users.filter((user) => this.tokenIsValid(user));
-    return true;
+  async checkUsersTokens(tokens: Partial<TokenData[]>): Promise<boolean> {
+    const seen = new Set();
+    const uniqueList = tokens.filter((el) => {
+      const duplicate = seen.has(el.user_id);
+      seen.add(el.user_id);
+      return !duplicate;
+    });
+    const invalidTokenUsers = uniqueList.filter(
+      (user) => !this.tokenIsValid(user),
+    );
+    if (invalidTokenUsers && invalidTokenUsers.length) {
+      Logger.log(`${invalidTokenUsers.length} users have expired tokens`);
+    }
+    debugger;
+    const refreshPromises = uniqueList.map((item) => {
+      return new Promise((resolve) => {
+        this.orviboService
+          .refreshToken({ refresh_token: item.refresh_token })
+          .then((token) => {
+            if (token.refresh_token) {
+              this.updateUser(item.user_id, {
+                orvibo_token: token.access_token,
+                orvibo_refresh_token: token.refresh_token,
+                orvibo_token_exp: token.expires_in,
+              }).then(() => {
+                Logger.log(`Token refreshed for user ${item.user_id}`);
+                resolve({
+                  user_id: item.user_id,
+                  orvibo_token: token.access_token,
+                  orvibo_refresh_token: token.refresh_token,
+                  orvibo_token_exp: token.expires_in,
+                });
+              });
+            }
+          });
+      });
+    });
+    return Promise.all(refreshPromises).then((promises) => {
+      return true;
+    });
   }
 }

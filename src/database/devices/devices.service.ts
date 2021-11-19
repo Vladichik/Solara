@@ -65,10 +65,14 @@ export class DevicesService {
       return device.orvibo_ids.map((id) => ({
         part_id: id,
         action: district.action,
-        user_id: ownerUser.orvibo_id,
+        user_id: ownerUser._id,
+        orvibo_user_id: ownerUser.orvibo_id,
         token: ownerUser.orvibo_token,
+        token_exp: ownerUser.orvibo_token_exp,
+        refresh_token: ownerUser.orvibo_refresh_token,
       }));
     });
+    await this.userSrv.checkUsersTokens(readyOperationalData);
     debugger;
   }
 }

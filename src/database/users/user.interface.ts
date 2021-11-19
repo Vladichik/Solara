@@ -14,3 +14,11 @@ export interface User extends Document {
   readonly email: string;
   readonly avatar: string;
 }
+
+export interface TokenData {
+  user_id: string;
+  orvibo_user_id: string;
+  token: string;
+  token_exp: number;
+  refresh_token: string;
+}
