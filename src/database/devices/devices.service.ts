@@ -72,7 +72,12 @@ export class DevicesService {
         refresh_token: ownerUser.orvibo_refresh_token,
       }));
     });
-    await this.userSrv.checkUsersTokens(readyOperationalData);
+    // We check the tokens of each relevant users to ensure
+    // that commands that are sent to motors will be executed.
+    const validOperationalData = await this.userSrv.checkUsersTokens(
+      readyOperationalData,
+    );
+    // ======================================================//
     debugger;
   }
 }

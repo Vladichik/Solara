@@ -61,7 +61,15 @@ export class UsersService {
     return false;
   }
 
-  async checkUsersTokens(tokens: Partial<TokenData[]>): Promise<boolean> {
+  /**
+   * Function that validates tokens
+   * if token is expired we refresh it in Orvibo then update
+   * updated token in our database.
+   * Than return data with updated tokens
+   * @param tokens
+   * Vlad. 20/11/21
+   */
+  async checkUsersTokens(tokens: Partial<TokenData[]>): Promise<TokenData[]> {
     const seen = new Set();
     const uniqueList = tokens.filter((el) => {
       const duplicate = seen.has(el.user_id);
@@ -73,33 +81,43 @@ export class UsersService {
     );
     if (invalidTokenUsers && invalidTokenUsers.length) {
       Logger.log(`${invalidTokenUsers.length} users have expired tokens`);
-    }
-    debugger;
-    const refreshPromises = uniqueList.map((item) => {
-      return new Promise((resolve) => {
-        this.orviboService
-          .refreshToken({ refresh_token: item.refresh_token })
-          .then((token) => {
-            if (token.refresh_token) {
-              this.updateUser(item.user_id, {
-                orvibo_token: token.access_token,
-                orvibo_refresh_token: token.refresh_token,
-                orvibo_token_exp: token.expires_in,
-              }).then(() => {
-                Logger.log(`Token refreshed for user ${item.user_id}`);
-                resolve({
-                  user_id: item.user_id,
+      const refreshPromises = uniqueList.map((item) => {
+        return new Promise((resolve) => {
+          this.orviboService
+            .refreshToken({ refresh_token: item.refresh_token })
+            .then((token) => {
+              if (token.refresh_token) {
+                this.updateUser(item.user_id, {
                   orvibo_token: token.access_token,
                   orvibo_refresh_token: token.refresh_token,
                   orvibo_token_exp: token.expires_in,
+                }).then(() => {
+                  Logger.log(`Token refreshed for user ${item.user_id}`);
+                  resolve({
+                    user_id: item.user_id,
+                    orvibo_token: token.access_token,
+                    orvibo_refresh_token: token.refresh_token,
+                    orvibo_token_exp: token.expires_in,
+                  });
                 });
-              });
-            }
-          });
+              }
+            });
+        });
       });
-    });
-    return Promise.all(refreshPromises).then((promises) => {
-      return true;
-    });
+      return Promise.all(refreshPromises).then((promises) => {
+        return tokens.map((token) => {
+          const hasUpdated = promises.find(
+            (p: TokenData) => p.user_id === token.user_id,
+          );
+          if (hasUpdated) {
+            // @ts-ignore
+            token.token = hasUpdated.orvibo_token;
+          }
+          return token;
+        });
+      });
+    } else {
+      return tokens;
+    }
   }
 }
