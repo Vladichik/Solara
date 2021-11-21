@@ -63,6 +63,27 @@ export class DevicesService {
   }
 
   /**
+   * Function that returns ready locks object to be updated
+   * in DB.
+   * @param condition
+   * @param time
+   * Vlad. 21/11/21
+   */
+  generateLockUpdateObject(
+    condition: string,
+    time: string,
+  ): Record<symbol, string> {
+    switch (condition) {
+      case 'SNOW':
+        return { lock_snow: new Date(time) };
+      case 'RAIN':
+        return { lock_rain: new Date(time) };
+      case 'WIND':
+        return { lock_wind: new Date(time) };
+    }
+  }
+
+  /**
    * Function that updates lock time of all devices which are going to be operated
    * @param weatherData
    * @param devices
@@ -73,20 +94,30 @@ export class DevicesService {
     devices: Device[],
   ): Promise<boolean> {
     if (devices && devices.length) {
+      const bulks = [];
       const devsToUpdate = JSON.parse(JSON.stringify(devices));
       devsToUpdate.forEach((device) => {
         const district = weatherData.find(
           // @ts-ignore
           (w) => w.district === device.address.district,
         );
-        device[`lock_${district.condition.toLowerCase()}`] = moment(district.time)
-          .add(
-            this.confSrv.get<number>(`${district.condition}_LOCK_TIME`),
-            'hours',
-          )
+        const timeToAdd = this.confSrv.get<number>(
+          `${district.condition}_LOCK_TIME`,
+        );
+        const updatedTime = moment(district.time)
+          .add(timeToAdd, 'hours')
           .format();
+        bulks.push({
+          updateOne: {
+            filter: { _id: device._id },
+            update: this.generateLockUpdateObject(
+              district.condition,
+              updatedTime,
+            ),
+          },
+        });
       });
-      debugger;
+      await this.deviceModel.bulkWrite(bulks);
       Logger.log(`Lock time updated for ${devsToUpdate.length} devices`);
       return true;
     }
