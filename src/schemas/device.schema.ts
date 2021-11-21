@@ -17,6 +17,9 @@ export const DeviceSchema = new mongoose.Schema({
   image_public_id: String,
   receipt_url: String,
   receipt_public_id: String,
+  lock_snow: Date,
+  lock_rain: Date,
+  lock_wind: Date,
   motor_type: { type: String, enum: ['SITO_MOTOR', 'TIM_MOTOR'] },
   patio_colors: [
     {

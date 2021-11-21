@@ -117,6 +117,7 @@ export class UsersService {
         });
       });
     } else {
+      Logger.log('All users have valid tokens');
       return tokens;
     }
   }

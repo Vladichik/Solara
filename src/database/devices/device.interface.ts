@@ -15,6 +15,9 @@ export interface Device extends Document {
   readonly technician_name: string;
   readonly technician_company: string;
   readonly installation_date: Date;
+  readonly lock_snow: Date;
+  readonly lock_rain: Date;
+  readonly lock_wind: Date;
   readonly address: mongoose.Schema.Types.Mixed;
   readonly image_url: string;
   readonly image_public_id: string;

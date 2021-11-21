@@ -13,6 +13,7 @@ export interface ForecastResponse {
 export interface AnalyzedWeather {
   district: string;
   condition: string;
+  time: string;
   code: number;
   text: string;
   action: string;

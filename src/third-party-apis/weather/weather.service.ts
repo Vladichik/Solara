@@ -124,18 +124,11 @@ export class WeatherService {
       if (!forecastData || !forecastData.length) return {};
       const relForecast = forecastData.find((h) => h.time.includes(`${hour}:`));
       if (!relForecast) return {};
-      if (relForecast.wind_mph >= this.maxWindSpeed) {
-        return {
-          code: relForecast.condition.code,
-          text: relForecast.condition.text,
-          condition: 'WIND',
-          action: this.actOn,
-        };
-      }
       if (this.snowCodes.includes(relForecast.condition.code)) {
         return {
           code: relForecast.condition.code,
           text: relForecast.condition.text,
+          time: relForecast.time,
           condition: 'SNOW',
           action: this.actOff,
         };
@@ -144,8 +137,18 @@ export class WeatherService {
         return {
           code: relForecast.condition.code,
           text: relForecast.condition.text,
+          time: relForecast.time,
           condition: 'RAIN',
           action: this.actOff,
+        };
+      }
+      if (relForecast.wind_mph >= this.maxWindSpeed) {
+        return {
+          code: relForecast.condition.code,
+          text: relForecast.condition.text,
+          time: relForecast.time,
+          condition: 'WIND',
+          action: this.actOn,
         };
       }
       // if (relForecast.is_day === 1 ) {
