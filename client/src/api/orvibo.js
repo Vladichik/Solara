@@ -53,7 +53,13 @@ export default class OrviboAPI {
   static async getUserDeviceList() {
     if (this.tokenIsValid()) {
       const payload = this.basicPayloadData();
-      return api.post(`${ORVIBO_API_BASE}/get-devices`, payload);
+      const devices = await api.post(`${ORVIBO_API_BASE}/get-devices`, payload);
+      // Case when token is valid, but token itself is wrong because of server side update
+      if (devices.data && devices.data.errorMsg && devices.data.errorMsg.includes('token')) {
+        this.triggerOrviboAuthentication();
+        return false;
+      }
+      return devices;
     }
     if (!localStorage.getItem(Constants.ORVIBO_TOKEN_KEY)) {
       this.triggerOrviboAuthentication();

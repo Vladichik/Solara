@@ -14,7 +14,7 @@ export class CronService {
 
   @Cron(CronExpression.EVERY_30_SECONDS)
   startCheckForWeatherHazards() {
-    this.weatherSrv.startScheduledTaskForWeatherHazards().then();
+    // this.weatherSrv.startScheduledTaskForWeatherHazards().then();
     // if (process.env.NODE_ENV === 'production') {
     //
     // }
