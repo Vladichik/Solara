@@ -1,5 +1,5 @@
 <template>
-  <section class="sol-device-control-panel">
+  <section :class="['sol-device-control-panel weather-def', getWeatherBackgroundClass(currentWeather)]">
     <navbar :absolute="true"
             :title="getDeviceName(device)"
             :btn-label="$tm('nav_bar.home')" :go-back="goHome" />
@@ -77,6 +77,7 @@ import { date } from 'quasar';
 import MotorSelectionPanel from 'components/dialogs/MotorSelectionPanel';
 import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
 import DeviceCommander from 'src/mixins/DeviceCommander';
+import WeatherDataComposition from 'src/mixins/WeatherDataComposition';
 import DevicesAPI from 'src/api/device';
 
 import WeatherAPI from 'src/api/weather';
@@ -95,6 +96,7 @@ export default defineComponent({
       beginSemiOpenProcess,
     } = DeviceCommander();
     const { getDeviceName } = DataGettersCompositions();
+    const { getWeatherBackgroundClass } = WeatherDataComposition();
     const store = useStore();
     const solaraDevice = ref({});
     const currentWeather = ref({});
@@ -181,6 +183,7 @@ export default defineComponent({
       stopProcess,
       beginSemiOpenProcess,
       saveSelectedMotors,
+      getWeatherBackgroundClass,
     };
   },
 });
@@ -203,6 +206,7 @@ export default defineComponent({
 }
 
 .sol-weather-content {
+  color: white;
   font-size: 18px;
   justify-items: center;
   @include setGridAuto(auto, 10px, "rows");
