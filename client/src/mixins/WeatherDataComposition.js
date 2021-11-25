@@ -7,7 +7,7 @@ export default function () {
    * Vlad. 22/11/21
    */
   const getWeatherBackgroundClass = (weather) => {
-    if (weather.condition) {
+    if (weather && weather.condition) {
       const isNight = weather.is_day === 0 ? '-night' : '';
       if (Constants.WEATHER_RAIN_CODES.includes(weather.condition.code)) {
         return `weather-rain${isNight}`;

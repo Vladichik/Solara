@@ -4,6 +4,7 @@
   .q-item__section--side {
     color: white;
   }
+
   //.q-select__dropdown-icon
 }
 
@@ -18,4 +19,45 @@
 
 .sol-orvibo-auth-btn {
   display: none;
+}
+
+.sol-open,
+.sol-semi-open,
+.sol-ninety-deg,
+.sol-semi-closed,
+.sol-closed {
+  width: 20px;
+  height: 20px;
+}
+
+.sol-open {
+  background-image: url("../../public/images/open.svg");
+}
+
+.sol-semi-open {
+  background-image: url("../../public/images/semi_open.svg");
+}
+
+.sol-ninety-deg {
+  background-image: url("../../public/images/ninety.svg");
+}
+
+.sol-semi-closed {
+  background-image: url("../../public/images/semi_closed.svg");
+}
+
+.sol-closed {
+  background-image: url("../../public/images/closed.svg");
+}
+
+.sol-control-btn-abs-right {
+  position: absolute;
+  bottom: 58px;
+  right: 59px;
+}
+
+.sol-control-btn-abs-left {
+  position: absolute;
+  bottom: 58px;
+  left: 59px;
 }

@@ -1,66 +1,79 @@
 <template>
   <section :class="['sol-device-control-panel weather-def', getWeatherBackgroundClass(currentWeather)]">
-    <navbar :absolute="true"
-            :title="getDeviceName(device)"
-            :btn-label="$tm('nav_bar.home')" :go-back="goHome" />
+    <navbar :absolute='true'
+            :title='getDeviceName(device)'
+            :btn-label="$tm('nav_bar.home')" :go-back='goHome' />
     <q-btn flat no-caps
-           icon="control_camera"
-           class="sol-motors-panel-trigger"
-           label="Motors" @click="$refs.motorSelectionPanel.showDialog = true" />
-    <div class="sol-control-panel-main full-height">
-      <div class="sol-weather-content">
+           icon='control_camera'
+           class='sol-motors-panel-trigger'
+           label='Motors' @click='$refs.motorSelectionPanel.showDialog = true' />
+    <div class='sol-control-panel-main full-height'>
+      <div class='sol-weather-content'>
         <div>
           {{ date.formatDate(currentWeather.last_updated_epoch * 1000, 'MMMM Do') }}
         </div>
         <span>{{ weatherLocation.name }}</span>
-        <div class="sol-condition-block">
-          <q-img spinner-color="white" :src="getIconUrl" style="height: 80px; width: 80px" />
-          <span class="sol-degrees-elem">{{ getCentigradeTemp }}</span>
+        <div class='sol-condition-block'>
+          <q-img spinner-color='white' :src='getIconUrl' style='height: 80px; width: 80px' />
+          <span class='sol-degrees-elem'>{{ getCentigradeTemp }}</span>
         </div>
         <span>{{ currentWeather.condition ? currentWeather.condition.text : '' }}</span>
       </div>
     </div>
-    <div class="sol-controls-ring-holder">
-      <div class="sol-controls-ring shadow-5">
-        <div class="sol-ring-btn-upper">
-          <div class="sol-ctr-button-frame">
-            <q-btn class="text-blue-grey-3"
-                   round color="white"
-                   icon="menu"
-                   size="md"
-                   @click="beginSemiOpenProcess(device)" />
-            <span class="text-blue-grey-3">{{ $t('semi_open') }}</span>
+    <div class='sol-controls-ring-holder'>
+      <div class='sol-controls-ring shadow-5'>
+        <div class='sol-ring-btn-upper'>
+          <div class='sol-ctr-button-frame'>
+            <q-btn class='text-blue-grey-7'
+                   round color='white'
+                   size='lg'
+                   @click='beginSemiOpenProcess(device)'>
+              <i class='sol-ninety-deg'></i>
+            </q-btn>
           </div>
         </div>
-        <div class="sol-ring-btn-base q-pl-md q-pr-md">
-          <div class="sol-ctr-button-frame">
-            <q-btn class="text-blue-grey-3"
-                   round color="white"
-                   icon="menu"
-                   size="md"
-                   @click="openDevice(device)" />
-            <span class="text-blue-grey-3">{{ $t('open') }}</span>
+        <div class='sol-ring-btn-base q-pl-md q-pr-md'>
+          <div class='sol-ctr-button-frame'>
+            <q-btn class='text-blue-grey-5'
+                   round color='white'
+                   size='lg'
+                   @click='openDevice(device)'>
+              <i class='sol-open'></i>
+            </q-btn>
+            <!--            <span class="text-blue-grey-3">{{ $t('open') }}</span>-->
           </div>
+          <q-btn class='sol-control-btn-abs-left text-blue-grey-5'
+                 round color='white'
+                 size='lg'
+                 @click='openDevice(device)'>
+            <i class='sol-semi-open'></i>
+          </q-btn>
           <div>
-            <q-btn round color="primary"
-                   icon="pause"
-                   size="17px"
-                   @click="stopProcess(device)" />
+            <q-btn round color='primary'
+                   icon='pause'
+                   size='lg'
+                   @click='stopProcess(device)' />
           </div>
-          <div class="sol-ctr-button-frame">
-            <q-btn class="text-blue-grey-3"
-                   round color="white"
-                   icon="stop"
-                   size="md"
-                   @click="closeDevice(device)" />
-            <span class="text-blue-grey-3">{{ $t('close') }}</span>
+          <q-btn class='sol-control-btn-abs-right text-blue-grey-5'
+                 round color='white'
+                 size='lg'
+                 @click='openDevice(device)'>
+            <i class='sol-semi-closed'></i>
+          </q-btn>
+          <div class='sol-ctr-button-frame'>
+            <q-btn class='text-blue-grey-5'
+                   round color='white'
+                   size='lg'
+                   @click='closeDevice(device)'>
+              <i class='sol-closed'></i>
+            </q-btn>
           </div>
         </div>
       </div>
     </div>
-    <motor-selection-panel :device="device"
-                           ref="motorSelectionPanel"
-                           @on-panel-close="saveSelectedMotors" />
+    <motor-selection-panel :device='device'
+                           ref='motorSelectionPanel'
+                           @on-panel-close='saveSelectedMotors' />
   </section>
 </template>
 
@@ -189,7 +202,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang='scss'>
 @import "src/css/mixins";
 
 .sol-device-control-panel {
@@ -206,6 +219,7 @@ export default defineComponent({
 }
 
 .sol-weather-content {
+  text-shadow: 1px 1px 1px #000000;
   color: white;
   font-size: 18px;
   justify-items: center;
@@ -214,9 +228,9 @@ export default defineComponent({
 
 .sol-controls-ring-holder {
   position: fixed;
-  height: 300px;
+  height: 320px;
   width: 100%;
-  bottom: -150px;
+  bottom: -160px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -225,7 +239,7 @@ export default defineComponent({
 .sol-controls-ring {
   width: 100%;
   height: 100%;
-  max-width: 300px;
+  max-width: 320px;
   background: white;
   margin: 0 10px;
   border-radius: 50%;
@@ -235,9 +249,10 @@ export default defineComponent({
 }
 
 .sol-ring-btn-base {
+  position: relative;
   width: 100%;
   margin: 0 0 80px 0;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   @include setGridAuto(auto, null, "columns");
 }
