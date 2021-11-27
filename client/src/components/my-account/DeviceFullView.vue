@@ -47,15 +47,15 @@
               v-model="formData.amount_of_motors"
               :model-value="formData.amount_of_motors"
               :options="amountsOfMotors" />
-    <q-select filled
-              map-options
-              emit-value
-              option-value="key"
-              option-label="text"
-              v-model="formData.motor_type"
-              :model-value="formData.motor_type"
-              :options="motorsTypeOptions"
-              :label="$t('motor_type')" />
+<!--    <q-select filled-->
+<!--              map-options-->
+<!--              emit-value-->
+<!--              option-value="key"-->
+<!--              option-label="text"-->
+<!--              v-model="formData.motor_type"-->
+<!--              :model-value="formData.motor_type"-->
+<!--              :options="motorsTypeOptions"-->
+<!--              :label="$t('motor_type')" />-->
     <q-input filled :label="$t('technician_name')"
              v-model="formData.technician_name" />
     <q-input filled
@@ -176,7 +176,7 @@ export default defineComponent({
       rafter_size: null,
       louver_size: null,
       amount_of_motors: null,
-      motor_type: null,
+      motor_type: 'MOTOR_TI',
     });
 
     const initFormData = () => {

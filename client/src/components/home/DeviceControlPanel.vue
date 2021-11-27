@@ -27,7 +27,7 @@
             <q-btn class='text-blue-grey-7'
                    round color='white'
                    size='lg'
-                   @click='beginSemiOpenProcess(device)'>
+                   @click='triggerMotorsPartialOpening(device, constants.MOTOR_SEM_OPEN)'>
               <i class='sol-ninety-deg'></i>
             </q-btn>
           </div>
@@ -45,7 +45,7 @@
           <q-btn class='sol-control-btn-abs-left text-blue-grey-5'
                  round color='white'
                  size='lg'
-                 @click='openDevice(device)'>
+                 @click='triggerMotorsPartialOpening(device, constants.MOTOR_QT_OPEN)'>
             <i class='sol-semi-open'></i>
           </q-btn>
           <div>
@@ -57,7 +57,7 @@
           <q-btn class='sol-control-btn-abs-right text-blue-grey-5'
                  round color='white'
                  size='lg'
-                 @click='openDevice(device)'>
+                 @click='triggerMotorsPartialOpening(device, constants.MOTOR_ALM_OPEN)'>
             <i class='sol-semi-closed'></i>
           </q-btn>
           <div class='sol-ctr-button-frame'>
@@ -87,12 +87,12 @@ import {
 } from 'vue';
 import { useStore } from 'vuex';
 import { date } from 'quasar';
+import { Constants } from 'src/config/constants';
 import MotorSelectionPanel from 'components/dialogs/MotorSelectionPanel';
 import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
 import DeviceCommander from 'src/mixins/DeviceCommander';
 import WeatherDataComposition from 'src/mixins/WeatherDataComposition';
 import DevicesAPI from 'src/api/device';
-
 import WeatherAPI from 'src/api/weather';
 
 export default defineComponent({
@@ -106,8 +106,9 @@ export default defineComponent({
       openDevice,
       closeDevice,
       stopProcess,
-      beginSemiOpenProcess,
+      triggerMotorsPartialOpening,
     } = DeviceCommander();
+    const constants = Constants;
     const { getDeviceName } = DataGettersCompositions();
     const { getWeatherBackgroundClass } = WeatherDataComposition();
     const store = useStore();
@@ -185,6 +186,7 @@ export default defineComponent({
       // console.log(props.device);
     });
     return {
+      constants,
       currentWeather,
       weatherLocation,
       getIconUrl,
@@ -194,7 +196,7 @@ export default defineComponent({
       openDevice,
       closeDevice,
       stopProcess,
-      beginSemiOpenProcess,
+      triggerMotorsPartialOpening,
       saveSelectedMotors,
       getWeatherBackgroundClass,
     };

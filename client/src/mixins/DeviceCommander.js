@@ -19,42 +19,37 @@ export default function () {
    * @returns {Promise<void>}
    * Vlad. 17/09/21
    */
-  const handleSemiOpenProcess = async (motorType, deviceId) => {
-    const motorSpeed = Constants[`${motorType}_SPEED`];
-    await timeout(motorSpeed + 1000);
-    openDevice({
-      selected_ids: [deviceId],
-    }).then();
-    await timeout(5000);
-    stopProcess({
-      selected_ids: [deviceId],
-    }).then();
-  };
+  // const handleSemiOpenProcess = async (motorType, deviceId) => {
+  //   const motorSpeed = Constants[`${motorType}_SPEED`];
+  //   await timeout(motorSpeed + 1000);
+  //   openDevice({
+  //     selected_ids: [deviceId],
+  //   }).then();
+  //   await timeout(5000);
+  //   stopProcess({
+  //     selected_ids: [deviceId],
+  //   }).then();
+  // };
 
   /**
    * Since Orvibo api does not support multiple device operation at the same time
    * and it also does not support query burst, we send multiple device operation as synchronised
    * queries - each next query fires after previous query finishes.
    * @param payload - Object
-   * @param cameFromSemiOpen - Boolean value that is TRUE if function is called by semiOpenDevice
    * @returns {Promise<boolean>}
    * Vlad. 16/09/21
    */
-  const sendCommandToDevice = async (payload, cameFromSemiOpen) => {
+  const sendCommandToDevice = async (payload) => {
     if (payload.deviceIds && payload.deviceIds.length) {
       store.commit('General/setMainLoaderState', true);
       await OrviboAPI.sendCommandToDevice({
         deviceId: payload.deviceIds[index],
         action: payload.action,
       });
-      // If semi open called this function we call the STOP method
-      // if (cameFromSemiOpen) {
-      //   handleSemiOpenProcess(payload.motor_type, payload.deviceIds[index]).then();
-      // }
       index += 1;
       if (payload.deviceIds[index]) {
         await timeout(1000);
-        await sendCommandToDevice(payload, cameFromSemiOpen);
+        await sendCommandToDevice(payload);
       }
     }
   };
@@ -142,11 +137,39 @@ export default function () {
     });
   };
 
+  /**
+   * Function triggers group operation of the motors when user presses the button
+   * on the device controll panel
+   * @param device
+   * @param position
+   * Vlad. 27/11/21
+   */
+  const triggerMotorsPartialOpening = async (device, position) => {
+    if (device && device.selected_ids.length) {
+      const awaitForFullClosing = Constants[`${device.motor_type}_SPEED`] + device.selected_ids.length * 1000;
+      await closeDevice({ selected_ids: device.selected_ids });
+      await timeout(awaitForFullClosing);
+      await openDevice({ selected_ids: device.selected_ids });
+      const processes = device.selected_ids.map((motor, i) => new Promise((resolve) => {
+        const stopAfterSeconds = Constants[`${device.motor_type}_${position}`] + 1000 * i;
+        setTimeout(() => {
+          stopProcess({ selected_ids: [motor] });
+          resolve(motor);
+        }, stopAfterSeconds);
+      }));
+      return Promise.all(processes).then((data) => {
+        store.commit('General/setMainLoaderState', false);
+      });
+    }
+    return false;
+  };
+
   return {
     openDevice,
     closeDevice,
     stopProcess,
-    beginSemiOpenProcess,
+    // beginSemiOpenProcess,
+    triggerMotorsPartialOpening,
     triggerFavoritesPreset,
   };
 }
