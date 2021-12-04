@@ -108,6 +108,7 @@ export default {
   select_motor: 'Select motor/s you want to operate',
   all: 'All',
   mode: 'Mode',
+  device_locked: 'This device has $value$ lock. Are you sure you want to remove this lock and proceed?',
   patio_color_opts: [
     { text: 'White', key: 'white' },
     { text: 'Adobe', key: 'adobe' },

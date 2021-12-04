@@ -103,13 +103,13 @@ export default function () {
    * @param device
    * @returns {Promise<void>}
    */
-  const beginSemiOpenProcess = async (device) => {
-    index = 0;
-    await sendCommandToDevice({
-      deviceIds: device.selected_ids,
-      action: 'TurnOff',
-    }, true);
-  };
+  // const beginSemiOpenProcess = async (device) => {
+  //   index = 0;
+  //   await sendCommandToDevice({
+  //     deviceIds: device.selected_ids,
+  //     action: 'TurnOff',
+  //   }, true);
+  // };
 
   /**
    * THis idiotic function is made to preset all angines according to favorites
@@ -120,6 +120,7 @@ export default function () {
    * Vlad. 02/10/21
    */
   const triggerFavoritesPreset = async (device) => {
+    debugger;
     const favoritesMotors = device.favorites_set.map((m) => m.orvibo_id);
     await closeDevice({ selected_ids: favoritesMotors });
     const awaitForFullClosing = Constants[`${device.motor_type}_SPEED`] + favoritesMotors.length * 1000;
@@ -139,7 +140,7 @@ export default function () {
 
   /**
    * Function triggers group operation of the motors when user presses the button
-   * on the device controll panel
+   * on the device control panel
    * @param device
    * @param position
    * Vlad. 27/11/21
@@ -168,7 +169,6 @@ export default function () {
     openDevice,
     closeDevice,
     stopProcess,
-    // beginSemiOpenProcess,
     triggerMotorsPartialOpening,
     triggerFavoritesPreset,
   };

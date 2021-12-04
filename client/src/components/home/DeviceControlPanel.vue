@@ -27,7 +27,7 @@
             <q-btn class='text-blue-grey-7'
                    round color='white'
                    size='lg'
-                   @click='triggerMotorsPartialOpening(device, constants.MOTOR_SEM_OPEN)'>
+                   @click='validateDeviceLockAndTrigger(constants.MOTOR_SEM_OPEN)'>
               <i class='sol-ninety-deg'></i>
             </q-btn>
           </div>
@@ -75,6 +75,7 @@
                            ref='motorSelectionPanel'
                            @on-panel-close='saveSelectedMotors' />
   </section>
+  <unlock-device-dialog ref="unlockDeviceDialog" :device='device' :lock-type='activeLockType' />
 </template>
 
 <script>
@@ -87,11 +88,13 @@ import {
 } from 'vue';
 import { useStore } from 'vuex';
 import { date } from 'quasar';
+import moment from 'moment';
 import { Constants } from 'src/config/constants';
 import MotorSelectionPanel from 'components/dialogs/MotorSelectionPanel';
 import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
 import DeviceCommander from 'src/mixins/DeviceCommander';
 import WeatherDataComposition from 'src/mixins/WeatherDataComposition';
+import UnlockDeviceDialog from 'components/dialogs/UnlockDeviceDialog';
 import DevicesAPI from 'src/api/device';
 import WeatherAPI from 'src/api/weather';
 
@@ -100,6 +103,7 @@ export default defineComponent({
   props: ['device', 'goHome'],
   components: {
     MotorSelectionPanel,
+    UnlockDeviceDialog,
   },
   setup(props) {
     const {
@@ -115,6 +119,8 @@ export default defineComponent({
     const solaraDevice = ref({});
     const currentWeather = ref({});
     const weatherLocation = ref({});
+    const unlockDeviceDialog = ref(null);
+    const activeLockType = ref(null);
     const myDevices = computed(() => store.state.Devices.myDevices);
 
     const getWeatherForDevice = () => {
@@ -132,7 +138,6 @@ export default defineComponent({
             if (weather.data && weather.data.current) {
               currentWeather.value = weather.data.current;
               weatherLocation.value = weather.data.location;
-              // console.log(weather.data);
             } else {
               currentWeather.value = {};
               weatherLocation.value = {};
@@ -181,9 +186,21 @@ export default defineComponent({
       store.commit('General/setMainLoaderState', false);
     };
 
+    const validateDeviceLockAndTrigger = (mode) => {
+      // triggerMotorsPartialOpening(device, constants.MOTOR_SEM_OPEN)
+      const lockTypes = ['lock_snow', 'lock_rain', 'lock_wind'];
+      activeLockType.value = lockTypes.find((type) => moment(props.device[type]).isBefore(new Date()));
+      if (activeLockType.value && activeLockType.value.length) {
+        unlockDeviceDialog.value.showDialog = true;
+      } else {
+        const partialProcesses = [constants.MOTOR_SEM_OPEN, constants.MOTOR_QT_OPEN, constants.MOTOR_ALM_OPEN];
+        const asd = props.device;
+        debugger;
+      }
+    };
+
     onBeforeMount(() => {
       getWeatherForDevice();
-      // console.log(props.device);
     });
     return {
       constants,
@@ -191,6 +208,8 @@ export default defineComponent({
       weatherLocation,
       getIconUrl,
       getCentigradeTemp,
+      activeLockType,
+      unlockDeviceDialog,
       date,
       getDeviceName,
       openDevice,
@@ -199,6 +218,7 @@ export default defineComponent({
       triggerMotorsPartialOpening,
       saveSelectedMotors,
       getWeatherBackgroundClass,
+      validateDeviceLockAndTrigger,
     };
   },
 });
