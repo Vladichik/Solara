@@ -192,7 +192,7 @@ export default defineComponent({
 
     const validateDeviceLockAndTrigger = (mode) => {
       const lockTypes = ['lock_snow', 'lock_rain', 'lock_wind'];
-      activeLockType.value = lockTypes.find((type) => moment(props.device[type]).isBefore(new Date()));
+      activeLockType.value = lockTypes.find((type) => moment(props.device[type]).isAfter(new Date()));
       if (activeLockType.value && activeLockType.value.length) {
         unlockDeviceDialog.value.showDialog = true;
         operationMode.value = mode;
@@ -206,18 +206,18 @@ export default defineComponent({
      * @param mode
      * V
      */
-    const triggerRelevantDeviceCommand = (mode = operationMode) => {
+    const triggerRelevantDeviceCommand = (mode = operationMode.value) => {
       const partialProcesses = [constants.MOTOR_SEM_OPEN, constants.MOTOR_QT_OPEN, constants.MOTOR_ALM_OPEN];
-      if (partialProcesses.includes(mode.value)) {
-        triggerMotorsPartialOpening(props.device, mode.value);
+      if (partialProcesses.includes(mode)) {
+        triggerMotorsPartialOpening(props.device, mode);
       }
-      if (mode.value === 'close') {
+      if (mode === 'close') {
         closeDevice(props.device);
       }
-      if (mode.value === 'open') {
+      if (mode === 'open') {
         openDevice(props.device);
       }
-      if (mode.value === 'close' || mode.value === 'open') {
+      if (mode === 'close' || mode === 'open') {
         setTimeout(() => {
           store.commit('General/setMainLoaderState', false);
         }, constants[`${props.device.motor_type}_SPEED`]);
