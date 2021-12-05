@@ -9,29 +9,6 @@ export default function () {
   const timeout = async (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   /**
-   * This function handles semi open process.
-   * It waits 11 seconds for each available moto to close then
-   * it begins to reopen each motor and after 5 seconds pauses the process.
-   * All times were calculated manually and real operation might be a bit
-   * uncalibrated
-   * @param motorType - String - Type of the motor, used to determine motor speed
-   * @param deviceId - string ID of the motor that should be operated
-   * @returns {Promise<void>}
-   * Vlad. 17/09/21
-   */
-  // const handleSemiOpenProcess = async (motorType, deviceId) => {
-  //   const motorSpeed = Constants[`${motorType}_SPEED`];
-  //   await timeout(motorSpeed + 1000);
-  //   openDevice({
-  //     selected_ids: [deviceId],
-  //   }).then();
-  //   await timeout(5000);
-  //   stopProcess({
-  //     selected_ids: [deviceId],
-  //   }).then();
-  // };
-
-  /**
    * Since Orvibo api does not support multiple device operation at the same time
    * and it also does not support query burst, we send multiple device operation as synchronised
    * queries - each next query fires after previous query finishes.
@@ -95,21 +72,6 @@ export default function () {
       action: 'Pause',
     });
   };
-
-  /**
-   * Function that half opens patio.
-   * Basically what we do is closing thee patio (waiting 10 seconds until it closes)
-   * Than we fire
-   * @param device
-   * @returns {Promise<void>}
-   */
-  // const beginSemiOpenProcess = async (device) => {
-  //   index = 0;
-  //   await sendCommandToDevice({
-  //     deviceIds: device.selected_ids,
-  //     action: 'TurnOff',
-  //   }, true);
-  // };
 
   /**
    * THis idiotic function is made to preset all angines according to favorites

@@ -37,7 +37,7 @@
             <q-btn class='text-blue-grey-5'
                    round color='white'
                    size='lg'
-                   @click='openDevice(device)'>
+                   @click='validateDeviceLockAndTrigger("open")'>
               <i class='sol-open'></i>
             </q-btn>
             <!--            <span class="text-blue-grey-3">{{ $t('open') }}</span>-->
@@ -45,7 +45,7 @@
           <q-btn class='sol-control-btn-abs-left text-blue-grey-5'
                  round color='white'
                  size='lg'
-                 @click='triggerMotorsPartialOpening(device, constants.MOTOR_QT_OPEN)'>
+                 @click='validateDeviceLockAndTrigger(constants.MOTOR_QT_OPEN)'>
             <i class='sol-semi-open'></i>
           </q-btn>
           <div>
@@ -57,14 +57,14 @@
           <q-btn class='sol-control-btn-abs-right text-blue-grey-5'
                  round color='white'
                  size='lg'
-                 @click='triggerMotorsPartialOpening(device, constants.MOTOR_ALM_OPEN)'>
+                 @click='validateDeviceLockAndTrigger(constants.MOTOR_ALM_OPEN)'>
             <i class='sol-semi-closed'></i>
           </q-btn>
           <div class='sol-ctr-button-frame'>
             <q-btn class='text-blue-grey-5'
                    round color='white'
                    size='lg'
-                   @click='closeDevice(device)'>
+                   @click='validateDeviceLockAndTrigger("close")'>
               <i class='sol-closed'></i>
             </q-btn>
           </div>
@@ -75,7 +75,10 @@
                            ref='motorSelectionPanel'
                            @on-panel-close='saveSelectedMotors' />
   </section>
-  <unlock-device-dialog ref="unlockDeviceDialog" :device='device' :lock-type='activeLockType' />
+  <unlock-device-dialog ref="unlockDeviceDialog"
+                        :device='device'
+                        :lock-type='activeLockType'
+                        :unlock='triggerRelevantDeviceCommand' />
 </template>
 
 <script>
@@ -121,6 +124,7 @@ export default defineComponent({
     const weatherLocation = ref({});
     const unlockDeviceDialog = ref(null);
     const activeLockType = ref(null);
+    const operationMode = ref(null);
     const myDevices = computed(() => store.state.Devices.myDevices);
 
     const getWeatherForDevice = () => {
@@ -187,15 +191,36 @@ export default defineComponent({
     };
 
     const validateDeviceLockAndTrigger = (mode) => {
-      // triggerMotorsPartialOpening(device, constants.MOTOR_SEM_OPEN)
       const lockTypes = ['lock_snow', 'lock_rain', 'lock_wind'];
       activeLockType.value = lockTypes.find((type) => moment(props.device[type]).isBefore(new Date()));
       if (activeLockType.value && activeLockType.value.length) {
         unlockDeviceDialog.value.showDialog = true;
+        operationMode.value = mode;
       } else {
-        const partialProcesses = [constants.MOTOR_SEM_OPEN, constants.MOTOR_QT_OPEN, constants.MOTOR_ALM_OPEN];
-        const asd = props.device;
-        debugger;
+        triggerRelevantDeviceCommand(mode);
+      }
+    };
+
+    /**
+     * Command trigger for different operations
+     * @param mode
+     * V
+     */
+    const triggerRelevantDeviceCommand = (mode = operationMode) => {
+      const partialProcesses = [constants.MOTOR_SEM_OPEN, constants.MOTOR_QT_OPEN, constants.MOTOR_ALM_OPEN];
+      if (partialProcesses.includes(mode.value)) {
+        triggerMotorsPartialOpening(props.device, mode.value);
+      }
+      if (mode.value === 'close') {
+        closeDevice(props.device);
+      }
+      if (mode.value === 'open') {
+        openDevice(props.device);
+      }
+      if (mode.value === 'close' || mode.value === 'open') {
+        setTimeout(() => {
+          store.commit('General/setMainLoaderState', false);
+        }, constants[`${props.device.motor_type}_SPEED`]);
       }
     };
 
@@ -219,6 +244,7 @@ export default defineComponent({
       saveSelectedMotors,
       getWeatherBackgroundClass,
       validateDeviceLockAndTrigger,
+      triggerRelevantDeviceCommand,
     };
   },
 });

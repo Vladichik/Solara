@@ -5,8 +5,7 @@
       <span class='q-pa-lg text-center sol-unlock-text'>{{ getMessage() }}</span>
       <div class='sol-dialog-footer'>
         <q-btn unelevated v-close-popup :label="$t('cancel')" />
-        <q-btn unelevated
-               color='primary'>
+        <q-btn unelevated color='primary' @click='unlockAndProceed()'>
           {{ $t('i_am_sure') }}
         </q-btn>
       </div>
@@ -21,7 +20,7 @@ import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   name: 'ConfirmLogout',
-  props: ['device', 'lockType'],
+  props: ['device', 'lockType', 'unlock'],
   setup(props) {
     const store = useStore();
     const { t } = useI18n();
@@ -34,9 +33,15 @@ export default defineComponent({
 
     const getMessage = () => t('device_locked').replace('$value$', lockTypes[props.lockType]);
 
+    const unlockAndProceed = () => {
+      props.unlock();
+      showDialog.value = false;
+    };
+
     return {
       showDialog,
       getMessage,
+      unlockAndProceed,
     };
   },
 });
