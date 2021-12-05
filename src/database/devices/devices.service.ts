@@ -4,6 +4,7 @@ import { Model, ObjectId } from 'mongoose';
 import { Device } from './device.interface';
 import { UsersService } from '../users/users.service';
 import { ConfigService } from '@nestjs/config';
+import { OrviboService } from '../../third-party-apis/orvibo/orvibo.service';
 import * as moment from 'moment';
 
 @Injectable()
@@ -13,7 +14,11 @@ export class DevicesService {
     private deviceModel: Model<Device>,
     private userSrv: UsersService,
     private confSrv: ConfigService,
+    private orviboSrv: OrviboService,
   ) {}
+
+  private cronOperationIndex = 0;
+  timeout = async (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   async getUserDevices(userID: ObjectId): Promise<Device[]> {
     return this.deviceModel
@@ -155,7 +160,7 @@ export class DevicesService {
         (d) => d.district === device.address.district,
       );
       return device.orvibo_ids.map((id) => ({
-        part_id: id,
+        deviceId: id,
         action: district.action,
         condition: district.condition,
         text: district.text,
@@ -165,17 +170,29 @@ export class DevicesService {
         lock_rain: device.lock_rain,
         lock_wind: device.lock_wind,
         orvibo_user_id: ownerUser.orvibo_id,
-        token: ownerUser.orvibo_token,
+        access_token: ownerUser.orvibo_token,
         token_exp: ownerUser.orvibo_token_exp,
         refresh_token: ownerUser.orvibo_refresh_token,
       }));
     });
-    // We check the tokens of each relevant users to ensure
-    // that commands that are sent to motors will be executed.
-    // const validOperationalData = await this.userSrv.checkUsersTokens(
-    //   readyOperationalData,
-    // );
-    // ======================================================//
-    debugger;
+    if (readyOperationalData && readyOperationalData.length) {
+      this.cronOperationIndex = 0;
+      this.operateDeviceInOrvibo(readyOperationalData).then();
+    }
+  }
+
+  /**
+   * Function that called by cron task which send command to device.
+   * @param devices - Array of devices that should be operated
+   * Vlad. 05/12/21
+   */
+  async operateDeviceInOrvibo(devices: any[]) {
+    this.orviboSrv.sendCommandToDevice(devices[this.cronOperationIndex]).then();
+    Logger.log(`${devices[this.cronOperationIndex].action} device`);
+    await this.timeout(1000);
+    this.cronOperationIndex++;
+    if (devices[this.cronOperationIndex]) {
+      this.operateDeviceInOrvibo(devices).then();
+    }
   }
 }

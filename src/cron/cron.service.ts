@@ -12,9 +12,9 @@ export class CronService {
     private readonly weatherSrv: WeatherService,
   ) {}
 
-  @Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_HOUR)
   startCheckForWeatherHazards() {
-    // this.weatherSrv.startScheduledTaskForWeatherHazards().then();
+    this.weatherSrv.startScheduledTaskForWeatherHazards().then();
     // if (process.env.NODE_ENV === 'production') {
     //
     // }

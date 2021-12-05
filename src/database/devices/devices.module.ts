@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { DeviceSchema } from '../../schemas/device.schema';
 import { DeviceAddressesModule } from '../device-addresses/device-addresses.module';
 import { UsersModule } from '../users/users.module';
+import { OrviboModule } from '../../third-party-apis/orvibo/orvibo.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
@@ -13,6 +14,7 @@ import { ConfigModule } from '@nestjs/config';
     DeviceAddressesModule,
     UsersModule,
     ConfigModule,
+    OrviboModule,
   ],
   controllers: [DevicesController],
   providers: [DevicesService],
