@@ -82,7 +82,6 @@ export default function () {
    * Vlad. 02/10/21
    */
   const triggerFavoritesPreset = async (device) => {
-    debugger;
     const favoritesMotors = device.favorites_set.map((m) => m.orvibo_id);
     await closeDevice({ selected_ids: favoritesMotors });
     const awaitForFullClosing = Constants[`${device.motor_type}_SPEED`] + favoritesMotors.length * 1000;
