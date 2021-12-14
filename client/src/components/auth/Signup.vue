@@ -63,7 +63,7 @@ export default defineComponent({
     async signup() {
       if (this.formData.checked) {
         const payload = {
-          username: this.formData.username,
+          username: this.formData.username.toLowerCase(),
           password: this.formData.password,
           first_name: this.formData.first_name,
           last_name: this.formData.last_name,
