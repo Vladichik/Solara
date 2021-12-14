@@ -32,7 +32,7 @@ export const DeviceSchema = new mongoose.Schema({
       orvibo_id: String,
       state: {
         type: String,
-        enum: ['CLOSE', 'OPEN', 'QUARTER_OPEN', 'SEMI_OPEN', 'ALMOST_OPEN'],
+        // enum: ['CLOSE', 'OPEN', 'QUARTER_OPEN', 'SEMI_OPEN', 'ALMOST_OPEN'],
       },
     },
   ],

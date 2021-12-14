@@ -37,11 +37,11 @@ import configuration from './config/configurations';
     }),
     MailerModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        transport: process.env.EMAIL_TRANSPORT, // configService.get<string>('EMAIL_TRANSPORT'),
-        port: process.env.EMAIL_PORT, // configService.get<string>('EMAIL_PORT'),
+      useFactory: async () => ({
+        transport: process.env.EMAIL_TRANSPORT,
+        port: process.env.EMAIL_PORT,
         defaults: {
-          from: process.env.COMPANY_EMAIL, //configService.get<string>('EMAIL_SOLARA'),
+          from: process.env.COMPANY_EMAIL,
         },
       }),
       inject: [ConfigService],
