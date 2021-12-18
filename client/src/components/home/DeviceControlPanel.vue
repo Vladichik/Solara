@@ -24,7 +24,8 @@
       <div class='sol-controls-ring shadow-5'>
         <div class='sol-ring-btn-upper'>
           <div class='sol-ctr-button-frame'>
-            <q-btn class='text-blue-grey-7'
+            <q-btn :class="['text-blue-grey-7', { 'sol-btn-disabled': processing} ]"
+                   :disable='processing'
                    round color='white'
                    size='lg'
                    @click='validateDeviceLockAndTrigger(constants.MOTOR_SEM_OPEN)'>
@@ -34,7 +35,8 @@
         </div>
         <div class='sol-ring-btn-base q-pl-md q-pr-md'>
           <div class='sol-ctr-button-frame'>
-            <q-btn class='text-blue-grey-5'
+            <q-btn :class="['text-blue-grey-7', { 'sol-btn-disabled': processing} ]"
+                   :disable='processing'
                    round color='white'
                    size='lg'
                    @click='validateDeviceLockAndTrigger("open")'>
@@ -42,7 +44,8 @@
             </q-btn>
             <!--            <span class="text-blue-grey-3">{{ $t('open') }}</span>-->
           </div>
-          <q-btn class='sol-control-btn-abs-left text-blue-grey-5'
+          <q-btn :class="['sol-control-btn-abs-left text-blue-grey-7', { 'sol-btn-disabled': processing} ]"
+                 :disable='processing'
                  round color='white'
                  size='lg'
                  @click='validateDeviceLockAndTrigger(constants.MOTOR_QT_OPEN)'>
@@ -54,14 +57,16 @@
                    size='lg'
                    @click='stopProcess(device)' />
           </div>
-          <q-btn class='sol-control-btn-abs-right text-blue-grey-5'
+          <q-btn :class="['sol-control-btn-abs-right text-blue-grey-7', { 'sol-btn-disabled': processing} ]"
+                 :disable='processing'
                  round color='white'
                  size='lg'
                  @click='validateDeviceLockAndTrigger(constants.MOTOR_ALM_OPEN)'>
             <i class='sol-semi-closed'></i>
           </q-btn>
           <div class='sol-ctr-button-frame'>
-            <q-btn class='text-blue-grey-5'
+            <q-btn :class="['text-blue-grey-7', { 'sol-btn-disabled': processing} ]"
+                   :disable='processing'
                    round color='white'
                    size='lg'
                    @click='validateDeviceLockAndTrigger("close")'>
@@ -75,7 +80,7 @@
                            ref='motorSelectionPanel'
                            @on-panel-close='saveSelectedMotors' />
   </section>
-  <unlock-device-dialog ref="unlockDeviceDialog"
+  <unlock-device-dialog ref='unlockDeviceDialog'
                         :device='device'
                         :lock-type='activeLockType'
                         :unlock='triggerRelevantDeviceCommand' />
@@ -126,6 +131,7 @@ export default defineComponent({
     const activeLockType = ref(null);
     const operationMode = ref(null);
     const myDevices = computed(() => store.state.Devices.myDevices);
+    const processing = computed(() => store.state.General.processing);
 
     const getWeatherForDevice = () => {
       if (myDevices.value && myDevices.value.length) {
@@ -229,6 +235,7 @@ export default defineComponent({
     });
     return {
       constants,
+      processing,
       currentWeather,
       weatherLocation,
       getIconUrl,
@@ -282,6 +289,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 11;
 }
 
 .sol-controls-ring {
@@ -337,5 +345,9 @@ export default defineComponent({
   width: 100%;
   justify-content: center;
   @include setGridAuto(auto, 10px, "columns");
+}
+
+.q-btn.disabled.sol-btn-disabled {
+  opacity: .4 !important;
 }
 </style>

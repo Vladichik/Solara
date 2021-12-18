@@ -1,4 +1,5 @@
 import { useStore } from 'vuex';
+import { computed } from 'vue';
 import { Constants } from 'src/config/constants';
 import OrviboAPI from 'src/api/orvibo';
 
@@ -6,6 +7,7 @@ export default function () {
   const store = useStore();
   let index = 0;
 
+  const processing = computed(() => store.state.General.processing);
   const timeout = async (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   /**
@@ -18,6 +20,7 @@ export default function () {
    */
   const sendCommandToDevice = async (payload) => {
     if (payload.deviceIds && payload.deviceIds.length) {
+      console.log(`Sending command: ${payload.action} - ${payload.deviceIds[index]}`);
       store.commit('General/setMainLoaderState', true);
       await OrviboAPI.sendCommandToDevice({
         deviceId: payload.deviceIds[index],
@@ -25,12 +28,11 @@ export default function () {
       });
       index += 1;
       if (payload.deviceIds[index]) {
-        await timeout(1000);
+        await timeout(2000);
         await sendCommandToDevice(payload);
       }
     }
   };
-
   /**
    * Sending command to open motor/patio
    * @param device - Object
@@ -71,6 +73,7 @@ export default function () {
       deviceIds: device.selected_ids,
       action: 'Pause',
     });
+    store.commit('General/setMainLoaderState', false);
   };
 
   /**
@@ -111,17 +114,19 @@ export default function () {
       const awaitForFullClosing = Constants[`${device.motor_type}_SPEED`] + device.selected_ids.length * 1000;
       await closeDevice({ selected_ids: device.selected_ids });
       await timeout(awaitForFullClosing);
-      await openDevice({ selected_ids: device.selected_ids });
-      const processes = device.selected_ids.map((motor, i) => new Promise((resolve) => {
-        const stopAfterSeconds = Constants[`${device.motor_type}_${position}`] + 1000 * i;
-        setTimeout(() => {
-          stopProcess({ selected_ids: [motor] });
-          resolve(motor);
-        }, stopAfterSeconds);
-      }));
-      return Promise.all(processes).then((data) => {
-        store.commit('General/setMainLoaderState', false);
-      });
+      if (processing.value === true) {
+        await openDevice({ selected_ids: device.selected_ids });
+        const processes = device.selected_ids.map((motor, i) => new Promise((resolve) => {
+          const stopAfterSeconds = Constants[`${device.motor_type}_${position}`] + 1000 * i;
+          setTimeout(() => {
+            stopProcess({ selected_ids: [motor] });
+            resolve(motor);
+          }, stopAfterSeconds);
+        }));
+        return Promise.all(processes).then((data) => {
+          store.commit('General/setMainLoaderState', false);
+        });
+      }
     }
     return false;
   };

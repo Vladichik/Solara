@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { HttpService, Injectable } from '@nestjs/common';
+import { HttpService, Injectable, Logger } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { ConfigService } from '@nestjs/config';
 import {
@@ -117,6 +117,7 @@ export class OrviboService {
    * Vlad. 06/09/21
    */
   async sendCommandToDevice(props: DeviceCommandProps): Promise<any> {
+    Logger.log(`Operating ${props.action}: ${props.deviceId}`);
     const namespace = 'Device.Control';
     const requestId = uuidv4();
     const time = this.getRequestTime();
