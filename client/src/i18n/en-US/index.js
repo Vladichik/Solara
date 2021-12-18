@@ -109,6 +109,7 @@ export default {
   all: 'All',
   mode: 'Mode',
   device_locked: 'This device has $value$ lock. Are you sure you want to remove this lock and proceed?',
+  get_pro_account: 'Get PRO account',
   patio_color_opts: [
     { text: 'White', key: 'white' },
     { text: 'Adobe', key: 'adobe' },

@@ -26,7 +26,12 @@
             </q-item-section>
           </q-item>
         </q-list>
-        <q-btn @click="triggerFavoritesPreset(device)" v-if='user.is_pro'>Trigger</q-btn>
+        <q-card flat>
+          <q-card-section class='text-center'>
+            <q-btn @click="triggerFavoritesPreset(device)" v-if='user.is_pro'>Trigger</q-btn>
+            <upgrade-button v-if='!user.is_pro' />
+          </q-card-section>
+        </q-card>
       </q-item>
     </q-list>
   </q-expansion-item>
@@ -45,12 +50,14 @@ import OrviboAndSolaraDevicesCombiner from 'src/mixins/OrviboAndSolaraDevicesCom
 import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
 import DeviceCommander from 'src/mixins/DeviceCommander';
 import MotorFavoritesPicker from 'components/inputs/MotorFavoritesPicker';
+import UpgradeButton from 'components/UpgradeButton';
 import DevicesAPI from 'src/api/device';
 
 export default defineComponent({
   name: 'Favorites',
   components: {
     MotorFavoritesPicker,
+    UpgradeButton,
   },
   setup() {
     const { generateEnvironments } = OrviboAndSolaraDevicesCombiner();
