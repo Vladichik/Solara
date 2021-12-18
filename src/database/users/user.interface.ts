@@ -14,6 +14,7 @@ export interface User extends Document {
   readonly email: string;
   readonly avatar: string;
   readonly is_pro: boolean;
+  readonly smart_active: boolean;
 }
 
 export interface TokenData {
