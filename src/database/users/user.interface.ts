@@ -13,6 +13,7 @@ export interface User extends Document {
   readonly last_name: string;
   readonly email: string;
   readonly avatar: string;
+  readonly is_pro: boolean;
 }
 
 export interface TokenData {

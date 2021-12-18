@@ -8,6 +8,7 @@
             option-label="text"
             :label="$t('mode')"
             :options="options"
+            :disable='!user.is_pro'
             @update:model-value="$emit('on-mode-selected', {state, orvibo_id: part.orvibo_id})" />
 </template>
 
@@ -15,13 +16,17 @@
 import {
   defineComponent,
   ref,
+  computed,
 } from 'vue';
+import { useStore } from 'vuex';
 import { Constants } from 'src/config/constants';
 
 export default defineComponent({
   name: 'MotorFavoritesPicker',
   props: ['part'],
   setup(props) {
+    const store = useStore();
+    const user = computed(() => store.state.User.user);
     const state = ref(props.part.state);
     const options = [
       { key: 'OPEN', text: 'Open' },
@@ -33,6 +38,7 @@ export default defineComponent({
     return {
       options,
       state,
+      user,
     };
   },
 });

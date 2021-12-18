@@ -14,6 +14,7 @@ export const UserSchema = new mongoose.Schema({
   orvibo_token: String,
   orvibo_refresh_token: String,
   orvibo_token_exp: Number,
+  is_pro: { type: Boolean, default: false },
 }).set('toJSON', {
   virtuals: true,
 });

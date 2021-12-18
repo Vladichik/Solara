@@ -1,5 +1,6 @@
 <template>
   <q-expansion-item
+    default-opened
     v-for="group in environments"
     :key="group.uid"
     expand-separator
@@ -25,7 +26,7 @@
             </q-item-section>
           </q-item>
         </q-list>
-        <q-btn @click="triggerFavoritesPreset(device)">Trigger</q-btn>
+        <q-btn @click="triggerFavoritesPreset(device)" v-if='user.is_pro'>Trigger</q-btn>
       </q-item>
     </q-list>
   </q-expansion-item>
@@ -58,6 +59,7 @@ export default defineComponent({
     const store = useStore();
     const environments = reactive([]);
     const myDevices = computed(() => store.state.Devices.myDevices);
+    const user = computed(() => store.state.User.user);
 
     const prepareFavoritesList = () => {
       const env = generateEnvironments();
@@ -93,6 +95,7 @@ export default defineComponent({
     });
 
     return {
+      user,
       environments,
       getPartName,
       updateDeviceData,
