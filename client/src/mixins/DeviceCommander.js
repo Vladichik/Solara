@@ -28,7 +28,7 @@ export default function () {
       });
       index += 1;
       if (payload.deviceIds[index]) {
-        await timeout(2000);
+        await timeout(Constants.DELAY_BETWEEN_COMMANDS);
         await sendCommandToDevice(payload);
       }
     }
@@ -87,11 +87,11 @@ export default function () {
   const triggerFavoritesPreset = async (device) => {
     const favoritesMotors = device.favorites_set.map((m) => m.orvibo_id);
     await closeDevice({ selected_ids: favoritesMotors });
-    const awaitForFullClosing = Constants[`${device.motor_type}_SPEED`] + favoritesMotors.length * 1000;
+    const awaitForFullClosing = Constants[`${device.motor_type}_SPEED`] + favoritesMotors.length * Constants.DELAY_BETWEEN_COMMANDS;
     await timeout(awaitForFullClosing);
     await openDevice({ selected_ids: favoritesMotors });
     const processes = device.favorites_set.map((motor, i) => new Promise((resolve) => {
-      const stopAfterSeconds = Constants[`${device.motor_type}_${motor.state}`] + 1000 * i;
+      const stopAfterSeconds = Constants[`${device.motor_type}_${motor.state}`] + Constants.DELAY_BETWEEN_COMMANDS * i;
       setTimeout(() => {
         stopProcess({ selected_ids: [motor.orvibo_id] });
         resolve(motor.orvibo_id);
@@ -111,13 +111,13 @@ export default function () {
    */
   const triggerMotorsPartialOpening = async (device, position) => {
     if (device && device.selected_ids.length) {
-      const awaitForFullClosing = Constants[`${device.motor_type}_SPEED`] + device.selected_ids.length * 1000;
+      const awaitForFullClosing = Constants[`${device.motor_type}_SPEED`] + device.selected_ids.length * Constants.DELAY_BETWEEN_COMMANDS;
       await closeDevice({ selected_ids: device.selected_ids });
       await timeout(awaitForFullClosing);
       if (processing.value === true) {
         await openDevice({ selected_ids: device.selected_ids });
         const processes = device.selected_ids.map((motor, i) => new Promise((resolve) => {
-          const stopAfterSeconds = Constants[`${device.motor_type}_${position}`] + 1000 * i;
+          const stopAfterSeconds = Constants[`${device.motor_type}_${position}`] + Constants.DELAY_BETWEEN_COMMANDS * i;
           setTimeout(() => {
             stopProcess({ selected_ids: [motor] });
             resolve(motor);
