@@ -6,7 +6,7 @@ export const Constants = Object.freeze({
   MOTOR_MARK: 'curtain',
   HUB_MARK: 'allone_pro',
   MOTOR_SITO: 'SITO_MOTOR',
-  MOTOR_TI: 'TIM_MOTOR',
+  MOTOR_TIM: 'TIM_MOTOR',
   DELAY_BETWEEN_COMMANDS: 2000,
   SITO_MOTOR_SPEED: 10000,
   TIM_MOTOR_SPEED: 20000,

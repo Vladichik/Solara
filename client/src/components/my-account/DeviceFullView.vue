@@ -176,14 +176,14 @@ export default defineComponent({
       rafter_size: null,
       louver_size: null,
       amount_of_motors: null,
-      motor_type: 'MOTOR_TI',
+      motor_type: 'TIM_MOTOR',
     });
 
     const initFormData = () => {
       if (props.device && props.device.id) {
         Object.assign(formData, props.device);
       } else {
-        formData.motor_type = Constants.MOTOR_TI;
+        formData.motor_type = Constants.MOTOR_TIM;
       }
     };
 

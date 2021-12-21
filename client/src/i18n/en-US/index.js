@@ -125,7 +125,7 @@ export default {
   ],
   motor_type_opts: [
     { text: 'Sito Motor', key: Constants.MOTOR_SITO },
-    { text: 'TiMotion Motor', key: Constants.MOTOR_TI },
+    { text: 'TiMotion Motor', key: Constants.MOTOR_TIM },
   ],
   states: [
     {
