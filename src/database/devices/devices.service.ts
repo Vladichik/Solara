@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { Device } from './device.interface';
+import { User } from '../users/user.interface';
 import { UsersService } from '../users/users.service';
 import { ConfigService } from '@nestjs/config';
 import { OrviboService } from '../../third-party-apis/orvibo/orvibo.service';
@@ -92,15 +93,27 @@ export class DevicesService {
    * Function that updates lock time of all devices which are going to be operated
    * @param weatherData
    * @param devices
+   * @param users
    * Vlad. 21/11/21
    */
   async updateDevicesLockTimes(
     weatherData: Array<any>,
     devices: Device[],
+    users: User[],
   ): Promise<boolean> {
     if (devices && devices.length) {
       const bulks = [];
-      const devsToUpdate = JSON.parse(JSON.stringify(devices));
+
+      // Getting Ids of PRO users only
+      const proUsers = users
+        .filter((u) => u.is_pro && u.smart_active)
+        .map((o) => o._id.toString());
+
+      // Filtering devices by PRO users, since only PRO user's devices must be updated
+      const devsToUpdate = devices.filter((d) =>
+        proUsers.includes(d.user_id.toString()),
+      );
+
       devsToUpdate.forEach((device) => {
         const district = weatherData.find(
           // @ts-ignore
@@ -148,10 +161,18 @@ export class DevicesService {
       weatherData,
       devicesByDistricts,
     );
-    await this.updateDevicesLockTimes(weatherData, unlockedDevices);
     const userIds = unlockedDevices.flatMap((d) => d.user_id);
     const relevantUsers = await this.userSrv.findUsers(userIds);
-    const readyOperationalData = unlockedDevices.flatMap((device) => {
+
+    // Here we update lock times for relevant users
+    await this.updateDevicesLockTimes(
+      weatherData,
+      unlockedDevices,
+      relevantUsers,
+    );
+
+    const readyOperationalData = [];
+    unlockedDevices.flatMap((device) => {
       const ownerUser = relevantUsers.find(
         (u) => u.id === device.user_id.toString(),
       );
@@ -159,25 +180,33 @@ export class DevicesService {
         // @ts-ignore
         (d) => d.district === device.address.district,
       );
-      return device.orvibo_ids.map((id) => ({
-        deviceId: id,
-        action: district.action,
-        condition: district.condition,
-        text: district.text,
-        code: district.code,
-        user_id: ownerUser._id,
-        lock_snow: device.lock_snow,
-        lock_rain: device.lock_rain,
-        lock_wind: device.lock_wind,
-        orvibo_user_id: ownerUser.orvibo_id,
-        access_token: ownerUser.orvibo_token,
-        token_exp: ownerUser.orvibo_token_exp,
-        refresh_token: ownerUser.orvibo_refresh_token,
-      }));
+      if (ownerUser.is_pro && ownerUser.smart_active) {
+        device.orvibo_ids.forEach((id) => {
+          readyOperationalData.push({
+            deviceId: id,
+            action: district.action,
+            condition: district.condition,
+            text: district.text,
+            code: district.code,
+            user_id: ownerUser._id,
+            lock_snow: device.lock_snow,
+            lock_rain: device.lock_rain,
+            lock_wind: device.lock_wind,
+            orvibo_user_id: ownerUser.orvibo_id,
+            access_token: ownerUser.orvibo_token,
+            token_exp: ownerUser.orvibo_token_exp,
+            refresh_token: ownerUser.orvibo_refresh_token,
+          });
+        });
+      }
     });
     if (readyOperationalData && readyOperationalData.length) {
       this.cronOperationIndex = 0;
       this.operateDeviceInOrvibo(readyOperationalData).then();
+    } else {
+      Logger.log(
+        'Weather hazard exist, but there are no available device to operate',
+      );
     }
   }
 
@@ -189,7 +218,7 @@ export class DevicesService {
   async operateDeviceInOrvibo(devices: any[]) {
     this.orviboSrv.sendCommandToDevice(devices[this.cronOperationIndex]).then();
     Logger.log(`${devices[this.cronOperationIndex].action} device`);
-    await this.timeout(1000);
+    await this.timeout(2000);
     this.cronOperationIndex++;
     if (devices[this.cronOperationIndex]) {
       this.operateDeviceInOrvibo(devices).then();
