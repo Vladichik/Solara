@@ -2,7 +2,7 @@
   "name": "solara",
   "version": "0.0.1",
   "description": "Smart home blinds controll application",
-  "productName": "Quasar App",
+  "productName": "Solara",
   "author": "vlad <vvidavsky@gmail.com>",
   "private": true,
   "scripts": {

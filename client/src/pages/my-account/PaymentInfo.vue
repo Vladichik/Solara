@@ -19,6 +19,10 @@ export default {
   name: 'PaymentInfo',
   setup() {
     let checkout;
+    const apiSrc = {
+      sandbox: 'https://sandboxcheckouttoolkit.rapyd.net',
+      prod: 'https://checkouttoolkit.rapyd.net',
+    };
     const store = useStore();
     const { tm } = useI18n();
     const { showWarningNotification } = NotificationsComposition();
@@ -56,9 +60,13 @@ export default {
       window.addEventListener('onCheckoutPaymentSuccess', onPaymentPassedSuccessfully);
       window.addEventListener('onCheckoutFailure', onPaymentFailed);
 
-      const recaptchaScript = document.createElement('script');
-      recaptchaScript.setAttribute('src', 'https://sandboxcheckouttoolkit.rapyd.net');
-      document.head.appendChild(recaptchaScript);
+      const paymentScript = document.createElement('script');
+      let paymentApi = apiSrc.prod;
+      if (window.location.origin.includes('localhost')) {
+        paymentApi = apiSrc.sandbox;
+      }
+      paymentScript.setAttribute('src', paymentApi);
+      document.head.appendChild(paymentScript);
       setTimeout(() => {
         initCheckout();
       }, 1000);

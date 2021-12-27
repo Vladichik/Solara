@@ -205,7 +205,7 @@ export class DevicesService {
       this.operateDeviceInOrvibo(readyOperationalData).then();
     } else {
       Logger.log(
-        'Weather hazard exist, but there are no available device to operate',
+        'Weather hazard exist, but there are no required device to operate',
       );
     }
   }
