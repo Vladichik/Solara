@@ -68,6 +68,7 @@ export default {
     device_created: 'Device created successfully',
     forgot_pw_sent: 'The password has been sent to your email',
     forgot_pw_absent: 'There is no registered user with such email',
+    payment_failed: 'Payment Failed!',
   },
   my_account_links: [
     { name: 'Payment Info', icon: 'credit_card', path: '/payment-info' },
