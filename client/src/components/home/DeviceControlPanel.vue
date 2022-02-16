@@ -289,7 +289,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 11;
+  z-index: 200;
 }
 
 .sol-controls-ring {

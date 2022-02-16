@@ -42,6 +42,7 @@ export default defineComponent({
     const store = useStore();
     const myDevices = computed(() => store.state.Devices.myDevices);
     const groupedDevices = reactive([]);
+    const noDevicesYet = computed(() => store.state.Devices.noDevicesYet);
 
     /**
      * Function that groups environments
@@ -58,6 +59,7 @@ export default defineComponent({
     });
 
     return {
+      noDevicesYet,
       myDevices,
       groupedDevices,
       groupListsByEnvironments,
@@ -66,6 +68,11 @@ export default defineComponent({
   watch: {
     myDevices(dev) {
       this.groupListsByEnvironments(dev);
+    },
+    noDevicesYet(noDevicesAdded) {
+      if (noDevicesAdded) {
+        this.$router.push('/products-info');
+      }
     },
   },
 });

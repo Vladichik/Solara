@@ -8,15 +8,21 @@ export function getMyDevicesFromOrvibo({ commit }) {
         commit('setMyOrviboDevices', resp.data.devices);
       }
     })
-    .catch((e) => {});
+    .catch((e) => {
+    });
 }
 
 export function getMyDevices({ commit }) {
   return DevicesAPI.getMyDevices()
     .then((resp) => {
       if (resp.status === 200 && resp.data) {
-        commit('setMyDevices', resp.data);
+        if (resp.data.length) {
+          commit('setMyDevices', resp.data);
+        } else {
+          commit('setNoDevicesYet', true);
+        }
       }
     })
-    .catch((e) => {});
+    .catch((e) => {
+    });
 }

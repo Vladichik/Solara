@@ -1,8 +1,8 @@
 <template>
-  <device-image-parallax :on-back="onBack" :device="formData" />
-  <q-form ref="deviceForm"
-          class="sol-form-grid q-pl-lg q-pr-lg q-pb-lg"
-          @submit="saveDevice()">
+  <device-image-parallax :on-back='onBack' :device='formData' />
+  <q-form ref='deviceForm'
+          class='sol-form-grid q-pl-lg q-pr-lg q-pb-lg'
+          @submit='saveDevice()'>
     <!--    <q-input filled :label="$t('location_name')"-->
     <!--             v-model="formData.location_name"-->
     <!--             :model-value="formData.location_name"-->
@@ -15,106 +15,115 @@
               multiple
               map-options
               emit-value
-              option-value="key"
-              option-label="text"
-              v-model="formData.patio_colors"
-              :model-value="formData.patio_colors"
+              option-value='key'
+              option-label='text'
+              v-model='formData.patio_colors'
+              :model-value='formData.patio_colors'
               :label="$t('pergola_colors')"
-              :options="colorOptions" />
+              :options='colorOptions'
+              :rules="[ val => val.length > 0 || $t('mandatory_field')]" />
     <q-select filled
               multiple
-              v-model="formData.rafter_size"
-              :model-value="formData.rafter_size"
+              v-model='formData.rafter_size'
+              :model-value='formData.rafter_size'
               :label="$t('rafter_size')"
-              :options="rafterSizes" />
+              :options='rafterSizes'
+              :rules="[ val => val.length > 0 || $t('mandatory_field')]" />
     <q-select filled
               multiple
-              v-model="formData.louver_size"
-              :model-value="formData.louver_size"
+              v-model='formData.louver_size'
+              :model-value='formData.louver_size'
               :label="$t('louver_size')"
-              :options="louverSizes" />
+              :options='louverSizes'
+              :rules="[ val => val.length > 0 || $t('mandatory_field')]" />
     <q-select filled
               map-options
               emit-value
-              option-value="key"
-              option-label="text"
-              v-model="formData.louver_type"
-              :model-value="formData.louver_type"
-              :options="louverTypeOptions"
-              :label="$t('louver_type')" />
+              option-value='key'
+              option-label='text'
+              v-model='formData.louver_type'
+              :model-value='formData.louver_type'
+              :options='louverTypeOptions'
+              :label="$t('louver_type')"
+              :rules="[ val => val !== null || $t('mandatory_field')]" />
     <q-select filled
               :label="$t('num_motors')"
-              v-model="formData.amount_of_motors"
-              :model-value="formData.amount_of_motors"
-              :options="amountsOfMotors" />
-<!--    <q-select filled-->
-<!--              map-options-->
-<!--              emit-value-->
-<!--              option-value="key"-->
-<!--              option-label="text"-->
-<!--              v-model="formData.motor_type"-->
-<!--              :model-value="formData.motor_type"-->
-<!--              :options="motorsTypeOptions"-->
-<!--              :label="$t('motor_type')" />-->
+              v-model='formData.amount_of_motors'
+              :model-value='formData.amount_of_motors'
+              :options='amountsOfMotors'
+              :rules="[ val => val !== null || $t('mandatory_field')]" />
+    <!--    <q-select filled-->
+    <!--              map-options-->
+    <!--              emit-value-->
+    <!--              option-value="key"-->
+    <!--              option-label="text"-->
+    <!--              v-model="formData.motor_type"-->
+    <!--              :model-value="formData.motor_type"-->
+    <!--              :options="motorsTypeOptions"-->
+    <!--              :label="$t('motor_type')" />-->
     <q-input filled :label="$t('technician_name')"
-             v-model="formData.technician_name" />
+             v-model='formData.technician_name'
+             :rules="[ val => val.length > 0 || $t('mandatory_field')]" />
     <q-input filled
              :label="$t('technician_company')"
-             v-model="formData.technician_company"
-             :model-value="formData.technician_company" />
+             v-model='formData.technician_company'
+             :model-value='formData.technician_company'
+             :rules="[ val => val.length > 0 || $t('mandatory_field')]" />
     <q-input square filled :label="$tm('install_date')"
-             v-model="formData.installation_date"
-             :model-value="formData.installation_date"
-             mask="date">
+             v-model='formData.installation_date'
+             :model-value='formData.installation_date'
+             mask='date'
+             :rules="[ val => val !== null && val.length > 3 || $t('mandatory_field')]">
       <template v-slot:append>
-        <q-icon name="event" class="cursor-pointer">
-          <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-            <q-date v-model="formData.installation_date"
-                    :options="getDatePickerOptions">
-              <div class="row items-center justify-end">
-                <q-btn v-close-popup label="Close" color="primary" flat />
+        <q-icon name='event' class='cursor-pointer'>
+          <q-popup-proxy ref='qDateProxy' transition-show='scale' transition-hide='scale'>
+            <q-date v-model='formData.installation_date'>
+              <!--                    :options='getDatePickerOptions'>-->
+              <div class='row items-center justify-end'>
+                <q-btn v-close-popup label='Close' color='primary' flat />
               </div>
             </q-date>
           </q-popup-proxy>
         </q-icon>
       </template>
     </q-input>
-    <q-select :model-value="formData.address"
-              v-model="formData.address"
+    <q-select :model-value='formData.address'
+              v-model='formData.address'
               map-options
               emit-value
               filled
-              option-value="id"
-              option-label="place_name"
+              option-value='id'
+              option-label='place_name'
               :label="$t('address')"
-              :options="deviceAddresses" />
-    <q-card flat class="bg-grey-3">
-      <q-card-section class="sol-receipt-btn-sec">
+              :options='deviceAddresses'
+              :rules="[ val => val !== null || $t('mandatory_field')]" />
+    <q-card flat class='bg-grey-3'>
+      <q-card-section class='sol-receipt-btn-sec'>
         <q-btn flat
-               class="bg-grey-5"
+               class='bg-grey-5'
                :label="$t('add_receipt')"
-               icon="upload"
-               @click="openReceiptUploader()"
-               size="18px" />
-        <a :href="getReceiptDownloadLink" v-if="device.receipt_url">
+               icon='upload'
+               @click='openReceiptUploader()'
+               size='18px' />
+        <a :href='getReceiptDownloadLink' v-if='device.receipt_url'>
           <q-btn flat
-                 class="bg-grey-5 full-width"
+                 class='bg-grey-5 full-width'
                  :label="$t('download_receipt')"
-                 icon="download"
-                 size="18px" />
+                 icon='download'
+                 size='18px' />
         </a>
       </q-card-section>
     </q-card>
     <q-btn flat
-           class="bg-grey-3"
+           class='bg-grey-3'
            :label="$t('add_photo')"
-           icon="photo_camera"
-           @click="openImageUploader()"
-           size="18px" />
-    <q-btn color="primary"
+           icon='photo_camera'
+           @click='openImageUploader()'
+           size='18px' />
+    <q-btn color='primary'
            :label="$t('save')"
-           @click="$refs.deviceForm.submit()"
-           size="18px" />
+           @click='$refs.deviceForm.submit()'
+           size='18px' />
   </q-form>
 </template>
 
@@ -301,7 +310,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang='scss'>
 @import "src/css/mixins";
 
 .sol-receipt-btn-sec {
