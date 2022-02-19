@@ -118,7 +118,7 @@ export default defineComponent({
       openDevice,
       closeDevice,
       stopProcess,
-      triggerMotorsPartialOpening,
+      initiateMotorsPartialOpeningProcess,
     } = DeviceCommander();
     const constants = Constants;
     const { getDeviceName } = DataGettersCompositions();
@@ -215,7 +215,7 @@ export default defineComponent({
     const triggerRelevantDeviceCommand = (mode = operationMode.value) => {
       const partialProcesses = [constants.MOTOR_SEM_OPEN, constants.MOTOR_QT_OPEN, constants.MOTOR_ALM_OPEN];
       if (partialProcesses.includes(mode)) {
-        triggerMotorsPartialOpening(props.device, mode);
+        initiateMotorsPartialOpeningProcess(props.device, mode);
       }
       if (mode === 'close') {
         closeDevice(props.device);
@@ -247,7 +247,7 @@ export default defineComponent({
       openDevice,
       closeDevice,
       stopProcess,
-      triggerMotorsPartialOpening,
+      initiateMotorsPartialOpeningProcess,
       saveSelectedMotors,
       getWeatherBackgroundClass,
       validateDeviceLockAndTrigger,

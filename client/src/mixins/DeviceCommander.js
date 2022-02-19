@@ -1,13 +1,11 @@
 import { useStore } from 'vuex';
-import { computed } from 'vue';
 import { Constants } from 'src/config/constants';
 import OrviboAPI from 'src/api/orvibo';
 
 export default function () {
   const store = useStore();
   let index = 0;
-
-  const processing = computed(() => store.state.General.processing);
+  let partialOpeningIndex = 0;
   const timeout = async (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   /**
@@ -64,16 +62,19 @@ export default function () {
   /**
    * Sending command to pause/stop the process
    * @param device - Object
+   * @param groupProcess - is true if motor group is processing
    * @returns {Promise<void>}
    * Vlad. 07/09/21
    */
-  const stopProcess = async (device) => {
+  const stopProcess = async (device, groupProcess = false) => {
     index = 0;
     await sendCommandToDevice({
       deviceIds: device.selected_ids,
       action: 'Pause',
     });
-    store.commit('General/setMainLoaderState', false);
+    if (!groupProcess) {
+      store.commit('General/setMainLoaderState', false);
+    }
   };
 
   /**
@@ -84,58 +85,69 @@ export default function () {
    * @returns {Promise<T>}
    * Vlad. 02/10/21
    */
-  const triggerFavoritesPreset = async (device) => {
-    const favoritesMotors = device.favorites_set.map((m) => m.orvibo_id);
-    await closeDevice({ selected_ids: favoritesMotors });
-    const awaitForFullClosing = Constants[`${device.motor_type}_SPEED`] + favoritesMotors.length * Constants.DELAY_BETWEEN_COMMANDS;
+  const triggerFavoritesMotorOpening = async (device) => {
+    const awaitForFullClosing = Constants[`${device.motor_type}_SPEED`] + Constants.DELAY_BETWEEN_COMMANDS;
+    const awaitForRequiredOpening = Constants[`${device.motor_type}_${device.favorites_set[partialOpeningIndex].state}`];
+    const currentMotor = [device.favorites_set[partialOpeningIndex].orvibo_id];
+    await closeDevice({ selected_ids: currentMotor });
     await timeout(awaitForFullClosing);
-    await openDevice({ selected_ids: favoritesMotors });
-    const processes = device.favorites_set.map((motor, i) => new Promise((resolve) => {
-      const stopAfterSeconds = Constants[`${device.motor_type}_${motor.state}`] + Constants.DELAY_BETWEEN_COMMANDS * i;
-      setTimeout(() => {
-        stopProcess({ selected_ids: [motor.orvibo_id] });
-        resolve(motor.orvibo_id);
-      }, stopAfterSeconds);
-    }));
-    return Promise.all(processes).then((data) => {
+    await openDevice({ selected_ids: currentMotor }); // beginning opening closed motor
+    await timeout(awaitForRequiredOpening); // Waiting for motor to reach specific point.
+    await stopProcess({ selected_ids: currentMotor }, true); // Stopping motor at specific position
+    partialOpeningIndex += 1;
+    if (device.favorites_set[partialOpeningIndex]) {
+      // Triggering next motor if exists
+      await timeout(Constants.DELAY_BETWEEN_COMMANDS);
+      triggerFavoritesMotorOpening(device).then();
+    } else {
       store.commit('General/setMainLoaderState', false);
-    });
+    }
   };
 
   /**
-   * Function triggers group operation of the motors when user presses the button
-   * on the device control panel
+   * Function implements single motor operation to specific state.
+   * Triggered from device control panel
    * @param device
    * @param position
-   * Vlad. 27/11/21
+   * Vlad. 19/02/22
    */
-  const triggerMotorsPartialOpening = async (device, position) => {
+  const openMotorPartially = async (device, position) => {
     if (device && device.selected_ids.length) {
-      const awaitForFullClosing = Constants[`${device.motor_type}_SPEED`] + device.selected_ids.length * Constants.DELAY_BETWEEN_COMMANDS;
-      await closeDevice({ selected_ids: device.selected_ids });
-      await timeout(awaitForFullClosing);
-      if (processing.value === true) {
-        await openDevice({ selected_ids: device.selected_ids });
-        const processes = device.selected_ids.map((motor, i) => new Promise((resolve) => {
-          const stopAfterSeconds = Constants[`${device.motor_type}_${position}`] + Constants.DELAY_BETWEEN_COMMANDS * i;
-          setTimeout(() => {
-            stopProcess({ selected_ids: [motor] });
-            resolve(motor);
-          }, stopAfterSeconds);
-        }));
-        return Promise.all(processes).then((data) => {
-          store.commit('General/setMainLoaderState', false);
-        });
+      const awaitForFullClosing = Constants[`${device.motor_type}_SPEED`] + Constants.DELAY_BETWEEN_COMMANDS;
+      const awaitForRequiredOpening = Constants[`${device.motor_type}_${position}`];
+      const currentMotor = [device.selected_ids[partialOpeningIndex]];
+      await closeDevice({ selected_ids: currentMotor });
+      await timeout(awaitForFullClosing); // Waiting for motor to fully close
+      await openDevice({ selected_ids: currentMotor }); // beginning opening closed motor
+      await timeout(awaitForRequiredOpening); // Waiting for motor to reach specific point.
+      await stopProcess({ selected_ids: currentMotor }, true); // Stopping motor at specific position
+      partialOpeningIndex += 1;
+      if (device.selected_ids[partialOpeningIndex]) {
+        // Triggering next motor if exists
+        await timeout(Constants.DELAY_BETWEEN_COMMANDS);
+        openMotorPartially(device, position).then();
+      } else {
+        store.commit('General/setMainLoaderState', false);
       }
     }
     return false;
+  };
+
+  const initiateMotorsPartialOpeningProcess = async (device, position) => {
+    partialOpeningIndex = 0;
+    await openMotorPartially(device, position);
+  };
+
+  const initiateFavoritesProcess = async (device) => {
+    partialOpeningIndex = 0;
+    await triggerFavoritesMotorOpening(device);
   };
 
   return {
     openDevice,
     closeDevice,
     stopProcess,
-    triggerMotorsPartialOpening,
-    triggerFavoritesPreset,
+    initiateMotorsPartialOpeningProcess,
+    initiateFavoritesProcess,
   };
 }

@@ -28,7 +28,7 @@
         </q-list>
         <q-card flat>
           <q-card-section class='text-center'>
-            <q-btn @click="triggerFavoritesPreset(device)" v-if='user.is_pro'>Trigger</q-btn>
+            <q-btn @click="initiateFavoritesProcess(device)" v-if='user.is_pro'>Trigger</q-btn>
             <upgrade-button v-if='!user.is_pro' />
           </q-card-section>
         </q-card>
@@ -62,7 +62,7 @@ export default defineComponent({
   setup() {
     const { generateEnvironments } = OrviboAndSolaraDevicesCombiner();
     const { getPartName } = DataGettersCompositions();
-    const { triggerFavoritesPreset } = DeviceCommander();
+    const { initiateFavoritesProcess } = DeviceCommander();
     const store = useStore();
     const environments = reactive([]);
     const myDevices = computed(() => store.state.Devices.myDevices);
@@ -106,7 +106,7 @@ export default defineComponent({
       environments,
       getPartName,
       updateDeviceData,
-      triggerFavoritesPreset,
+      initiateFavoritesProcess,
     };
   },
 });
