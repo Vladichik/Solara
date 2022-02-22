@@ -89,9 +89,9 @@ export default function () {
     const awaitForFullClosing = Constants[`${device.motor_type}_SPEED`] + Constants.DELAY_BETWEEN_COMMANDS;
     const awaitForRequiredOpening = Constants[`${device.motor_type}_${device.favorites_set[partialOpeningIndex].state}`];
     const currentMotor = [device.favorites_set[partialOpeningIndex].orvibo_id];
-    await closeDevice({ selected_ids: currentMotor });
+    await openDevice({ selected_ids: currentMotor });
     await timeout(awaitForFullClosing);
-    await openDevice({ selected_ids: currentMotor }); // beginning opening closed motor
+    await closeDevice({ selected_ids: currentMotor }); // beginning opening closed motor
     await timeout(awaitForRequiredOpening); // Waiting for motor to reach specific point.
     await stopProcess({ selected_ids: currentMotor }, true); // Stopping motor at specific position
     partialOpeningIndex += 1;
