@@ -1,7 +1,7 @@
 <template>
   <device-image-parallax :on-back='onBack' :device='formData' />
   <q-form ref='deviceForm'
-          class='sol-form-grid q-pl-lg q-pr-lg q-pb-lg'
+          class='sol-device-details-form sol-form-grid q-pl-lg q-pr-lg q-pb-lg'
           @submit='saveDevice()'>
     <!--    <q-input filled :label="$t('location_name')"-->
     <!--             v-model="formData.location_name"-->
@@ -11,47 +11,36 @@
     <!--             :model-value="formData.device_name"-->
     <!--             v-model="formData.device_name"-->
     <!--             :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />-->
-    <q-select filled
-              multiple
+    <q-select v-for='comp in multiselectComponents'
+              :key='comp.mdl'
+              filled
+              :multiple='comp.multi'
               map-options
               emit-value
               option-value='key'
               option-label='text'
-              v-model='formData.patio_colors'
-              :model-value='formData.patio_colors'
-              :label="$t('pergola_colors')"
-              :options='colorOptions'
-              :rules="[ val => val.length > 0 || $t('mandatory_field')]" />
-    <q-select filled
-              multiple
-              v-model='formData.rafter_size'
-              :model-value='formData.rafter_size'
-              :label="$t('rafter_size')"
-              :options='rafterSizes'
-              :rules="[ val => val.length > 0 || $t('mandatory_field')]" />
-    <q-select filled
-              multiple
-              v-model='formData.louver_size'
-              :model-value='formData.louver_size'
-              :label="$t('louver_size')"
-              :options='louverSizes'
-              :rules="[ val => val.length > 0 || $t('mandatory_field')]" />
-    <q-select filled
-              map-options
-              emit-value
-              option-value='key'
-              option-label='text'
-              v-model='formData.louver_type'
-              :model-value='formData.louver_type'
-              :options='louverTypeOptions'
-              :label="$t('louver_type')"
-              :rules="[ val => val !== null || $t('mandatory_field')]" />
-    <q-select filled
-              :label="$t('num_motors')"
-              v-model='formData.amount_of_motors'
-              :model-value='formData.amount_of_motors'
-              :options='amountsOfMotors'
-              :rules="[ val => val !== null || $t('mandatory_field')]" />
+              v-model='formData[comp.mdl]'
+              :model-value='formData[comp.mdl]'
+              :label='comp.title'
+              :options='comp.options'
+              :rules="[ val => !comp.multi ? val !== null : val.length > 0 || $t('mandatory_field')]">
+      <template v-slot:option='scope' v-if='comp.multi'>
+        <q-item v-bind='scope.itemProps'>
+          <q-item-section avatar class='q-pr-sm'>
+            <q-icon name='radio_button_unchecked' v-if='!scope.itemProps.active' />
+            <q-icon name='task_alt' v-if='scope.itemProps.active' />
+          </q-item-section>
+          <q-item-section class='znz-lang-picker-opt'>
+            {{ scope.opt.text }}
+          </q-item-section>
+        </q-item>
+      </template>
+      <template v-slot:selected-item='scope'>
+        <q-chip color='primary' text-color='white'>
+          {{ scope.opt.text }}
+        </q-chip>
+      </template>
+    </q-select>
     <!--    <q-select filled-->
     <!--              map-options-->
     <!--              emit-value-->
@@ -158,9 +147,26 @@ export default defineComponent({
     const colorOptions = tm('patio_color_opts');
     const louverTypeOptions = tm('louver_type_opts');
     const motorsTypeOptions = tm('motor_type_opts');
-    const rafterSizes = Array.apply(0, Array(98 - 1)).map((element, index) => index + 4);
-    const louverSizes = Array.apply(0, Array(21 - 1)).map((element, index) => index + 4);
-    const amountsOfMotors = Array.from({ length: 20 }, (_, i) => i + 1);
+    const rafterSizes = Array.apply(0, Array(98 - 1)).map((element, index) => ({ text: index + 4, key: index + 4 }));
+    const louverSizes = Array.apply(0, Array(21 - 1)).map((element, index) => ({ text: index + 4, key: index + 4 }));
+    const amountsOfMotors = Array.from({ length: 20 }, (_, i) => ({ text: i + 1, key: i + 1 }));
+    const multiselectComponents = [
+      {
+        title: tm('pergola_colors'), options: colorOptions, mdl: 'patio_colors', multi: true,
+      },
+      {
+        title: tm('rafter_size'), options: rafterSizes, mdl: 'rafter_size', multi: true,
+      },
+      {
+        title: tm('louver_size'), options: louverSizes, mdl: 'louver_size', multi: true,
+      },
+      {
+        title: tm('louver_type'), options: louverTypeOptions, mdl: 'louver_type', multi: false,
+      },
+      {
+        title: tm('num_motors'), options: amountsOfMotors, mdl: 'amount_of_motors', multi: false,
+      },
+    ];
 
     const getReceiptDownloadLink = computed(() => {
       if (props.device && props.device.receipt_url) {
@@ -285,6 +291,7 @@ export default defineComponent({
       louverTypeOptions,
       amountsOfMotors,
       motorsTypeOptions,
+      multiselectComponents,
       getDatePickerOptions,
       openImageUploader,
       openReceiptUploader,
@@ -312,7 +319,11 @@ export default defineComponent({
 
 <style lang='scss'>
 @import "src/css/mixins";
-
+.sol-device-details-form {
+  .q-select__dropdown-icon {
+    font-size: 50px;
+  }
+}
 .sol-receipt-btn-sec {
   align-content: center;
   @include setGridAuto(auto, 10px, "rows");
