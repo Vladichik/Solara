@@ -77,6 +77,22 @@ export default function () {
     }
   };
 
+  const beginFromOpening = async (currentMotor, awaitForFullClosing, awaitForRequiredOpening) => {
+    await openDevice({ selected_ids: currentMotor });
+    await timeout(awaitForFullClosing); // Waiting for motor to fully close
+    await closeDevice({ selected_ids: currentMotor }); // beginning opening closed motor
+    await timeout(awaitForRequiredOpening); // Waiting for motor to reach specific point.
+    await stopProcess({ selected_ids: currentMotor });
+  };
+
+  const beginFromClosing = async (currentMotor, awaitForFullClosing, awaitForRequiredOpening) => {
+    await closeDevice({ selected_ids: currentMotor });
+    await timeout(awaitForFullClosing); // Waiting for motor to fully close
+    await openDevice({ selected_ids: currentMotor }); // beginning opening closed motor
+    await timeout(awaitForRequiredOpening); // Waiting for motor to reach specific point.
+    await stopProcess({ selected_ids: currentMotor });
+  };
+
   /**
    * THis idiotic function is made to preset all angines according to favorites
    * state saved by user. This sick flow is forced to be done because our motors
@@ -89,11 +105,12 @@ export default function () {
     const awaitForFullClosing = Constants[`${device.motor_type}_SPEED`] + Constants.DELAY_BETWEEN_COMMANDS;
     const awaitForRequiredOpening = Constants[`${device.motor_type}_${device.favorites_set[partialOpeningIndex].state}`];
     const currentMotor = [device.favorites_set[partialOpeningIndex].orvibo_id];
-    await openDevice({ selected_ids: currentMotor });
-    await timeout(awaitForFullClosing);
-    await closeDevice({ selected_ids: currentMotor }); // beginning opening closed motor
-    await timeout(awaitForRequiredOpening); // Waiting for motor to reach specific point.
-    await stopProcess({ selected_ids: currentMotor }, true); // Stopping motor at specific position
+    const requiredState = device.favorites_set[partialOpeningIndex].state;
+    if (requiredState === Constants.MOTOR_QT_OPEN) {
+      await beginFromOpening(currentMotor, awaitForFullClosing, awaitForRequiredOpening);
+    } else {
+      await beginFromClosing(currentMotor, awaitForFullClosing, awaitForRequiredOpening);
+    }
     partialOpeningIndex += 1;
     if (device.favorites_set[partialOpeningIndex]) {
       // Triggering next motor if exists
@@ -116,11 +133,11 @@ export default function () {
       const awaitForFullClosing = Constants[`${device.motor_type}_SPEED`] + Constants.DELAY_BETWEEN_COMMANDS;
       const awaitForRequiredOpening = Constants[`${device.motor_type}_${position}`];
       const currentMotor = [device.selected_ids[partialOpeningIndex]];
-      await openDevice({ selected_ids: currentMotor });
-      await timeout(awaitForFullClosing); // Waiting for motor to fully close
-      await closeDevice({ selected_ids: currentMotor }); // beginning opening closed motor
-      await timeout(awaitForRequiredOpening); // Waiting for motor to reach specific point.
-      await stopProcess({ selected_ids: currentMotor }, true); // Stopping motor at specific position
+      if (position === Constants.MOTOR_QT_OPEN) {
+        await beginFromOpening(currentMotor, awaitForFullClosing, awaitForRequiredOpening);
+      } else {
+        await beginFromClosing(currentMotor, awaitForFullClosing, awaitForRequiredOpening);
+      }
       partialOpeningIndex += 1;
       if (device.selected_ids[partialOpeningIndex]) {
         // Triggering next motor if exists

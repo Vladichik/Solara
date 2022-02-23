@@ -2,7 +2,7 @@
   <section :class="['sol-device-control-panel weather-def', getWeatherBackgroundClass(currentWeather)]">
     <navbar :absolute='true'
             :title='getDeviceName(device)'
-            :btn-label="$tm('nav_bar.home')" :go-back='goHome' />
+            :go-back='goHome' />
     <q-btn flat no-caps
            icon='control_camera'
            class='sol-motors-panel-trigger'
