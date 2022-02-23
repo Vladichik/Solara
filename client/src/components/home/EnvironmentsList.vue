@@ -32,15 +32,17 @@ import {
   reactive,
 } from 'vue';
 import { useStore } from 'vuex';
+import OrviboAndSolaraDevicesCombiner from 'src/mixins/OrviboAndSolaraDevicesCombiner';
 
 export default defineComponent({
   name: 'EnvironmentsList',
   props: ['enterDevice'],
   setup() {
+    const { generateEnvironments } = OrviboAndSolaraDevicesCombiner();
     const store = useStore();
-    const myDevicesOrvibo = computed(() => store.state.Devices.myOrviboDevices);
     const myDevices = computed(() => store.state.Devices.myDevices);
     const groupedDevices = reactive([]);
+    const noDevicesYet = computed(() => store.state.Devices.noDevicesYet);
 
     /**
      * Function that groups environments
@@ -48,23 +50,8 @@ export default defineComponent({
      * Vlad. 24/08/21
      */
     const groupListsByEnvironments = () => {
-      if (myDevicesOrvibo.value && myDevicesOrvibo.value.length && myDevices.value && myDevices.value.length) {
-        const cloned = JSON.parse(JSON.stringify(myDevicesOrvibo.value));
-        const clonedMyDevices = JSON.parse(JSON.stringify(myDevices.value));
-
-        const hubsOnly = cloned.filter((device) => device.deviceTypeName.includes('allone_pro'));
-        const orviboRegisteredDevices = cloned.map((d) => d.deviceId);
-        myDevicesOrvibo.value.forEach((device) => {
-          if (device.subDeviceType.includes('allone_pro')) {
-            const foundGroup = hubsOnly.find((g) => g.uid === device.uid);
-            if (foundGroup) {
-              foundGroup.devices = clonedMyDevices.filter((md) => md.hub_id === foundGroup.deviceId
-              && md.orvibo_ids.some((oid) => orviboRegisteredDevices.includes(oid)));
-            }
-          }
-        });
-        Object.assign(groupedDevices, hubsOnly);
-      }
+      const environments = generateEnvironments();
+      Object.assign(groupedDevices, environments);
     };
 
     onBeforeMount(() => {
@@ -72,6 +59,7 @@ export default defineComponent({
     });
 
     return {
+      noDevicesYet,
       myDevices,
       groupedDevices,
       groupListsByEnvironments,
@@ -81,10 +69,11 @@ export default defineComponent({
     myDevices(dev) {
       this.groupListsByEnvironments(dev);
     },
+    noDevicesYet(noDevicesAdded) {
+      if (noDevicesAdded) {
+        this.$router.push('/products-info');
+      }
+    },
   },
 });
 </script>
-
-<style scoped>
-
-</style>

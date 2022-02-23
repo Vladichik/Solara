@@ -1,5 +1,7 @@
 import { api } from 'boot/axios';
 import { Constants } from 'src/config/constants';
+import AuthAPI from 'src/api/authentication';
+import UserAPI from 'src/api/user';
 
 const ORVIBO_API_BASE = '/orvibo';
 
@@ -19,10 +21,6 @@ export default class OrviboAPI {
       return date > new Date();
     }
     return false;
-  }
-
-  static expiredToken() {
-    return { message: 'TOKEN_EXPIRED' };
   }
 
   static triggerOrviboAuthentication() {
@@ -52,13 +50,46 @@ export default class OrviboAPI {
    * @returns {{message: string}|Promise<AxiosResponse<any>>}
    * Vlad. 03/09/21
    */
-  static getUserDeviceList() {
+  static async getUserDeviceList() {
     if (this.tokenIsValid()) {
       const payload = this.basicPayloadData();
-      return api.post(`${ORVIBO_API_BASE}/get-devices`, payload);
+      const devices = await api.post(`${ORVIBO_API_BASE}/get-devices`, payload);
+      // Case when token is valid, but token itself is wrong because of server side update
+      if (devices.data && devices.data.errorMsg && devices.data.errorMsg.includes('token')) {
+        this.triggerOrviboAuthentication();
+        return false;
+      }
+      return devices;
     }
-    this.triggerOrviboAuthentication();
-    return this.expiredToken();
+    if (!localStorage.getItem(Constants.ORVIBO_TOKEN_KEY)) {
+      this.triggerOrviboAuthentication();
+    } else {
+      this.refreshTokenAndUpdateSolara().then();
+    }
+    return '';
+  }
+
+  /**
+   * Function that refreshes Orvibo token and saves it in Solara DB
+   * @returns {Promise<void>}
+   * Vlad. 11/11/21
+   */
+  static async refreshTokenAndUpdateSolara() {
+    const { data } = await AuthAPI.refreshOrviboToken();
+    if (data && data.refresh_token) {
+      AuthAPI.setOrviboToken(data);
+      const tokenData = {
+        orvibo_id: data.user_id,
+        orvibo_token: `Bearer ${data.access_token}`,
+        orvibo_token_exp: data.expires_in,
+        orvibo_refresh_token: data.refresh_token,
+      };
+      await UserAPI.updateUser(tokenData);
+    }
+    if (data && data.error === 'invalid_grant') {
+      localStorage.removeItem(Constants.ORVIBO_TOKEN_KEY);
+      this.triggerOrviboAuthentication();
+    }
   }
 
   /**

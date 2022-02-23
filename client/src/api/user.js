@@ -24,7 +24,7 @@ export default class UserAPI {
   /**
    * API call that updates user details
    * @param user - Object
-   * @returns {Promise<T>}
+   * @returns
    * Vlad. 01/08/21
    */
   static updateUser(user) {

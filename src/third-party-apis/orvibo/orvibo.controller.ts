@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   HttpStatus,
+  Logger,
   Post,
   Request,
   Res,
@@ -31,6 +32,16 @@ export class OrviboController {
   @Post('/operate-device')
   async sendDeviceCommand(@Request() req, @Res() res, @Body() command) {
     const sent = await this.orviboService.sendCommandToDevice(command);
+    Logger.log('========= RESPONSE FROM ORVIBO ON COMMAND ==========');
+    Logger.log(sent);
+    Logger.log('====================================================');
+    return res.status(HttpStatus.OK).json(sent);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/refresh-token')
+  async refreshClientToken(@Request() req, @Res() res, @Body() payload) {
+    const sent = await this.orviboService.refreshToken(payload);
     return res.status(HttpStatus.OK).json(sent);
   }
 }

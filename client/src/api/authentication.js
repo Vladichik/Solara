@@ -23,6 +23,18 @@ export default class AuthAPI {
   }
 
   /**
+   * Function that performs LogIn sequence
+   * @param credentials - Object with login credentials
+   * @return {Promise}
+   * Vlad. 15/1/21
+   */
+  static signIn(credentials) {
+    return api.post(`${AUTH_BASE}/login`, credentials)
+      .then((resp) => resp)
+      .catch((error) => error.response);
+  }
+
+  /**
    * API call that implements authentication in Orvibo Cloud.
    * @param code - String from url parameter after triggering orvibo authentication
    * @returns {Promise}
@@ -35,13 +47,13 @@ export default class AuthAPI {
   }
 
   /**
-   * Function that performs LogIn sequence
-   * @param credentials - Object with login credentials
-   * @return {Promise}
-   * Vlad. 15/1/21
+   * API call that sends request to refresh token of logged in user
+   * @returns
+   * Vlad. 11/11/21
    */
-  static signIn(credentials) {
-    return api.post(`${AUTH_BASE}/login`, credentials)
+  static refreshOrviboToken() {
+    const refreshToken = this.getOrviboRefreshToken();
+    return api.post('orvibo/refresh-token', { refresh_token: refreshToken })
       .then((resp) => resp)
       .catch((error) => error.response);
   }
@@ -80,6 +92,7 @@ export default class AuthAPI {
    */
   static setOrviboToken(token) {
     const tokenData = {
+      refresh_token: token.refresh_token,
       access_token: token.access_token,
       expires_in: token.expires_in,
       user_id: token.user_id,
@@ -110,6 +123,14 @@ export default class AuthAPI {
 
   static getAuthToken() {
     return localStorage.getItem(Constants.AUTH_TOKEN_KEY);
+  }
+
+  static getOrviboRefreshToken() {
+    const orviboToken = localStorage.getItem(Constants.ORVIBO_TOKEN_KEY);
+    if (orviboToken) {
+      return JSON.parse(orviboToken).refresh_token;
+    }
+    return null;
   }
 
   /**

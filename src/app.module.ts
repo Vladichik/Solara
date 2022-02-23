@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
+import MongoConfig from './config/mongo-config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronModule } from './cron/cron.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { ConfigModule } from '@nestjs/config';
-import MongoConfig from './config/mongo-config';
-import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './database/users/users.module';
@@ -16,6 +18,8 @@ import { AddressesModule } from './database/addresses/addresses.module';
 import { DeviceAddressesModule } from './database/device-addresses/device-addresses.module';
 import { OrviboModule } from './third-party-apis/orvibo/orvibo.module';
 import { WeatherModule } from './third-party-apis/weather/weather.module';
+import { ContactUsModule } from './database/contact-us/contact-us.module';
+import { MailerModule } from '@nestjs-modules/mailer';
 import configuration from './config/configurations';
 
 @Module({
@@ -24,7 +28,6 @@ import configuration from './config/configurations';
       rootPath: join(__dirname, '..', 'client/dist/spa'),
     }),
     ConfigModule.forRoot({
-      // ignoreEnvFile: true,
       envFilePath: '.env',
       load: [configuration],
       isGlobal: true,
@@ -32,6 +35,19 @@ import configuration from './config/configurations';
     MongooseModule.forRootAsync({
       useClass: MongoConfig,
     }),
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async () => ({
+        transport: process.env.EMAIL_TRANSPORT,
+        port: process.env.EMAIL_PORT,
+        defaults: {
+          from: process.env.COMPANY_EMAIL,
+        },
+      }),
+      inject: [ConfigService],
+    }),
+    ScheduleModule.forRoot(),
+    CronModule,
     AuthModule,
     UsersModule,
     CryptoGuyModule,
@@ -42,8 +58,10 @@ import configuration from './config/configurations';
     DeviceAddressesModule,
     OrviboModule,
     WeatherModule,
+    ContactUsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+}

@@ -1,0 +1,32 @@
+.weather {
+  &-clear {
+    background-image: url("../../public/images/clear_day.jpg");
+    &-night {
+      background-image: url("../../public/images/clear_night.jpg");
+    }
+  }
+  &-rain {
+    background-image: url("../../public/images/rain_day.jpg");
+    &-night {
+      background-image: url("../../public/images/rain_night.jpg");
+    }
+  }
+  &-snow {
+    background-image: url("../../public/images/snow_day.jpg");
+    &-night {
+      background-image: url("../../public/images/snow_night.jpg");
+    }
+  }
+  &-clouds {
+    background-image: url("../../public/images/cloudy_day.jpg");
+    &-night {
+      background-image: url("../../public/images/cloudy_night.jpg");
+    }
+  }
+}
+
+.weather-def {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

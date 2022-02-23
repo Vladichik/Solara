@@ -46,6 +46,7 @@ export default defineComponent({
     const deviceData = reactive({
       user_id: null,
       orvibo_ids: null,
+      selected_ids: null,
       hub_id: null,
       assembly_type: null,
     });
@@ -57,15 +58,19 @@ export default defineComponent({
      */
     const setSelectedDevice = (data) => {
       deviceData.orvibo_ids = data.device_ids;
+      deviceData.selected_ids = data.device_ids;
       deviceData.hub_id = data.hub_id;
       deviceData.assembly_type = data.assembly_type;
+      deviceData.favorites_set = data.device_ids.map((id) => ({ orvibo_id: id, state: 'OPEN' }));
     };
 
     const resetForm = () => {
       deviceData.orvibo_ids = null;
+      deviceData.selected_ids = null;
       deviceData.user_id = null;
       deviceData.assembly_type = null;
       deviceData.hub_id = null;
+      deviceData.favorites_set = null;
     };
     return {
       showDialog,

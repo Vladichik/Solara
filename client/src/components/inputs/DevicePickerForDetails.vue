@@ -18,6 +18,7 @@ import {
   computed, defineComponent, ref, onBeforeMount, reactive,
 } from 'vue';
 import { useStore } from 'vuex';
+import { Constants } from 'src/config/constants';
 
 export default defineComponent({
   name: 'DevicePickerForDetails',
@@ -36,7 +37,7 @@ export default defineComponent({
         const groups = [];
         noAvailableDevices.value = false;
         const cloned = JSON.parse(JSON.stringify(myOrviboDevices.value));
-        const filtered = cloned.filter((device) => !device.deviceTypeName.includes('allone_pro')
+        const filtered = cloned.filter((device) => !device.deviceTypeName.includes(Constants.HUB_MARK)
           && !myDevices.value.some((d) => d.orvibo_ids.includes(device.deviceId)));
 
         // Determining how many unique groups/hubs user has
@@ -48,12 +49,12 @@ export default defineComponent({
 
         if (groups.length) {
           groups.forEach((g) => {
-            const hub = cloned.find((dev) => dev.uid === g && dev.deviceTypeName.includes('allone_pro'));
+            const hub = cloned.find((dev) => dev.uid === g && dev.deviceTypeName.includes(Constants.HUB_MARK));
             options.push({
               device_name: `Patio - ${hub.deviceName}`,
               hub_id: hub.deviceId,
               assembly_type: 'patio',
-              device_ids: filtered.filter((d) => d.uid === g && d.deviceTypeName === 'curtain').map((dev) => dev.deviceId),
+              device_ids: filtered.filter((d) => d.uid === g && d.deviceTypeName === Constants.MOTOR_MARK).map((dev) => dev.deviceId),
             });
           });
         }

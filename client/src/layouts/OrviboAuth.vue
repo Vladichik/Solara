@@ -22,8 +22,9 @@
 </template>
 
 <script>
-import { defineComponent, onBeforeMount } from 'vue';
+import { computed, defineComponent, onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 import SolaraLogo from 'components/icons/SolaraLogo';
 import CloudIcon from 'components/icons/CloudIcon';
 
@@ -38,11 +39,24 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const router = useRouter();
+    const store = useStore();
+    const user = computed(() => store.state.User.user);
     onBeforeMount(() => {
       setTimeout(async () => {
+        await store.dispatch('User/getLoggedInUser');
         const loggedIn = await AuthAPI.orviboLogin(route.query.code);
         if (loggedIn.data && loggedIn.data.access_token) {
           AuthAPI.setOrviboToken(loggedIn.data);
+          // Saving orvibo token in Solara database to give server access to the
+          // user devices
+          const userData = {
+            ...user.value,
+            orvibo_id: loggedIn.data.user_id,
+            orvibo_token: `Bearer ${loggedIn.data.access_token}`,
+            orvibo_token_exp: loggedIn.data.expires_in,
+            orvibo_refresh_token: loggedIn.data.refresh_token,
+          };
+          await store.dispatch('User/updateUser', userData);
           await router.push('/home');
         }
       }, 1000);

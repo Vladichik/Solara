@@ -24,7 +24,7 @@
       sdfgsdfg
     </q-drawer>
 
-    <q-page-container class="full-height">
+    <q-page-container>
       <router-view />
     </q-page-container>
     <splash-screen />

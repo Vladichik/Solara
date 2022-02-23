@@ -31,8 +31,23 @@ export default function () {
     return '';
   };
 
+  /**
+   * Function that gets deviceName of motor or any other part by its ID
+   * @param partId - String
+   * @returns {string|*|string}
+   * Vlad. 28/09/21
+   */
+  const getPartName = (partId) => {
+    if (myOrviboDevice.value && myOrviboDevice.value.length) {
+      const name = myOrviboDevice.value.find((d) => d.deviceId === partId);
+      return name ? name.deviceName : '';
+    }
+    return '';
+  };
+
   return {
     getOrviboAuthUrl,
     getDeviceName,
+    getPartName,
   };
 }

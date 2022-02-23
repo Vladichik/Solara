@@ -1,3 +1,5 @@
+import { Constants } from 'src/config/constants';
+
 export default {
   main_tabs: [
     { name: 'Home', route: '/home', icon: 'home' },
@@ -32,6 +34,7 @@ export default {
   signup: 'Sign Up',
   logout: 'Log out',
   confirm: 'Confirm',
+  remind_pw: 'Remind Password',
   i_am_sure: 'I am sure',
   logout_msg: 'Are you sure you want to logout?',
   confirm_logout: 'Confirm Logout',
@@ -63,6 +66,9 @@ export default {
     saving_failed: 'Could not save changes',
     device_creation_fail: 'Device creation failed',
     device_created: 'Device created successfully',
+    forgot_pw_sent: 'The password has been sent to your email',
+    forgot_pw_absent: 'There is no registered user with such email',
+    payment_failed: 'Payment Failed!',
   },
   my_account_links: [
     { name: 'Payment Info', icon: 'credit_card', path: '/payment-info' },
@@ -86,10 +92,12 @@ export default {
   technician_name: 'Technician name',
   technician_company: 'Technician company name',
   install_date: 'Installation date',
-  pergola_colors: 'Pergola colors',
+  pergola_colors: 'Patio Cover colors',
   rafter_size: 'Rafter size',
-  louvered_size: 'Louvered size',
+  louver_type: 'Louver type',
+  louver_size: 'Louver size',
   num_motors: 'Number of motors',
+  motor_type: 'Motor Type',
   add_photo: 'Device Photo',
   add_receipt: 'Upload Receipt',
   download_receipt: 'Download Receipt',
@@ -100,6 +108,26 @@ export default {
   patio: 'Patio',
   select_motor: 'Select motor/s you want to operate',
   all: 'All',
+  mode: 'Mode',
+  device_locked: 'This device has $value$ lock. Are you sure you want to remove this lock and proceed?',
+  get_pro_account: 'Get PRO account',
+  auto_patio_msg: 'Automate patio according to weather',
+  patio_color_opts: [
+    { text: 'White', key: 'white' },
+    { text: 'Adobe', key: 'adobe' },
+    { text: 'Cameo', key: 'cameo' },
+    { text: 'Latte', key: 'latte' },
+    { text: 'Spanish Brown', key: 'spanish_brown' },
+    { text: 'Custom', key: 'custom' },
+  ],
+  louver_type_opts: [
+    { text: 'Extruded', key: 'extruded' },
+    { text: 'Roll Formed', key: 'roll_formed' },
+  ],
+  motor_type_opts: [
+    { text: 'Sito Motor', key: Constants.MOTOR_SITO },
+    { text: 'TiMotion Motor', key: Constants.MOTOR_TIM },
+  ],
   states: [
     {
       name: 'Alabama',

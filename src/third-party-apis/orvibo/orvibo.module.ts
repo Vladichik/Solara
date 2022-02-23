@@ -8,5 +8,6 @@ import { ConfigModule } from '@nestjs/config';
   imports: [HttpModule, ConfigModule, CryptoGuyModule],
   providers: [OrviboService],
   controllers: [OrviboController],
+  exports: [OrviboService],
 })
 export class OrviboModule {}

@@ -9,7 +9,7 @@ const DEVICES_BASE = '/devices';
 export default class DevicesAPI {
   /**
    * API call that fetches user devices from the server
-   * @returns {Promise<T>}
+   * @returns
    * Vlad. 02/08/21
    */
   static getMyDevices() {
@@ -22,7 +22,7 @@ export default class DevicesAPI {
   /**
    * API call that calls new device creation
    * @param device - Object with device details
-   * @returns {Promise<T>}
+   * @returns
    * Vlad. 02/08/21
    */
   static createDevice(device) {
@@ -34,7 +34,7 @@ export default class DevicesAPI {
   /**
    * API call that implements device update
    * @param device - Object
-   * @returns {Promise<T>}
+   * @returns
    */
   static updateDevice(device) {
     return api.put(`${DEVICES_BASE}/device`, device)

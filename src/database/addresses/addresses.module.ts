@@ -12,5 +12,6 @@ import { AddressManualSchema } from '../../schemas/address.manual.schema';
   ],
   providers: [AddressesService],
   controllers: [AddressesController],
+  exports: [AddressesService],
 })
 export class AddressesModule {}

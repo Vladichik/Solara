@@ -30,6 +30,8 @@
 
 ```bash
 $ npm install
+
+create .env file with relevant data (ask admin)
 ```
 
 ## Running the app
@@ -71,3 +73,4 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
