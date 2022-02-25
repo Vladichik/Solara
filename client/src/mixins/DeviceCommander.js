@@ -18,6 +18,7 @@ export default function () {
    */
   const sendCommandToDevice = async (payload) => {
     if (payload.deviceIds && payload.deviceIds.length) {
+      // eslint-disable-next-line no-console
       console.log(`Sending command: ${payload.action} - ${payload.deviceIds[index]}`);
       store.commit('General/setMainLoaderState', true);
       await OrviboAPI.sendCommandToDevice({
@@ -78,8 +79,8 @@ export default function () {
   };
 
   const beginFromOpening = async (currentMotor, awaitForFullClosing, awaitForRequiredOpening) => {
-    await openDevice({ selected_ids: currentMotor });
-    await timeout(awaitForFullClosing); // Waiting for motor to fully close
+    await openDevice({ selected_ids: currentMotor }); // Waiting for motor to fully open
+    await timeout(awaitForFullClosing);
     await closeDevice({ selected_ids: currentMotor }); // beginning opening closed motor
     await timeout(awaitForRequiredOpening); // Waiting for motor to reach specific point.
     await stopProcess({ selected_ids: currentMotor });

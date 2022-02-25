@@ -8,6 +8,7 @@
            class='sol-motors-panel-trigger'
            label='Motors' @click='$refs.motorSelectionPanel.showDialog = true' />
     <div class='sol-control-panel-main full-height'>
+      <PleaseFillDeviceDetails v-if='!isAllowedToUse' :device='solaraDevice' />
       <div class='sol-weather-content'>
         <div>
           {{ date.formatDate(currentWeather.last_updated_epoch * 1000, 'MMMM Do') }}
@@ -103,6 +104,7 @@ import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
 import DeviceCommander from 'src/mixins/DeviceCommander';
 import WeatherDataComposition from 'src/mixins/WeatherDataComposition';
 import UnlockDeviceDialog from 'components/dialogs/UnlockDeviceDialog';
+import PleaseFillDeviceDetails from 'components/home/PleaseFillDeviceDetails';
 import DevicesAPI from 'src/api/device';
 import WeatherAPI from 'src/api/weather';
 
@@ -112,6 +114,7 @@ export default defineComponent({
   components: {
     MotorSelectionPanel,
     UnlockDeviceDialog,
+    PleaseFillDeviceDetails,
   },
   setup(props) {
     const {
@@ -132,6 +135,12 @@ export default defineComponent({
     const operationMode = ref(null);
     const myDevices = computed(() => store.state.Devices.myDevices);
     const processing = computed(() => store.state.General.processing);
+    const isAllowedToUse = computed(() => {
+      if (solaraDevice.value && solaraDevice.value.id) {
+        return solaraDevice.value.technician_company.length > 0 && solaraDevice.value.technician_name.length > 0;
+      }
+      return true;
+    });
 
     const getWeatherForDevice = () => {
       if (myDevices.value && myDevices.value.length) {
@@ -242,6 +251,8 @@ export default defineComponent({
       getCentigradeTemp,
       activeLockType,
       unlockDeviceDialog,
+      isAllowedToUse,
+      solaraDevice,
       date,
       getDeviceName,
       openDevice,

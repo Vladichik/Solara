@@ -110,6 +110,7 @@ export default {
   all: 'All',
   mode: 'Mode',
   device_locked: 'This device has $value$ lock. Are you sure you want to remove this lock and proceed?',
+  must_fill_det: 'You must fill all device detail before operating it...',
   get_pro_account: 'Get PRO account',
   auto_patio_msg: 'Automate patio according to weather',
   patio_color_opts: [

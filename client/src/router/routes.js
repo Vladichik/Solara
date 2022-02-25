@@ -23,7 +23,7 @@ const routes = [
           { path: '/payment-info', component: () => import('pages/my-account/PaymentInfo.vue') },
           { path: '/personal-info', component: () => import('pages/my-account/PersonalInfo.vue') },
           { path: '/address', component: () => import('pages/my-account/Addresses.vue') },
-          { path: '/products-info', component: () => import('pages/my-account/ProductsInfo.vue') },
+          { path: '/products-info/:deviceId?', component: () => import('pages/my-account/ProductsInfo.vue') },
           { path: '/contact-us', component: () => import('pages/my-account/ContactUs.vue') },
         ],
       },
