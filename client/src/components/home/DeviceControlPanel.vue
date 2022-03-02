@@ -56,6 +56,7 @@
             <q-btn round color='primary'
                    icon='pause'
                    size='lg'
+                   :disable='processingSemi || (!processing && !processingSemi)'
                    @click='stopProcess(device)' />
           </div>
           <q-btn :class="['sol-control-btn-abs-right text-blue-grey-7', { 'sol-btn-disabled': processing} ]"
@@ -135,6 +136,7 @@ export default defineComponent({
     const operationMode = ref(null);
     const myDevices = computed(() => store.state.Devices.myDevices);
     const processing = computed(() => store.state.General.processing);
+    const processingSemi = computed(() => store.state.General.processingSemi);
     const isAllowedToUse = computed(() => {
       if (solaraDevice.value && solaraDevice.value.id) {
         return solaraDevice.value.technician_company.length > 0 && solaraDevice.value.technician_name.length > 0;
@@ -245,6 +247,7 @@ export default defineComponent({
     return {
       constants,
       processing,
+      processingSemi,
       currentWeather,
       weatherLocation,
       getIconUrl,

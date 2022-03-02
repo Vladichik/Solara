@@ -83,7 +83,7 @@ export default function () {
     await timeout(awaitForFullClosing);
     await closeDevice({ selected_ids: currentMotor }); // beginning opening closed motor
     await timeout(awaitForRequiredOpening); // Waiting for motor to reach specific point.
-    await stopProcess({ selected_ids: currentMotor });
+    await stopProcess({ selected_ids: currentMotor }, true);
   };
 
   const beginFromClosing = async (currentMotor, awaitForFullClosing, awaitForRequiredOpening) => {
@@ -91,7 +91,7 @@ export default function () {
     await timeout(awaitForFullClosing); // Waiting for motor to fully close
     await openDevice({ selected_ids: currentMotor }); // beginning opening closed motor
     await timeout(awaitForRequiredOpening); // Waiting for motor to reach specific point.
-    await stopProcess({ selected_ids: currentMotor });
+    await stopProcess({ selected_ids: currentMotor }, true);
   };
 
   /**
@@ -130,6 +130,7 @@ export default function () {
    * Vlad. 19/02/22
    */
   const openMotorPartially = async (device, position) => {
+    store.commit('General/setProcessingSemi', true);
     if (device && device.selected_ids.length) {
       const awaitForFullClosing = Constants[`${device.motor_type}_SPEED`] + Constants.DELAY_BETWEEN_COMMANDS;
       const awaitForRequiredOpening = Constants[`${device.motor_type}_${position}`];
@@ -146,6 +147,7 @@ export default function () {
         openMotorPartially(device, position).then();
       } else {
         store.commit('General/setMainLoaderState', false);
+        store.commit('General/setProcessingSemi', false);
       }
     }
     return false;
