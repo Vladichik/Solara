@@ -56,8 +56,8 @@
             <q-btn round color='primary'
                    icon='pause'
                    size='lg'
-                   :disable='processingSemi || (!processing && !processingSemi)'
-                   @click='stopProcess(device)' />
+                   :disable='processingSemi || blockPause'
+                   @click='triggerStopProcess(device)' />
           </div>
           <q-btn :class="['sol-control-btn-abs-right text-blue-grey-7', { 'sol-btn-disabled': processing} ]"
                  :disable='processing'
@@ -127,6 +127,7 @@ export default defineComponent({
     const constants = Constants;
     const { getDeviceName } = DataGettersCompositions();
     const { getWeatherBackgroundClass } = WeatherDataComposition();
+    const blockPause = ref(false);
     const store = useStore();
     const solaraDevice = ref({});
     const currentWeather = ref({});
@@ -224,6 +225,7 @@ export default defineComponent({
      * V
      */
     const triggerRelevantDeviceCommand = (mode = operationMode.value) => {
+      store.commit('General/setMainLoaderState', true);
       const partialProcesses = [constants.MOTOR_SEM_OPEN, constants.MOTOR_QT_OPEN, constants.MOTOR_ALM_OPEN];
       if (partialProcesses.includes(mode)) {
         initiateMotorsPartialOpeningProcess(props.device, mode);
@@ -235,10 +237,23 @@ export default defineComponent({
         openDevice(props.device);
       }
       if (mode === 'close' || mode === 'open') {
-        setTimeout(() => {
-          store.commit('General/setMainLoaderState', false);
-        }, constants[`${props.device.motor_type}_SPEED`]);
+        blockPause.value = true;
+        shutDownSpinner();
       }
+    };
+
+    const triggerStopProcess = (device) => {
+      store.commit('General/setMainLoaderState', true);
+      blockPause.value = true;
+      stopProcess(device);
+      shutDownSpinner();
+    };
+
+    const shutDownSpinner = () => {
+      setTimeout(() => {
+        blockPause.value = false;
+        store.commit('General/setMainLoaderState', false);
+      }, props.device.selected_ids.length * Constants.DELAY_BETWEEN_COMMANDS);
     };
 
     onBeforeMount(() => {
@@ -256,11 +271,13 @@ export default defineComponent({
       unlockDeviceDialog,
       isAllowedToUse,
       solaraDevice,
+      blockPause,
       date,
       getDeviceName,
       openDevice,
       closeDevice,
       stopProcess,
+      triggerStopProcess,
       initiateMotorsPartialOpeningProcess,
       saveSelectedMotors,
       getWeatherBackgroundClass,

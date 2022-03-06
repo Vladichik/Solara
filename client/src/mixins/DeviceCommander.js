@@ -17,10 +17,9 @@ export default function () {
    * Vlad. 16/09/21
    */
   const sendCommandToDevice = async (payload) => {
-    if (payload.deviceIds && payload.deviceIds.length) {
+    if (payload.deviceIds && payload.deviceIds.length && payload.deviceIds[index]) {
       // eslint-disable-next-line no-console
       console.log(`Sending command: ${payload.action} - ${payload.deviceIds[index]}`);
-      store.commit('General/setMainLoaderState', true);
       await OrviboAPI.sendCommandToDevice({
         deviceId: payload.deviceIds[index],
         action: payload.action,
@@ -73,9 +72,6 @@ export default function () {
       deviceIds: device.selected_ids,
       action: 'Pause',
     });
-    if (!groupProcess) {
-      store.commit('General/setMainLoaderState', false);
-    }
   };
 
   const beginFromOpening = async (currentMotor, awaitForFullClosing, awaitForRequiredOpening) => {
