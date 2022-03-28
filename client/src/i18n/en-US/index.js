@@ -113,6 +113,8 @@ export default {
   must_fill_det: 'You must fill all device detail before operating it...',
   get_pro_account: 'Get PRO account',
   auto_patio_msg: 'Automate patio according to weather',
+  please_create_device: 'Product information is required',
+  go_to_product: 'Go to product info',
   patio_color_opts: [
     { text: 'White', key: 'white' },
     { text: 'Adobe', key: 'adobe' },

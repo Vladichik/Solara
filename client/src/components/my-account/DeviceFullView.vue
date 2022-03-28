@@ -13,6 +13,7 @@
     <!--             :rules="[ val => val && val.length > 0 || $t('mandatory_field')]" />-->
     <q-select v-for='comp in multiselectComponents'
               :key='comp.mdl'
+              behavior='menu'
               filled
               :multiple='comp.multi'
               map-options
@@ -78,6 +79,7 @@
     </q-input>
     <q-select :model-value='formData.address'
               v-model='formData.address'
+              behavior='menu'
               map-options
               emit-value
               filled

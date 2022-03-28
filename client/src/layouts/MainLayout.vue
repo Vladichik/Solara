@@ -2,7 +2,6 @@
   <q-layout view="hHh lpR fFf" class="sol-main-frame">
     <q-header class="bg-white text-primary shadow-1" height-hint="98">
       <q-toolbar>
-        <!--        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />-->
         <q-toolbar-title>
           <solara-logo width="120" height="40" class="q-mt-sm" />
         </q-toolbar-title>
@@ -14,7 +13,8 @@
                      :to="r.route"
                      :label="r.name"
                      :icon="r.icon"
-                     :key="r.route" />
+                     :key="r.route"
+                     @click='onTabPressed()' />
       </q-tabs>
     </q-header>
 
@@ -35,21 +35,28 @@
 <script>
 import { ref, onBeforeMount, computed } from 'vue';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 import SolaraLogo from 'components/icons/SolaraLogo';
 import SplashScreen from 'components/splash/SplashScreen';
+import bus from 'vue3-eventbus';
 
 export default {
   components: {
     SolaraLogo,
     SplashScreen,
   },
-  setup() {
+  setup(props, { emit }) {
     const store = useStore();
+    const route = useRoute();
     const processing = computed(() => store.state.General.processing);
     const leftDrawerOpen = ref(false);
 
     const toggleLeftDrawer = () => {
       leftDrawerOpen.value = !leftDrawerOpen.value;
+    };
+
+    const onTabPressed = () => {
+      bus.emit('closeNav');
     };
 
     onBeforeMount(async () => {
@@ -65,6 +72,7 @@ export default {
       processing,
       leftDrawerOpen,
       toggleLeftDrawer,
+      onTabPressed,
     };
   },
 };
