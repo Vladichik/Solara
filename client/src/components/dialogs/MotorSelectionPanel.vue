@@ -54,7 +54,12 @@ export default defineComponent({
     const store = useStore();
     const showDialog = ref(false);
     const selectedAllState = ref(true);
-    const panelItems = ref([]);
+    const panelItems = ref([
+      { deviceId: 123412341234, deviceName: 'Motor 1' },
+      { deviceId: 1234123410234, deviceName: 'Motor 2' },
+      { deviceId: 1234123941234, deviceName: 'Motor 3' },
+      { deviceId: 1234123841234, deviceName: 'Motor 4' },
+    ]);
     const selectedMotors = ref([]);
     const myOrviboDevices = computed(() => store.state.Devices.myOrviboDevices);
 

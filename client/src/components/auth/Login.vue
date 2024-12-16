@@ -8,7 +8,6 @@
              :placeholder="$t('pw')"
              type="password"
              v-model="formData.password"
-             model-value=""
              :rules="[ val => val && val.length > 5 || $t('pw_mandatory')]" />
     <div class="sol-forgot-pw-block">
       <q-btn flat dense no-caps @click="$emit('set-tab', 'forgot')">{{ $t('forgot_pw') }}</q-btn>

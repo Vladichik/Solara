@@ -28,7 +28,7 @@ export default function () {
       const name = myOrviboDevice.value.find((d) => d.deviceId === assembly.hub_id);
       return name ? `${t(assembly.assembly_type)} - ${name.deviceName}` : '';
     }
-    return '';
+    return 'Test Device';
   };
 
   /**

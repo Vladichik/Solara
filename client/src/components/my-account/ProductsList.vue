@@ -33,8 +33,8 @@
 <script>
 import { defineComponent, computed } from 'vue';
 import { useStore } from 'vuex';
-import CreateDeviceDialog from 'components/dialogs/CreateDeviceDialog';
-import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
+import CreateDeviceDialog from '../../components/dialogs/CreateDeviceDialog';
+import DataGettersCompositions from '../../mixins/DataGettersCompositions';
 
 export default defineComponent({
   name: 'ProductsList',
