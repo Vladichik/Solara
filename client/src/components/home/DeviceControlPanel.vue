@@ -101,13 +101,13 @@ import { date } from 'quasar';
 import moment from 'moment';
 import { Constants } from 'src/config/constants';
 import MotorSelectionPanel from 'components/dialogs/MotorSelectionPanel';
-import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
 import DeviceCommander from 'src/mixins/DeviceCommander';
-import WeatherDataComposition from 'src/mixins/WeatherDataComposition';
 import UnlockDeviceDialog from 'components/dialogs/UnlockDeviceDialog';
 import PleaseFillDeviceDetails from 'components/home/PleaseFillDeviceDetails';
 import DevicesAPI from 'src/api/device';
 import WeatherAPI from 'src/api/weather';
+import WeatherDataComposition from '../../mixins/WeatherDataComposition';
+import DataGettersCompositions from '../../mixins/DataGettersCompositions';
 
 export default defineComponent({
   name: 'DeviceControlPanel',
@@ -289,7 +289,7 @@ export default defineComponent({
 </script>
 
 <style lang='scss'>
-@import "src/css/mixins";
+@import "../../css/mixins";
 
 .sol-device-control-panel {
   height: calc(100vh - 130px);

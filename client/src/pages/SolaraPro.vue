@@ -21,8 +21,8 @@
 <script>
 import { ref, computed, watch } from 'vue';
 import { useStore } from 'vuex';
-import UpgradeButton from 'components/UpgradeButton';
 import UserAPI from 'src/api/user';
+import UpgradeButton from '../components/UpgradeButton';
 
 export default {
   name: 'SolaraPro',

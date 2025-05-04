@@ -9,27 +9,36 @@
     :label="group.deviceName"
   >
     <q-list separator>
-      <q-item class="bg-grey-2 sol-favorites-devices-list"
-              v-for="device in group.devices"
-              :key="device.id">
+      <q-item
+        class="bg-grey-2 sol-favorites-devices-list"
+        v-for="device in group.devices"
+        :key="device.id"
+      >
         <q-item-section class="text-center q-pb-md q-pt-sm">
-          <q-item-label>{{ $t(device.assembly_type) }}</q-item-label>
+          <q-item-label>{{ device.assembly_type }}</q-item-label>
         </q-item-section>
         <q-list class="sol-favorite-parts-list">
-          <q-item class="sol-favorite-part-row text-blue-grey-8" v-for="part in device.favorites_set"
-                  :key="part.orvibo_id">
-            <q-item-section>{{ getPartName(part.orvibo_id) }}</q-item-section>
+          <q-item
+            class="sol-favorite-part-row text-blue-grey-8"
+            v-for="part in device.favorites_set"
+            :key="part.orvibo_id"
+          >
+            <q-item-section>{{ part.name }}</q-item-section>
+<!--            <q-item-section>{{ getPartName(part.orvibo_id) }}</q-item-section>-->
             <q-item-section>
               <motor-favorites-picker
                 :part="part"
-                @on-mode-selected="(val) => updateDeviceData(val, device)" />
+                @on-mode-selected="(val) => updateDeviceData(val, device)"
+              />
             </q-item-section>
           </q-item>
         </q-list>
         <q-card flat>
-          <q-card-section class='text-center'>
-            <q-btn @click="initiateFavoritesProcess(device)" v-if='user.is_pro'>Trigger</q-btn>
-            <upgrade-button v-if='!user.is_pro' />
+          <q-card-section class="text-center">
+            <q-btn @click="initiateFavoritesProcess(device)" v-if="user?.is_pro"
+              >Trigger
+            </q-btn>
+            <upgrade-button v-if="!user?.is_pro" />
           </q-card-section>
         </q-card>
       </q-item>
@@ -39,19 +48,15 @@
 
 <script>
 import {
-  defineComponent,
-  computed,
-  watch,
-  onBeforeMount,
-  reactive,
+  defineComponent, computed, watch, onBeforeMount, reactive,
 } from 'vue';
 import { useStore } from 'vuex';
 import OrviboAndSolaraDevicesCombiner from 'src/mixins/OrviboAndSolaraDevicesCombiner';
-import DataGettersCompositions from 'src/mixins/DataGettersCompositions';
-import DeviceCommander from 'src/mixins/DeviceCommander';
 import MotorFavoritesPicker from 'components/inputs/MotorFavoritesPicker';
 import UpgradeButton from 'components/UpgradeButton';
 import DevicesAPI from 'src/api/device';
+import DataGettersCompositions from '../mixins/DataGettersCompositions';
+import DeviceCommander from '../mixins/DeviceCommander';
 
 export default defineComponent({
   name: 'Favorites',
@@ -64,13 +69,39 @@ export default defineComponent({
     const { getPartName } = DataGettersCompositions();
     const { initiateFavoritesProcess } = DeviceCommander();
     const store = useStore();
-    const environments = reactive([]);
+    const environments = reactive([
+      {
+        uid: 123123123,
+        devices: [
+          {
+            user_id: '62ac6b4c2d4d9b002257b368',
+            selected_ids: [],
+            hub_id: '14234123412jk234h1j234',
+            assembly_type: 'Environment 1',
+            favorites_set: [
+              { orvibo_id: 123, name: 'Terrace' },
+              { orvibo_id: 12, name: 'Balcony' },
+            ],
+          },
+          {
+            user_id: '62ac6b4c2d4d9b002257b368',
+            favorites_set: [
+              { orvibo_id: 132, name: 'Pool' },
+              { orvibo_id: 144, name: 'Parking Area' },
+            ],
+            selected_ids: [],
+            hub_id: '14234123412jk234h1j234',
+            assembly_type: 'Environment 2',
+          },
+        ],
+      },
+    ]);
     const myDevices = computed(() => store.state.Devices.myDevices);
     const user = computed(() => store.state.User.user);
 
     const prepareFavoritesList = () => {
-      const env = generateEnvironments();
-      Object.assign(environments, env);
+      // const env = generateEnvironments();
+      // Object.assign(environments, env);
     };
 
     /**
@@ -82,7 +113,9 @@ export default defineComponent({
      * Vlad. 01/10/21
      */
     const updateDeviceData = async (pickerData, device) => {
-      const partToUpdate = device.favorites_set.find((part) => part.orvibo_id === pickerData.orvibo_id);
+      const partToUpdate = device.favorites_set.find(
+        (part) => part.orvibo_id === pickerData.orvibo_id,
+      );
       if (!partToUpdate) return;
       store.commit('General/setMainLoaderState', true);
       partToUpdate.state = pickerData.state;
@@ -113,7 +146,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "src/css/mixins";
+@import '../css/mixins';
 
 .sol-favorites-devices-list {
   padding: 10px 0 0 0 !important;
@@ -125,7 +158,7 @@ export default defineComponent({
 }
 
 .sol-favorite-parts-list {
-  @include setGridAuto(60px, null, "rows");
+  @include setGridAuto(60px, null, 'rows');
 
   .q-item {
     align-items: center;
@@ -143,6 +176,6 @@ export default defineComponent({
 
 .sol-favorite-part-row {
   padding: 0 0 0 15px;
-  @include setGrid(1fr 180px, 10px, null, null, "columns");
+  @include setGrid(1fr 180px, 10px, null, null, 'columns');
 }
 </style>

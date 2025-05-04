@@ -5,16 +5,16 @@
     expand-separator
     class="bg-primary sol-white-arrow"
     header-class="text-white sol-expansion-head"
-    :label="group.deviceName"
+    :label="group?.motor_type"
   >
     <q-list separator>
       <q-item clickable
               v-ripple
               class="q-pt-lg q-pb-lg bg-white"
-              v-for="device in group.devices"
-              :key="device.id" @click="enterDevice(device)">
+              v-for="device in group.orvibo_ids"
+              :key="device?._id" @click="enterDevice(device)">
         <q-item-section>
-          <q-item-label>{{ $t(device.assembly_type) }}</q-item-label>
+          <q-item-label>{{ device }}</q-item-label>
         </q-item-section>
         <q-item-section avatar>
           <q-icon color="grey-5" name="arrow_forward_ios" size="xs" />
@@ -32,7 +32,7 @@ import {
   reactive,
 } from 'vue';
 import { useStore } from 'vuex';
-import OrviboAndSolaraDevicesCombiner from 'src/mixins/OrviboAndSolaraDevicesCombiner';
+import OrviboAndSolaraDevicesCombiner from '../../mixins/OrviboAndSolaraDevicesCombiner';
 
 export default defineComponent({
   name: 'EnvironmentsList',
@@ -51,6 +51,7 @@ export default defineComponent({
      */
     const groupListsByEnvironments = () => {
       const environments = generateEnvironments();
+      console.log(environments);
       Object.assign(groupedDevices, environments);
     };
 
