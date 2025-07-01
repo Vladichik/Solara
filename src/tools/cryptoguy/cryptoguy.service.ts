@@ -6,8 +6,13 @@ import * as crypto from 'crypto-js';
 
 @Injectable()
 export class CryptoGuyService {
-  constructor(private configService: ConfigService) {}
-  password = this.configService.get<string>('PASS_SECRET');
+  // constructor(private configService: ConfigService) {}
+  // password = this.configService.get<string>('PASS_SECRET');
+  password: string;
+
+  constructor(private configService: ConfigService) {
+    this.password = this.configService.get<string>('PASS_SECRET');
+  }
 
   async hashPassword(password: string) {
     const saltOrRounds = 10;
