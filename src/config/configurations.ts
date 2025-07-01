@@ -10,7 +10,7 @@ export default () => ({
   ORVIBO_ACT_OFF: 'TurnOff',
   ORVIBO_ACT_ON: 'TurnOn',
   ORVIBO_ACT_STOP: 'Pause',
-  WEATHER_API_SECRET: '55e03e48dcd04a19b87110610210809',
+  WEATHER_API_SECRET: '3c4d30adbc6142478cc122305252306',
   WEATHER_API_URL: 'https://api.weatherapi.com/v1/',
   SNOW_LOCK_TIME: 720,
   RAIN_LOCK_TIME: 14,

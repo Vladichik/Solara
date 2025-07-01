@@ -1,11 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
-import { HttpService, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 import { AxiosResponse } from 'axios';
 import { ConfigService } from '@nestjs/config';
 import {
   OrviboDeviceQueryProps,
   DeviceCommandProps,
-  OrviboRefreshTokenProps, RefreshTokenResponse,
+  OrviboRefreshTokenProps,
+  RefreshTokenResponse,
 } from './types';
 import { CryptoGuyService } from '../../tools/cryptoguy/cryptoguy.service';
 

@@ -51,7 +51,6 @@ export default defineComponent({
      */
     const groupListsByEnvironments = () => {
       const environments = generateEnvironments();
-      console.log(environments);
       Object.assign(groupedDevices, environments);
     };
 

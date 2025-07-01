@@ -40,8 +40,8 @@ export default class OrviboAPI {
     const tokensData = localStorage.getItem(Constants.ORVIBO_TOKEN_KEY);
     const parsedData = tokensData ? JSON.parse(tokensData) : null;
     return {
-      access_token: parsedData.access_token,
-      user_id: parsedData.user_id,
+      access_token: parsedData?.access_token || '',
+      user_id: parsedData?.user_id || '',
     };
   }
 
@@ -100,6 +100,7 @@ export default class OrviboAPI {
    */
   static sendCommandToDevice(action) {
     const payload = Object.assign(this.basicPayloadData(), action);
+    console.log(payload);
     return api.post(`${ORVIBO_API_BASE}/operate-device`, payload);
   }
 }

@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
-import { Injectable, HttpService } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { WeatherParams, ForecastResponse, AnalyzedWeather } from './types';
 import { DeviceAddressesService } from '../../database/device-addresses/device-addresses.service';
@@ -62,7 +63,7 @@ export class WeatherService {
   async getCurrentWeather(params: Partial<WeatherParams>): Promise<any> {
     let p = `&q=${params.city}`;
     if (!params.city || !params.city.length) {
-      p = `&q=${params.lat},${params.long}`;
+      p = `&q=${params.long},${params.lat}`;
     }
     return await this.callWeatherAPI(p);
   }

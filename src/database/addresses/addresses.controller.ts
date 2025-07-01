@@ -19,9 +19,8 @@ export class AddressesController {
   @Get('/manual/:userID')
   async getUserDevices(@Res() res, @Param('userID') userID) {
     if (userID) {
-      const devices = await this.addressService.queryManualAddressesByUser(
-        userID,
-      );
+      const devices =
+        await this.addressService.queryManualAddressesByUser(userID);
       return res.status(HttpStatus.OK).json(devices);
     }
     return res

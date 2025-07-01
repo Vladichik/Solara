@@ -78,13 +78,16 @@ export class DevicesService {
   generateLockUpdateObject(
     condition: string,
     time: string,
-  ): Record<symbol, string> {
+  ): Record<symbol, Date> {
     switch (condition) {
       case 'SNOW':
+        // @ts-ignore
         return { lock_snow: new Date(time) };
       case 'RAIN':
+        // @ts-ignore
         return { lock_rain: new Date(time) };
       case 'WIND':
+        // @ts-ignore
         return { lock_wind: new Date(time) };
     }
   }

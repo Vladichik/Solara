@@ -15,9 +15,6 @@ export default class MongooseConfigService implements MongooseOptionsFactory {
         : 'solara-db-dev';
     return {
       uri: `mongodb+srv://solara:solara.app.2021@cluster0.xkafi.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`,
-      useFindAndModify: false,
-      useNewUrlParser: true,
-      useCreateIndex: true,
     };
   }
 }

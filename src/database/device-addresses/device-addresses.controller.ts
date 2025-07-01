@@ -20,9 +20,8 @@ export class DeviceAddressesController {
   @Get('/:userID')
   async getUserDevices(@Res() res, @Param('userID') userID) {
     if (userID) {
-      const addresses = await this.deviceAddressesService.listDeviceAddresses(
-        userID,
-      );
+      const addresses =
+        await this.deviceAddressesService.listDeviceAddresses(userID);
       return res.status(HttpStatus.OK).json(addresses);
     }
     return res
@@ -46,9 +45,8 @@ export class DeviceAddressesController {
   @Delete('/:addressID')
   async deleteDeviceAddress(@Res() res, @Param('addressID') addressID) {
     if (addressID) {
-      const devices = await this.deviceAddressesService.deleteAddress(
-        addressID,
-      );
+      const devices =
+        await this.deviceAddressesService.deleteAddress(addressID);
       return res.status(HttpStatus.OK).json(devices);
     }
     return res

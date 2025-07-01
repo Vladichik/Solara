@@ -6,7 +6,7 @@ import { CronModule } from './cron/cron.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './database/users/users.module';
@@ -19,7 +19,7 @@ import { DeviceAddressesModule } from './database/device-addresses/device-addres
 import { OrviboModule } from './third-party-apis/orvibo/orvibo.module';
 import { WeatherModule } from './third-party-apis/weather/weather.module';
 import { ContactUsModule } from './database/contact-us/contact-us.module';
-import { MailerModule } from '@nestjs-modules/mailer';
+// import { MailerModule } from '@nestjs-modules/mailer';
 import configuration from './config/configurations';
 
 @Module({
@@ -35,17 +35,17 @@ import configuration from './config/configurations';
     MongooseModule.forRootAsync({
       useClass: MongoConfig,
     }),
-    MailerModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async () => ({
-        transport: process.env.EMAIL_TRANSPORT,
-        port: process.env.EMAIL_PORT,
-        defaults: {
-          from: process.env.COMPANY_EMAIL,
-        },
-      }),
-      inject: [ConfigService],
-    }),
+    // MailerModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   useFactory: async () => ({
+    //     transport: process.env.EMAIL_TRANSPORT,
+    //     port: process.env.EMAIL_PORT,
+    //     defaults: {
+    //       from: process.env.COMPANY_EMAIL,
+    //     },
+    //   }),
+    //   inject: [ConfigService],
+    // }),
     ScheduleModule.forRoot(),
     CronModule,
     AuthModule,
@@ -63,5 +63,4 @@ import configuration from './config/configurations';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-}
+export class AppModule {}

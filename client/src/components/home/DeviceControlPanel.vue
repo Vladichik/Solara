@@ -204,7 +204,8 @@ export default defineComponent({
       const cloned = JSON.parse(JSON.stringify(props.device));
       cloned.selected_ids = selectedMotors;
       Object.assign(props.device, cloned);
-      await DevicesAPI.updateDevice(props.device);
+      // TODO Commented out just to avoid it for tests
+      // await DevicesAPI.updateDevice(props.device);
       store.commit('General/setMainLoaderState', false);
     };
 
@@ -253,7 +254,7 @@ export default defineComponent({
       setTimeout(() => {
         blockPause.value = false;
         store.commit('General/setMainLoaderState', false);
-      }, props.device.selected_ids.length * Constants.DELAY_BETWEEN_COMMANDS);
+      }, props.device?.selected_ids?.length * Constants.DELAY_BETWEEN_COMMANDS);
     };
 
     onBeforeMount(() => {

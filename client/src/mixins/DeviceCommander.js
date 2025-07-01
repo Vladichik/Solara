@@ -127,7 +127,7 @@ export default function () {
    */
   const openMotorPartially = async (device, position) => {
     store.commit('General/setProcessingSemi', true);
-    if (device && device.selected_ids.length) {
+    if (device && device.selected_ids?.length) {
       const awaitForFullClosing = Constants[`${device.motor_type}_SPEED`] + Constants.DELAY_BETWEEN_COMMANDS;
       const awaitForRequiredOpening = Constants[`${device.motor_type}_${position}`];
       const currentMotor = [device.selected_ids[partialOpeningIndex]];

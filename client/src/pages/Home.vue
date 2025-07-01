@@ -37,16 +37,16 @@ export default defineComponent({
     const panel = ref('list');
     const selectedDevice = reactive({});
     const myDevices = computed(() => store.state.Devices.myDevices);
-    console.log(myDevices.value);
 
     const enterDevice = (device) => {
-      Object.assign(selectedDevice, device);
+      selectedDevice.id = device;
+      // Object.assign(selectedDevice, device);
       panel.value = 'device';
     };
 
     const goHome = () => {
       panel.value = 'list';
-      Object.assign(selectedDevice, {});
+      selectedDevice.value = {};
     };
 
     bus.on('closeNav', () => {
