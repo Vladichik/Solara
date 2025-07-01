@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
-import { Injectable, HttpService } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { WeatherParams, ForecastResponse, AnalyzedWeather } from './types';
 import { DeviceAddressesService } from '../../database/device-addresses/device-addresses.service';

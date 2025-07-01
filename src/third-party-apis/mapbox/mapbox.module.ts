@@ -1,4 +1,5 @@
-import { Module, HttpModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios';
 import { MapboxController } from './mapbox.controller';
 import { MapboxService } from './mapbox.service';
 

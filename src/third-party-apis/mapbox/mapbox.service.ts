@@ -1,11 +1,12 @@
-import { Injectable, HttpService } from '@nestjs/common';
-import { AxiosResponse } from 'axios';
+import { Injectable } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+// import { AxiosResponse } from 'axios';
 
 @Injectable()
 export class MapboxService {
   constructor(private httpService: HttpService) {}
 
-  getAddressSuggestions(text): Promise<AxiosResponse<any>> {
+  getAddressSuggestions(text): Promise<any> {
     return this.httpService
       .get(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${text}.json?country=US&access_token=pk.eyJ1Ijoic2Nvcml0aSIsImEiOiJja2xxczh1aW4waTl2Mm5sbG5jYWtybTkwIn0.kYNYp1CEUjiroifspgKmcQ`,

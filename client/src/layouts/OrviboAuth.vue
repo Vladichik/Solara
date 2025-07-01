@@ -43,6 +43,7 @@ export default defineComponent({
     const user = computed(() => store.state.User.user);
     onBeforeMount(() => {
       setTimeout(async () => {
+        debugger;
         await store.dispatch('User/getLoggedInUser');
         const loggedIn = await AuthAPI.orviboLogin(route.query.code);
         if (loggedIn.data && loggedIn.data.access_token) {

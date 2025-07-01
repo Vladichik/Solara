@@ -1,4 +1,5 @@
-import { Module, HttpModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios';
 import { OrviboService } from './orvibo.service';
 import { OrviboController } from './orvibo.controller';
 import { CryptoGuyModule } from '../../tools/cryptoguy/cryptoguy.module';
