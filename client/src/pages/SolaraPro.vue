@@ -13,7 +13,7 @@
       />
     </q-card-section>
     <q-card-section>
-      <upgrade-button />
+      <upgrade-button v-if="!user?.is_pro" />
     </q-card-section>
   </q-card>
 </template>
