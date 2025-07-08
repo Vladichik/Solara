@@ -61,7 +61,7 @@ export default {
       window.addEventListener('onCheckoutFailure', onPaymentFailed);
 
       const paymentScript = document.createElement('script');
-      let paymentApi = apiSrc.prod;
+      let paymentApi = apiSrc.sandbox;
       if (window.location.origin.includes('localhost')) {
         paymentApi = apiSrc.sandbox;
       }
