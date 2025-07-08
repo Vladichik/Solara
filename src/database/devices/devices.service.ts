@@ -183,7 +183,7 @@ export class DevicesService {
         // @ts-ignore
         (d) => d.district === device.address.district,
       );
-      if (ownerUser.is_pro && ownerUser.smart_active) {
+      if (ownerUser?.is_pro && ownerUser.smart_active) {
         device.orvibo_ids.forEach((id) => {
           readyOperationalData.push({
             deviceId: id,

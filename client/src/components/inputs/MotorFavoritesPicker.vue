@@ -8,7 +8,7 @@
             option-label="text"
             :label="$t('mode')"
             :options="options"
-            :disable='!user.is_pro'
+            :disable='!user?.is_pro'
             @update:model-value="$emit('on-mode-selected', {state, orvibo_id: part.orvibo_id})" />
 </template>
 

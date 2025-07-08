@@ -2,7 +2,7 @@
   <q-card flat>
     <q-card-section>
       <q-toggle
-        :disable='!user.is_pro'
+        :disable='!user?.is_pro'
         size='lg'
         v-model='smartMode'
         checked-icon='check'

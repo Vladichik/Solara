@@ -28,8 +28,8 @@
         </q-list>
         <q-card flat>
           <q-card-section class='text-center'>
-            <q-btn @click="initiateFavoritesProcess(device)" v-if='user.is_pro'>Trigger</q-btn>
-            <upgrade-button v-if='!user.is_pro' />
+            <q-btn @click="initiateFavoritesProcess(device)" v-if='user?.is_pro'>Trigger</q-btn>
+            <upgrade-button v-if='!user?.is_pro' />
           </q-card-section>
         </q-card>
       </q-item>
