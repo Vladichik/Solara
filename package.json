@@ -19,7 +19,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "postinstall": "npm --prefix ./client/ install --legacy-peer-deps && npm --prefix ./client/ run build"
+    "postinstall": "npm --prefix ./client/ install && npm --prefix ./client/ run build"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.6.0",
@@ -70,7 +70,7 @@
     "ts-loader": "^8.0.18",
     "ts-node": "^9.1.1",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^4.9.5"
+    "typescript": "^5.8.3"
   },
   "jest": {
     "moduleFileExtensions": [
