@@ -33,7 +33,6 @@ export default defineComponent({
     this.$store.commit('General/setMainLoaderState', true);
     await this.$store.dispatch('Devices/getMyDevices');
     this.$store.commit('General/setMainLoaderState', false);
-    console.log(this.$route);
   },
   watch: {
     myDevices(v) {
