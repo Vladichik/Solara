@@ -32,7 +32,7 @@ export default {
       checkout = new RapydCheckoutToolkit({
         pay_button_text: 'Make Payment',
         pay_button_color: 'red',
-        id: 'checkout_3YQaCRva',
+        id: 'payment_155a86814953ea37dcebfee5af8988f9',
         close_on_complete: true,
         page_type: 'collection',
         width: 200,
