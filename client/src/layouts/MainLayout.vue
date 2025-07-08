@@ -8,20 +8,20 @@
       </q-toolbar>
 
       <q-tabs align="left" narrow-indicator>
-        <q-route-tab no-caps
-                     v-for="r in $tm('main_tabs')"
-                     :to="r.route"
-                     :label="r.name"
-                     :icon="r.icon"
-                     :key="r.route"
-                     @click='onTabPressed()' />
+        <q-route-tab
+          no-caps
+          v-for="r in $tm('main_tabs')"
+          :to="r.route"
+          :label="r.name"
+          :icon="r.icon"
+          :key="r.route"
+          @click="onTabPressed()"
+        />
       </q-tabs>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" side="left" overlay>
-      sdfgsdfg
-      sdfgsdfg
-      sdfgsdfg
+      sdfgsdfg sdfgsdfg sdfgsdfg
     </q-drawer>
 
     <q-page-container>

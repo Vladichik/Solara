@@ -11,6 +11,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 /* eslint func-names: 0 */
 /* eslint global-require: 0 */
 const { configure } = require('quasar/wrappers');
+const path = require('path');
 
 module.exports = configure((ctx) => ({
   // https://v2.quasar.dev/quasar-cli/supporting-ts
