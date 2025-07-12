@@ -12,7 +12,7 @@ export class CronService {
     private readonly weatherSrv: WeatherService,
   ) {}
 
-  @Cron(CronExpression.EVERY_HOUR)
+  @Cron(CronExpression.EVERY_MINUTE)
   startCheckForWeatherHazards() {
     if (process.env.NODE_ENV === 'production') {
       this.weatherSrv.startScheduledTaskForWeatherHazards().then();
