@@ -14,9 +14,9 @@ export class CronService {
 
   @Cron(CronExpression.EVERY_MINUTE)
   startCheckForWeatherHazards() {
-    if (process.env.NODE_ENV === 'production') {
+    // if (process.env.NODE_ENV === 'production') {
       Logger.log(`StartCheckForWeatherHazards`);
       this.weatherSrv.startScheduledTaskForWeatherHazards().then();
-    }
+    // }
   }
 }
