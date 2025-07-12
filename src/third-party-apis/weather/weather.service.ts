@@ -89,6 +89,7 @@ export class WeatherService {
    * Vlad. 16/10/21
    */
   async getWeatherForDistrict() {
+    Logger.log(this.districts[this.flowIndex]);
     if (this.districts[this.flowIndex]) {
       const forecast = await this.callWeatherAPI(
         `&q=${this.districts[this.flowIndex]}&aqi=no&alerts=no`,
