@@ -77,6 +77,7 @@ export class WeatherService {
     this.flowIndex = 0;
     this.allWeathers = [];
     this.districts = await this.deviceAddressSrv.getAddressDistricts();
+    Logger.log(`Districts ${this.districts?.length}`);
     if (this.districts && this.districts.length) {
       await this.getWeatherForDistrict();
     }
