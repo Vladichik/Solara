@@ -104,6 +104,7 @@ export class WeatherService {
       await this.getWeatherForDistrict();
     } else if (this.allWeathers.length) {
       Logger.log(`Operation made for ${this.allWeathers.length} regions`);
+      Logger.log(this.allWeathers);
       await this.devicesSrv.operateDevicesAccordingToWeatherForecast(
         this.allWeathers,
       );
