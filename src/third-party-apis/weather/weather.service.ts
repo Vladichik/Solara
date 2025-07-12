@@ -77,7 +77,6 @@ export class WeatherService {
     this.flowIndex = 0;
     this.allWeathers = [];
     this.districts = await this.deviceAddressSrv.getAddressDistricts();
-    Logger.log(`Districts ${this.districts?.length}`);
     if (this.districts && this.districts.length) {
       await this.getWeatherForDistrict();
     }
@@ -89,7 +88,6 @@ export class WeatherService {
    * Vlad. 16/10/21
    */
   async getWeatherForDistrict() {
-    Logger.log(this.districts[this.flowIndex]);
     if (this.districts[this.flowIndex]) {
       const forecast = await this.callWeatherAPI(
         `&q=${this.districts[this.flowIndex]}&aqi=no&alerts=no`,
@@ -104,7 +102,6 @@ export class WeatherService {
       await this.getWeatherForDistrict();
     } else if (this.allWeathers.length) {
       Logger.log(`Operation made for ${this.allWeathers.length} regions`);
-      Logger.log(this.allWeathers);
       await this.devicesSrv.operateDevicesAccordingToWeatherForecast(
         this.allWeathers,
       );

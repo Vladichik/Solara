@@ -37,15 +37,11 @@ export class DevicesService {
   }
 
   async getDeviceByDistricts(districts): Promise<Device[]> {
-    Logger.log(districts)
     const allDevices = await this.deviceModel.find().populate('address');
-    console.log(allDevices)
     if (allDevices && allDevices.length) {
-      return allDevices.filter((device) => {
-          console.log(device.address);
-          // @ts-ignore
-          return districts.includes(device.address.district);
-        }
+      return allDevices.filter((device) =>
+        // @ts-ignore
+        districts.includes(device.address.district),
       );
     }
   }
