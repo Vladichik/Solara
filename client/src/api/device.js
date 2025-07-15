@@ -3,6 +3,7 @@
  */
 import { api } from 'boot/axios';
 import AuthAPI from 'src/api/authentication';
+import { Constants } from 'src/config/constants';
 
 const DEVICES_BASE = '/devices';
 
@@ -43,7 +44,9 @@ export default class DevicesAPI {
   }
 
   static simulateWeather(payload) {
-    return api.post(`${DEVICES_BASE}/simulate`, payload)
+    const tokensData = localStorage.getItem(Constants.ORVIBO_TOKEN_KEY);
+    const parsedData = tokensData ? JSON.parse(tokensData) : null;
+    return api.post(`${DEVICES_BASE}/simulate`, { ...payload, access_token: parsedData.access_token })
       .then((resp) => resp)
       .catch((error) => error.response);
   }

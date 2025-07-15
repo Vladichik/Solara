@@ -161,11 +161,12 @@ export class DevicesService {
         lock_rain: device.lock_rain,
         lock_wind: device.lock_wind,
         orvibo_user_id: user.orvibo_id,
-        access_token: user.orvibo_token,
+        access_token: payload.access_token,
         token_exp: user.orvibo_token_exp,
         refresh_token: user.orvibo_refresh_token,
       });
     });
+    console.log(readyOperationalData);
     this.cronOperationIndex = 0;
     this.operateDeviceInOrvibo(readyOperationalData).then();
   }
