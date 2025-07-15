@@ -245,7 +245,6 @@ export class DevicesService {
    */
   async operateDeviceInOrvibo(devices: any[]) {
     console.log('entered operateDeviceInOrvibo')
-    console.log(devices);
     this.orviboSrv.sendCommandToDevice(devices[this.cronOperationIndex]).then();
     Logger.log(`${devices[this.cronOperationIndex].action} device`);
     await this.timeout(2000);

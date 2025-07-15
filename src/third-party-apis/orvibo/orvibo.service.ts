@@ -137,6 +137,7 @@ export class OrviboService {
         time: time,
       },
     };
+    console.log(payload);
     return this.callOrviboCloud(payload);
   }
 }
