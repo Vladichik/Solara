@@ -2,10 +2,10 @@
   <q-tab-panels v-model="panel" animated>
     <q-tab-panel name="list" class="q-pa-none">
       <PleaseCreateDeviceMessage v-if='!myDevices.length' />
-<!--      <a :href="getOrviboAuthUrl()"-->
-<!--         class="sol-orvibo-auth-btn"-->
-<!--         id="orvibo-auth-btn" />-->
-<!--      <environments-list :enter-device="enterDevice" />-->
+      <a :href="getOrviboAuthUrl()"
+         class="sol-orvibo-auth-btn"
+         id="orvibo-auth-btn" />
+      <environments-list :enter-device="enterDevice" />
     </q-tab-panel>
     <q-tab-panel name="device" class="q-pa-none">
       <device-control-panel :device="selectedDevice" :go-home="goHome" />
@@ -27,7 +27,7 @@ import bus from 'vue3-eventbus';
 export default defineComponent({
   name: 'Home',
   components: {
-    // EnvironmentsList,
+    EnvironmentsList,
     DeviceControlPanel,
     PleaseCreateDeviceMessage,
   },

@@ -44,7 +44,7 @@ export class DevicesController {
   @Post('/simulate')
   async onSimulateReceived(@Res() res, @Body() payload) {
     const device = await this.deviceService.simulateDevicesOperation(payload);
-    return true;
+    return res.status(HttpStatus.OK).json({ done: true});
   }
 
   @UseGuards(JwtAuthGuard)
