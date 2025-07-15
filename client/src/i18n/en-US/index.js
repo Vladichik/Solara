@@ -77,6 +77,7 @@ export default {
     { name: 'Product Info', icon: 'info', path: '/products-info' },
     { name: 'Resource center (Q&A)', icon: 'construction', path: '/resource-center' },
     { name: 'Contact Us', icon: 'support_agent', path: '/contact-us' },
+    { name: 'Weather Simulator', icon: 'watch', path: '/weather-sim' },
   ],
   account_info: {
     first_name: 'First Name',

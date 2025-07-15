@@ -25,6 +25,7 @@ const routes = [
           { path: '/address', component: () => import('pages/my-account/Addresses.vue') },
           { path: '/products-info/:deviceId?', component: () => import('pages/my-account/ProductsInfo.vue') },
           { path: '/contact-us', component: () => import('pages/my-account/ContactUs.vue') },
+          { path: '/weather-sim', component: () => import('pages/my-account/WeatherSim.vue') },
         ],
       },
       { path: '/favorites', component: () => import('pages/Favorites.vue') },

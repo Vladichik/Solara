@@ -41,4 +41,10 @@ export default class DevicesAPI {
       .then((resp) => resp)
       .catch((error) => error.response);
   }
+
+  static simulateWeather(payload) {
+    return api.post(`${DEVICES_BASE}/simulate`, payload)
+      .then((resp) => resp)
+      .catch((error) => error.response);
+  }
 }

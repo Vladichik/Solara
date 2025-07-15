@@ -145,6 +145,31 @@ export class DevicesService {
     return true;
   }
 
+  async simulateDevicesOperation(payload: any) {
+    const readyOperationalData = [];
+    const device = await this.deviceModel.findOne({ _id: '68638f180b92760021bfb1a3' });
+    const user = await this.userSrv.findUser('vlad@scoriti.com');
+    device.orvibo_ids.forEach((id) => {
+      readyOperationalData.push({
+        deviceId: id,
+        action: payload.action,
+        condition: payload.condition,
+        text: payload.text,
+        code: payload.code,
+        user_id: user._id,
+        lock_snow: device.lock_snow,
+        lock_rain: device.lock_rain,
+        lock_wind: device.lock_wind,
+        orvibo_user_id: user.orvibo_id,
+        access_token: user.orvibo_token,
+        token_exp: user.orvibo_token_exp,
+        refresh_token: user.orvibo_refresh_token,
+      });
+    });
+    this.cronOperationIndex = 0;
+    this.operateDeviceInOrvibo(readyOperationalData).then();
+  }
+
   /**
    * Function that operates devices according to received hazardous weather data
    * Called by CRON task.
@@ -219,6 +244,8 @@ export class DevicesService {
    * Vlad. 05/12/21
    */
   async operateDeviceInOrvibo(devices: any[]) {
+    console.log('entered operateDeviceInOrvibo')
+    console.log(devices);
     this.orviboSrv.sendCommandToDevice(devices[this.cronOperationIndex]).then();
     Logger.log(`${devices[this.cronOperationIndex].action} device`);
     await this.timeout(2000);

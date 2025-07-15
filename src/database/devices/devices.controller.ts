@@ -41,6 +41,13 @@ export class DevicesController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Post('/simulate')
+  async onSimulateReceived(@Res() res, @Body() payload) {
+    const device = await this.deviceService.simulateDevicesOperation(payload);
+    return true;
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Put('/device')
   async updateDevice(@Res() res, @Body() payload) {
     const device = await this.deviceService.updateDevice(payload);

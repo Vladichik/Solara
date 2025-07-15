@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { DevicesService } from '../database/devices/devices.service';
 import { DeviceAddressesService } from '../database/device-addresses/device-addresses.service';
@@ -14,9 +14,8 @@ export class CronService {
 
   @Cron(CronExpression.EVERY_HOUR)
   startCheckForWeatherHazards() {
-    // if (process.env.NODE_ENV === 'production') {
-      Logger.log(`StartCheckForWeatherHazards`);
+    if (process.env.NODE_ENV === 'production') {
       this.weatherSrv.startScheduledTaskForWeatherHazards().then();
-    // }
+    }
   }
 }
