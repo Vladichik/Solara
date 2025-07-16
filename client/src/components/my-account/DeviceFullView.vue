@@ -320,7 +320,7 @@ export default defineComponent({
 </script>
 
 <style lang='scss'>
-@import "src/css/mixins";
+@import "../../css/mixins";
 .sol-device-details-form {
   .q-select__dropdown-icon {
     font-size: 50px;
