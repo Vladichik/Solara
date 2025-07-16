@@ -1,6 +1,26 @@
 <template>
-  <q-select dense outlined label="Weather" :options="options" v-model="selected" map-options emit-value />
-  <q-btn dense no-caps color="red" label="Trigger" :loading="processing" @click="simulateWeather" />
+  <div class="sol-sim-frame">
+    <div style="width: 300px" class="q-pa-xl">
+      <q-select
+        dense
+        outlined
+        label="Weather"
+        :options="options"
+        v-model="selected"
+        map-options
+        emit-value
+      />
+      <q-btn
+        dense
+        no-caps
+        color="red"
+        label="Trigger"
+        class="full-width q-mt-md"
+        :loading="processing"
+        @click="simulateWeather"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -51,29 +71,6 @@ export default defineComponent({
       },
     };
 
-    // return {
-
-    // };
-
-    // if (this.rainCodes.includes(relForecast.condition.code)) {
-    //   return {
-    //     code: relForecast.condition.code,
-    //     text: relForecast.condition.text,
-    //     time: relForecast.time,
-    //     condition: 'RAIN',
-    //     action: this.actOff,
-    //   };
-    // }
-    // if (relForecast.wind_mph >= this.maxWindSpeed) {
-    //   return {
-    //     code: relForecast.condition.code,
-    //     text: relForecast.condition.text,
-    //     time: relForecast.time,
-    //     condition: 'WIND',
-    //     action: this.actOn,
-    //   };
-    // }
-
     return {
       selected,
       options,
@@ -93,5 +90,13 @@ export default defineComponent({
 .sol-new-device-btn-frame {
   display: flex;
   justify-content: center;
+}
+
+.sol-sim-frame {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  //grid-template-columns: 1fr;
 }
 </style>
