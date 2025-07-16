@@ -42,15 +42,15 @@
         </q-chip>
       </template>
     </q-select>
-    <!--    <q-select filled-->
-    <!--              map-options-->
-    <!--              emit-value-->
-    <!--              option-value="key"-->
-    <!--              option-label="text"-->
-    <!--              v-model="formData.motor_type"-->
-    <!--              :model-value="formData.motor_type"-->
-    <!--              :options="motorsTypeOptions"-->
-    <!--              :label="$t('motor_type')" />-->
+        <q-select filled
+                  map-options
+                  emit-value
+                  option-value="key"
+                  option-label="text"
+                  v-model="formData.motor_type"
+                  :model-value="formData.motor_type"
+                  :options="motorsTypeOptions"
+                  :label="$t('motor_type')" />
     <q-input filled :label="$t('technician_name')"
              v-model='formData.technician_name'
              :rules="[ val => val.length > 0 || $t('mandatory_field')]" />
