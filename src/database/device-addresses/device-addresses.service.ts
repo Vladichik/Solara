@@ -21,7 +21,7 @@ export class DeviceAddressesService {
       { $group: { _id: '$district' } },
     ]);
     if (districts.length) {
-      return districts.map((district) => district._id);
+      return districts?.map((district) => district._id);
     }
     return [];
   }

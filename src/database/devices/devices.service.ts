@@ -41,7 +41,7 @@ export class DevicesService {
     if (allDevices && allDevices.length) {
       return allDevices.filter((device) =>
         // @ts-ignore
-        districts.includes(device.address.district),
+        districts.includes(device.address?.district),
       );
     }
   }
@@ -57,12 +57,12 @@ export class DevicesService {
     return devices.filter((d) => {
       const district = weatherData.find(
         // @ts-ignore
-        (w) => w.district === d.address.district,
+        (w) => w.district === d.address?.district,
       );
       return (
-        !d[`lock_${district.condition.toLowerCase()}`] ||
-        moment(district.time).isAfter(
-          d[`lock_${district.condition.toLowerCase()}`],
+        !d[`lock_${district?.condition.toLowerCase()}`] ||
+        moment(district?.time).isAfter(
+          d[`lock_${district?.condition.toLowerCase()}`],
         )
       );
     });
@@ -120,12 +120,12 @@ export class DevicesService {
       devsToUpdate.forEach((device) => {
         const district = weatherData.find(
           // @ts-ignore
-          (w) => w.district === device.address.district,
+          (w) => w.district === device.address?.district,
         );
         const timeToAdd = this.confSrv.get<number>(
           `${district.condition}_LOCK_TIME`,
         );
-        const updatedTime = moment(district.time)
+        const updatedTime = moment(district?.time)
           .add(timeToAdd, 'hours')
           .format();
         bulks.push({
